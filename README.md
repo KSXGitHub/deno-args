@@ -7,8 +7,8 @@ CLI arguments parser for [Deno](https://deno.land) with TypeScript inference.
 ```typescript
 import build from 'https://deno.land/x/args/build.ts'
 import help from 'https://deno.land/x/args/help.ts'
-import { Flag, Option } from 'https://deno.land/x/args/extractors.ts'
-import { Number, Choice } from 'https://deno.land/x/args/types.ts'
+import { Flag, Option } from 'https://deno.land/x/args/xarg.ts'
+import { Number, Choice } from 'https://deno.land/x/args/xval.ts'
 
 const parser = build()
   .with(Flag('help', {
