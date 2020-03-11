@@ -55,3 +55,12 @@ export function partition<X> (xs: Iterable<X>, fn: (x: X) => boolean) {
   }
   return [left, right]
 }
+
+export function find<X> (xs: Iterable<X>, fn: (x: X) => boolean) {
+  let index = 0
+  for (const value of xs) {
+    if (fn(value)) return { index, value }
+    index += 1
+  }
+  return null
+}
