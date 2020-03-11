@@ -1,4 +1,6 @@
 import {
+  ok,
+  err,
   iterateArguments,
   partition
 } from './utils.ts'
@@ -36,13 +38,10 @@ abstract class ParserBase<
   public parse (args: readonly string[]): ParseResult<this[__parseResult]> {
     const res = this[__parse]([...iterateArguments(args)])
     if (!res.tag) return res
-    return {
-      tag: true,
-      value: {
-        ...res.value.value,
-        _: res.value.remainingArgs
-      }
-    }
+    return ok({
+      ...res.value.value,
+      _: res.value?.remainingArgs
+    })
   }
 
   public with<NextName extends string, NextValue> (extractor: Extractor<NextName, NextValue>) {
@@ -75,10 +74,7 @@ class ParserNode<
       ...next.value.value
     }
     const remainingArgs = next.value.remainingArgs
-    return {
-      tag: true,
-      value: { value, remainingArgs }
-    }
+    return ok({ value, remainingArgs })
   }
 }
 
@@ -86,18 +82,12 @@ class EmptyParser extends ParserBase<never, never, never> {
   public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const [flags, nonFlags] = partition(args, x => x.isFlag)
     if (flags.length) {
-      return {
-        tag: false,
-        error: new UnknownOptions(flags.map(x => x.value))
-      }
+      return err(new UnknownOptions(flags.map(x => x.value)))
     }
-    return {
-      tag: true,
-      value: {
-        value: {} as never,
-        remainingArgs: nonFlags.map(x => x.value)
-      }
-    }
+    return ok({
+      value: {} as never,
+      remainingArgs: nonFlags.map(x => x.value)
+    })
   }
 }
 

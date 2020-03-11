@@ -1,4 +1,19 @@
-import { ArgvItem } from './types.ts'
+import {
+  ParseSuccess,
+  ParseFailure,
+  ParseError,
+  ArgvItem
+} from './types.ts'
+
+export const ok = <Value> (value: Value): ParseSuccess<Value> => ({
+  tag: true,
+  value
+})
+
+export const err = (error: ParseError): ParseFailure => ({
+  tag: false,
+  error
+})
 
 export function * iterateArguments (args: readonly string[]) {
   let fn = (value: string): ArgvItem[] => {
