@@ -11,28 +11,59 @@ import {
 declare const __parseResult: unique symbol
 type __parseResult = typeof __parseResult
 
-type _ParseReturn<This extends Parser<any, any, any>> = ParseResult<{
+const __parse = Symbol()
+type __parse = typeof __parse
+
+type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
   value: This[__parseResult]
   remainingArgs: string[]
 }>
 
-export class Parser<
+abstract class ParserBase<
   Name extends string,
   Value,
-  Next extends Parser<any, any, any>
+  Next extends ParserBase<any, any, any>
 > {
   /** Type helper */
   declare public [__parseResult]: Record<Name, Value> & Next[__parseResult]
+  public abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
+
+  public parse (args: readonly string[]): ParseResult<this[__parseResult]> {
+    const res = this[__parse]([...iterateArguments(args)])
+    if (!res.tag) return res
+    return {
+      tag: true,
+      value: {
+        ...res.value.value,
+        _: res.value.remainingArgs
+      }
+    }
+  }
+
+  public with<NextName extends string, NextValue> (extractor: Extractor<NextName, NextValue>) {
+    return new ParserNode(extractor, this)
+  }
+}
+
+class ParserNode<
+  Name extends string,
+  Value,
+  Rest extends ParserBase<any, any, any>
+> extends ParserBase<Name, Value, Rest> {
+  /** Type helper */
+  declare public [__parseResult]: Record<Name, Value> & Rest[__parseResult]
 
   constructor (
     private readonly _extractor: Extractor<Name, Value>,
-    private readonly _next: Next
-  ) {}
+    private readonly _next: Rest
+  ) {
+    super()
+  }
 
-  private _parse (args: ArgvItem[]): _ParseReturn<this> {
+  public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const current = this._extractor.extract(args)
     if (!current.tag) return current
-    const next = this._next._parse(current.value.remainingArgs)
+    const next = this._next[__parse](current.value.remainingArgs)
     if (!next.tag) return next
     const value = {
       [this._extractor.name]: current.value,
@@ -44,20 +75,20 @@ export class Parser<
       value: { value, remainingArgs }
     }
   }
+}
 
-  public parse (args: readonly string[]): ParseResult<this[__parseResult]> {
-    const res = this._parse([...iterateArguments(args)])
-    if (!res.tag) return res
+class EmptyParser extends ParserBase<never, never, never> {
+  public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     return {
       tag: true,
       value: {
-        ...res.value.value,
-        _: res.value.remainingArgs
+        value: {} as never,
+        remainingArgs: args.map(x => x.value) // TODO: Filter flags out
       }
     }
   }
 }
 
-export const build = () => new Parser<never, never, never>()
+export const build = () => new EmptyParser()
 
 export default build
