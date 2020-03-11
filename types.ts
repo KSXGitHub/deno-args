@@ -1,4 +1,4 @@
-export interface Extractor<Name extends string, Value> {
+export interface ArgumentExtractor<Name extends string, Value> {
   readonly name: Name
   readonly extract: (args: ArgvItem[]) => ParseResult<{
     value: Value

@@ -6,7 +6,7 @@ import {
 } from './utils.ts'
 
 import {
-  Extractor,
+  ArgumentExtractor,
   ParseResult,
   ArgvItem
 } from './types.ts'
@@ -44,7 +44,7 @@ abstract class ParserBase<
     })
   }
 
-  public with<NextName extends string, NextValue> (extractor: Extractor<NextName, NextValue>) {
+  public with<NextName extends string, NextValue> (extractor: ArgumentExtractor<NextName, NextValue>) {
     return new ParserNode(extractor, this)
   }
 }
@@ -58,7 +58,7 @@ class ParserNode<
   declare public [__parseResult]: Record<Name, Value> & Rest[__parseResult]
 
   constructor (
-    private readonly _extractor: Extractor<Name, Value>,
+    private readonly _extractor: ArgumentExtractor<Name, Value>,
     private readonly _next: Rest
   ) {
     super()
