@@ -6,6 +6,10 @@ export interface ArgumentExtractor<Name extends string, Value> {
   }>
 }
 
+export interface ValueExtractor<Value, Raw extends readonly string[]> {
+  (raw: Raw): ParseResult<Value>
+}
+
 export type ParseResult<Value> = ParseSuccess<Value> | ParseFailure
 
 export interface ParseSuccess<Value> {
