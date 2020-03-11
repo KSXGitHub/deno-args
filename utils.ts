@@ -31,3 +31,12 @@ export function * iterateArguments (args: readonly string[]) {
     yield * fn(x)
   }
 }
+
+export function partition<X> (xs: Iterable<X>, fn: (x: X) => boolean) {
+  const left: X[] = []
+  const right: X[] = []
+  for (const x of xs) {
+    (fn(x) ? left : right).push(x)
+  }
+  return [left, right]
+}

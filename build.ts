@@ -1,5 +1,6 @@
 import {
-  iterateArguments
+  iterateArguments,
+  partition
 } from './utils.ts'
 
 import {
@@ -7,6 +8,10 @@ import {
   ParseResult,
   ArgvItem
 } from './types.ts'
+
+import {
+  UnknownOptions
+} from './errors.ts'
 
 declare const __parseResult: unique symbol
 type __parseResult = typeof __parseResult
@@ -79,11 +84,18 @@ class ParserNode<
 
 class EmptyParser extends ParserBase<never, never, never> {
   public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
+    const [flags, nonFlags] = partition(args, x => x.isFlag)
+    if (flags.length) {
+      return {
+        tag: false,
+        error: new UnknownOptions(flags.map(x => x.value))
+      }
+    }
     return {
       tag: true,
       value: {
         value: {} as never,
-        remainingArgs: args.map(x => x.value) // TODO: Filter flags out
+        remainingArgs: nonFlags.map(x => x.value)
       }
     }
   }

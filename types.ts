@@ -17,9 +17,11 @@ export interface ParseSuccess<Value> {
 export interface ParseFailure {
   readonly tag: false
   readonly value?: null
-  readonly error: {
-    toString (): string
-  }
+  readonly error: ParseError
+}
+
+export interface ParseError {
+  toString (): string
 }
 
 export interface ArgvItem {
