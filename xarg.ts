@@ -40,7 +40,9 @@ export const Flag = <Name extends string> (
     })
   },
   help () {
-    return `${flag(name)}${fmtAliasList(descriptor.alias)}${fmtDescSuffix(descriptor.describe)}`
+    const alias = fmtAliasList(descriptor.alias)
+    const suffix = fmtDescSuffix(descriptor.describe)
+    return `${flag(name)}${alias}${suffix}`
   }
 })
 
@@ -74,7 +76,9 @@ export const Option = <Name extends string, Value> (
   },
   help () {
     const typeName = descriptor.type.help()
-    return `${flag(name)} <${typeName}>${fmtAliasList(descriptor.alias)}${fmtDescSuffix(descriptor.describe)}`
+    const alias = fmtAliasList(descriptor.alias)
+    const suffix = fmtDescSuffix(descriptor.describe)
+    return `${flag(name)} <${typeName}>${alias}${suffix}`
   }
 })
 
