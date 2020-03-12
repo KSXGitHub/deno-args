@@ -20,7 +20,7 @@ export class UnknownFlags extends ErrorBase {
   }
 
   public toString () {
-    return `Unknown options: ${fmtFlagList(this.names)}`
+    return `Unknown flags: ${fmtFlagList(this.names)}`
   }
 }
 
@@ -32,7 +32,7 @@ export class MissingFlag extends ErrorBase {
   }
 
   public toString () {
-    return `Option ${flag(this.name)} is required but missing`
+    return `Flag ${flag(this.name)} is required but missing`
   }
 }
 
