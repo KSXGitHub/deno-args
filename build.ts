@@ -86,7 +86,7 @@ class ParserNode<
   }
 
   protected [__help] (): string {
-    const current = this._extractor.help() || ''
+    const current = this._extractor.help()
     const next = this._next[__help]()
     return current + '\n' + next
   }

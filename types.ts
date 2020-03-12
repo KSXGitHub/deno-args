@@ -4,7 +4,7 @@ export interface ArgumentExtractor<Name extends string, Value> {
     value: Value
     remainingArgs: ArgvItem[]
   }>
-  help (): string | null
+  help (): string
 }
 
 export interface ValueExtractor<Value, Raw extends readonly string[]> {
