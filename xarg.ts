@@ -9,8 +9,7 @@ import {
   find
 } from './utils.ts'
 
-type Flag = <Name extends string> (name: Name) => ArgumentExtractor<Name, boolean>
-export const Flag: Flag = name => ({
+export const Flag = <Name extends string> (name: Name): ArgumentExtractor<Name, boolean> => ({
   name,
   extract (args) {
     const res = find(args, x => x.isFlag && x.value === name)
