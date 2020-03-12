@@ -59,17 +59,22 @@ export function partition<X> (xs: Iterable<X>, fn: (x: X) => boolean): [X[], X[]
   return [left, right]
 }
 
+const flagMapFn = (item: ArgvItem, index: number) => ({ ...item, index })
+
+const flagPredicate = (names: readonly string[]) =>
+  (item: ArgvItem) => item.isFlag && names.includes(item.value)
+
 export const partitionFlags = (
   args: Iterable<ArgvItem>,
   names: readonly string[]
 ) => partition(
-  [...args].map((item, index) => ({ ...item, index })),
-  item => item.isFlag && names.includes(item.value)
+  [...args].map(flagMapFn),
+  flagPredicate(names)
 )
 
 export const findFlags = (
   args: readonly ArgvItem[],
   names: readonly string[]
 ) => args
-  .map((item, index) =>({ ...item, index }))
-  .filter(item => item.isFlag && names.includes(item.value))
+  .map(flagMapFn)
+  .filter(flagPredicate(names))
