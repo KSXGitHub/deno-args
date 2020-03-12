@@ -21,6 +21,9 @@ type __parseResult = typeof __parseResult
 const __parse = Symbol()
 type __parse = typeof __parse
 
+const __help = Symbol()
+type __help = typeof __help
+
 type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
   value: This[__parseResult]
   remainingArgs: string[]
@@ -33,7 +36,8 @@ abstract class ParserBase<
 > {
   /** Type helper */
   declare public [__parseResult]: Record<Name, Value> & Next[__parseResult]
-  public abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
+  protected abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
+  protected abstract [__help] (): string
 
   public parse (args: readonly string[]): ParseResult<this[__parseResult]> {
     const res = this[__parse]([...iterateArguments(args)])
@@ -46,6 +50,10 @@ abstract class ParserBase<
 
   public with<NextName extends string, NextValue> (extractor: ArgumentExtractor<NextName, NextValue>) {
     return new ParserNode(extractor, this)
+  }
+
+  public help (): string {
+    return this[__help]()
   }
 }
 
@@ -64,7 +72,7 @@ class ParserNode<
     super()
   }
 
-  public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
+  protected [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const current = this._extractor.extract(args)
     if (!current.tag) return current
     const next = this._next[__parse](current.value.remainingArgs)
@@ -75,6 +83,12 @@ class ParserNode<
     }
     const remainingArgs = next.value.remainingArgs
     return ok({ value, remainingArgs })
+  }
+
+  protected [__help] (): string {
+    const current = this._extractor.help() || ''
+    const next = this._next[__help]()
+    return current + '\n' + next
   }
 }
 
@@ -88,6 +102,10 @@ class EmptyParser extends ParserBase<never, never, never> {
       value: {} as never,
       remainingArgs: nonFlags.map(x => x.value)
     })
+  }
+
+  protected [__help] (): string {
+    return ''
   }
 }
 
