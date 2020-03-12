@@ -33,7 +33,7 @@ const fmtDescSuffix = (describe?: string) => describe
   ? `:\t${describe}`
   : ''
 
-export const Flag = <Name extends string> (
+export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
 ): ArgumentExtractor<Name, boolean> => ({
@@ -57,6 +57,8 @@ export const Flag = <Name extends string> (
     return `${flag(name)}${alias}${suffix}`
   }
 })
+
+export { BinaryFlag as Flag }
 
 export interface FlagDescriptor {
   readonly describe?: string
