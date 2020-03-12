@@ -24,7 +24,7 @@ const parser = build()
     describe: 'Value of b'
   }))
   .with(Option('operator', {
-    type: Choice(
+    type: Choice<'add' | 'sub'>(
       {
         value: 'add',
         describe: 'Add two numbers'
