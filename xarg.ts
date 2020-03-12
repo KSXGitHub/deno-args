@@ -10,6 +10,13 @@ import {
   findFlags
 } from './utils.ts'
 
+const listFlags = <Name extends string> (
+  name: Name,
+  descriptor: {
+    readonly alias?: Iterable<string>
+  }
+): [Name, ...string[]] => [name, ...descriptor.alias || []]
+
 const fmtAliasList = (alias?: readonly string[]) => alias?.length
   ? ` (alias ${alias.map(flag).join(' ')})`
   : ''
@@ -26,7 +33,7 @@ export const Flag = <Name extends string> (
   extract (args) {
     const [findRes, remainingArgs] = partitionFlags(
       args,
-      [name, ...descriptor.alias || []]
+      listFlags(name, descriptor)
     )
     if (!findRes.length) {
       return ok({
@@ -59,7 +66,7 @@ export const Option = <Name extends string, Value> (
   extract (args) {
     const findRes = findFlags(
       args,
-      [name, ...descriptor.alias || []]
+      listFlags(name, descriptor)
     )
     if (!findRes.length) throw new Error('Unimplemented') // TODO
     if (findRes.length !== 1) throw new Error('Unimplemented') // TODO
