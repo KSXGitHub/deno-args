@@ -8,11 +8,11 @@ import {
 
 const fmtFlagList = (names: readonly string[]) => names.map(flag).join(' ')
 
-abstract class ErrorBase implements ParseError {
+abstract class FlagError implements ParseError {
   public abstract toString (): string
 }
 
-export class UnknownFlags extends ErrorBase {
+export class UnknownFlags extends FlagError {
   constructor (
     public readonly names: readonly string[]
   ) {
@@ -24,7 +24,7 @@ export class UnknownFlags extends ErrorBase {
   }
 }
 
-export class MissingFlag extends ErrorBase {
+export class MissingFlag extends FlagError {
   constructor (
     public readonly name: string
   ) {
@@ -36,7 +36,7 @@ export class MissingFlag extends ErrorBase {
   }
 }
 
-export class ConflictFlags extends ErrorBase {
+export class ConflictFlags extends FlagError {
   constructor (
     public readonly names: readonly string[]
   ) {
@@ -48,7 +48,7 @@ export class ConflictFlags extends ErrorBase {
   }
 }
 
-export class MissingValue extends ErrorBase {
+export class MissingValue extends FlagError {
   constructor (
     public readonly name: string
   ) {
@@ -60,7 +60,7 @@ export class MissingValue extends ErrorBase {
   }
 }
 
-export class UnexpectedFlag extends ErrorBase {
+export class UnexpectedFlag extends FlagError {
   constructor (
     public readonly name: string,
     public readonly unexpectedFlag: string
@@ -75,7 +75,7 @@ export class UnexpectedFlag extends ErrorBase {
 
 // TODO: Distinguish flag error and value error
 
-export class NotANumber extends ErrorBase {
+export class NotANumber extends FlagError {
   constructor (
     public readonly raw: string
   ) {
@@ -87,7 +87,7 @@ export class NotANumber extends ErrorBase {
   }
 }
 
-export class NotAnInteger extends ErrorBase {
+export class NotAnInteger extends FlagError {
   constructor (
     public readonly raw: string,
     public readonly error: SyntaxError
