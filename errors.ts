@@ -6,7 +6,7 @@ abstract class ErrorBase implements ParseError {
   public abstract toString (): string
 }
 
-export class UnknownOptions extends ErrorBase {
+export class UnknownFlags extends ErrorBase {
   constructor (
     public readonly options: readonly string[]
   ) {
@@ -18,7 +18,7 @@ export class UnknownOptions extends ErrorBase {
   }
 }
 
-export class MissingOption extends ErrorBase {
+export class MissingFlag extends ErrorBase {
   constructor (
     public readonly optionName: string
   ) {
@@ -30,7 +30,7 @@ export class MissingOption extends ErrorBase {
   }
 }
 
-export class ConflictOptions extends ErrorBase {
+export class ConflictFlags extends ErrorBase {
   constructor (
     public readonly options: readonly string[]
   ) {

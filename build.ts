@@ -12,7 +12,7 @@ import {
 } from './types.ts'
 
 import {
-  UnknownOptions
+  UnknownFlags
 } from './errors.ts'
 
 declare const __parseResult: unique symbol
@@ -96,7 +96,7 @@ class EmptyParser extends ParserBase<never, never, never> {
   public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const [flags, nonFlags] = partition(args, x => x.isFlag)
     if (flags.length) {
-      return err(new UnknownOptions(flags.map(x => x.value)))
+      return err(new UnknownFlags(flags.map(x => x.value)))
     }
     return ok({
       value: {} as never,
