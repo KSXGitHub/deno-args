@@ -13,7 +13,8 @@ import {
 
 import {
   MissingFlag,
-  ConflictFlags
+  ConflictFlags,
+  MissingValue
 } from './errors.ts'
 
 const listFlags = <Name extends string> (
@@ -73,7 +74,7 @@ export const Option = <Name extends string, Value> (
     if (findRes.length !== 1) return err(new ConflictFlags(flags))
     const [res] = findRes
     const valPos = res.index + 1
-    if (args.length <= valPos) throw new Error('Unimplemented') // TODO
+    if (args.length <= valPos) return err(new MissingValue(res.value))
     const { isFlag, value: raw } = args[valPos]
     if (isFlag) throw new Error('Unimplemented') // TODO
     const parseResult = descriptor.type.extract([raw])

@@ -47,3 +47,15 @@ export class ConflictFlags extends ErrorBase {
     return `Conflicting options: ${fmtFlagList(this.names)}`
   }
 }
+
+export class MissingValue extends ErrorBase {
+  constructor (
+    public readonly name: string
+  ) {
+    super()
+  }
+
+  public toString () {
+    return `Option ${flag(this.name)} requires a value but none was found`
+  }
+}
