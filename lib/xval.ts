@@ -12,6 +12,11 @@ import {
   NotAnInteger
 } from './value-errors.ts'
 
+export const Text: ValueExtractor<string, readonly [string]> = {
+  extract: ([raw]) => ok(raw),
+  help: () => 'text'
+}
+
 export const FiniteNumber: ValueExtractor<number, readonly [string]> = {
   extract ([raw]) {
     const value = Number(raw)
