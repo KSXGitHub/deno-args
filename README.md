@@ -23,6 +23,19 @@ const parser = build()
     type: FiniteNumber,
     describe: 'Value of b'
   }))
+  .with(Option('operator', {
+    type: Choice(
+      {
+        value: 'add',
+        describe: 'Add two numbers'
+      },
+      {
+        value: 'sub',
+        describe: 'Subtract two numbers'
+      }
+    ),
+    describe: 'Operator to use'
+  }))
 
 const res = parser.parse(Deno.args)
 
