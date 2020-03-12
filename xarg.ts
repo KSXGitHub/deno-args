@@ -16,7 +16,7 @@ import {
   ConflictFlags,
   MissingValue,
   UnexpectedFlag
-} from './errors.ts'
+} from './flag-errors.ts'
 
 const listFlags = <Name extends string> (
   name: Name,

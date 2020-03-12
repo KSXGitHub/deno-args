@@ -13,7 +13,7 @@ import {
 
 import {
   UnknownFlags
-} from './errors.ts'
+} from './flag-errors.ts'
 
 declare const __parseResult: unique symbol
 type __parseResult = typeof __parseResult
