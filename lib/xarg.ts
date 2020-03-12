@@ -95,7 +95,9 @@ export const Option = <Name extends string, Value> (
     const { isFlag, raw } = args[valPos]
     if (isFlag) return err(new UnexpectedFlag(res.name!, raw))
     const parseResult = descriptor.type.extract([raw])
-    if (!parseResult.tag) return err(new ValueParsingFailure(res.name!, parseResult.error))
+    if (!parseResult.tag) {
+      return err(new ValueParsingFailure(res.name!, parseResult.error))
+    }
     const remainingArgs = [
       ...args.slice(0, res.index),
       ...args.slice(valPos + 1)
