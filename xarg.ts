@@ -27,7 +27,8 @@ export const Flag: Flag = name => ({
       value: true,
       remainingArgs
     })
-  }
+  },
+  help () {}
 })
 
 export const Option = <Name extends string, Value> (
@@ -42,7 +43,7 @@ export const Option = <Name extends string, Value> (
     if (args.length <= valPos) throw new Error('Unimplemented') // TODO
     const { isFlag, value: raw } = args[valPos]
     if (isFlag) throw new Error('Unimplemented') // TODO
-    const parseResult = descriptor.type([raw])
+    const parseResult = descriptor.type.extract([raw])
     if (!parseResult.tag) return parseResult
     const remainingArgs = [
       ...args.slice(0, res.index),
@@ -52,6 +53,15 @@ export const Option = <Name extends string, Value> (
       value: parseResult.value,
       remainingArgs
     })
+  },
+  help () {
+    // TODO: alias
+    const prefix = name.length === 1 ? '-' : '--'
+    const typeName = descriptor.type.help()
+    const suffix = descriptor.describe
+      ? `:\t${descriptor.describe}`
+      : ''
+    return `${prefix}${name} <${typeName}>${suffix}`
   }
 })
 
