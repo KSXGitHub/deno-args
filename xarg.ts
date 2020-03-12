@@ -31,10 +31,7 @@ export const Flag = <Name extends string> (
 ): ArgumentExtractor<Name, boolean> => ({
   name,
   extract (args) {
-    const [findRes, remainingArgs] = partitionFlags(
-      args,
-      listFlags(name, descriptor)
-    )
+    const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
     if (!findRes.length) {
       return ok({
         value: false,
@@ -64,10 +61,7 @@ export const Option = <Name extends string, Value> (
 ): ArgumentExtractor<Name, Value> => ({
   name,
   extract (args) {
-    const findRes = findFlags(
-      args,
-      listFlags(name, descriptor)
-    )
+    const findRes = findFlags(args, listFlags(name, descriptor))
     if (!findRes.length) throw new Error('Unimplemented') // TODO
     if (findRes.length !== 1) throw new Error('Unimplemented') // TODO
     const [res] = findRes
