@@ -31,7 +31,15 @@ export const Flag = <Name extends string> (
       remainingArgs
     })
   },
-  help () {}
+  help () {
+    const aliases = descriptor.alias?.length
+      ? ` (alias ${descriptor.alias.map(flag).join(' ')})`
+      : ''
+    const suffix = descriptor.describe
+      ? `:\t${descriptor.describe}`
+      : ''
+    return `${flag(name)}${aliases}${suffix}`
+  }
 })
 
 export interface FlagDescriptor {
