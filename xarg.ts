@@ -5,6 +5,7 @@ import {
 
 import {
   ok,
+  flag,
   find
 } from './utils.ts'
 
@@ -55,13 +56,14 @@ export const Option = <Name extends string, Value> (
     })
   },
   help () {
-    // TODO: alias
-    const prefix = name.length === 1 ? '-' : '--'
     const typeName = descriptor.type.help()
+    const aliases = descriptor.alias?.length
+      ? ` (alias ${descriptor.alias.map(flag).join(' ')})`
+      : ''
     const suffix = descriptor.describe
       ? `:\t${descriptor.describe}`
       : ''
-    return `${prefix}${name} <${typeName}>${suffix}`
+    return `${flag(name)} <${typeName}>${aliases}${suffix}`
   }
 })
 

@@ -15,6 +15,9 @@ export const err = (error: ParseError): ParseFailure => ({
   error
 })
 
+export const flagPrefix = (name: string): '-' | '--' => name.length === 1 ? '-' : '--'
+export const flag = (name: string) => flagPrefix(name) + name
+
 export function * iterateArguments (args: readonly string[]) {
   let fn = (value: string): ArgvItem[] => {
     if (value === '--') {
