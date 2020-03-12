@@ -6,7 +6,8 @@ import {
 import {
   ok,
   flag,
-  partitionFlags
+  partitionFlags,
+  findFlags
 } from './utils.ts'
 
 const fmtAliasList = (alias?: readonly string[]) => alias?.length
@@ -56,10 +57,10 @@ export const Option = <Name extends string, Value> (
 ): ArgumentExtractor<Name, Value> => ({
   name,
   extract (args) {
-    const [findRes] = partitionFlags(
+    const findRes = findFlags(
       args,
       [name, ...descriptor.alias || []]
-    ) // TODO: Change this line to something more efficient
+    )
     if (!findRes.length) throw new Error('Unimplemented') // TODO
     if (findRes.length !== 1) throw new Error('Unimplemented') // TODO
     const [res] = findRes

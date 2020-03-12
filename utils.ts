@@ -66,3 +66,10 @@ export const partitionFlags = (
   [...args].map((item, index) => ({ ...item, index })),
   item => item.isFlag && names.includes(item.value)
 )
+
+export const findFlags = (
+  args: readonly ArgvItem[],
+  names: readonly string[]
+) => args
+  .map((item, index) =>({ ...item, index }))
+  .filter(item => item.isFlag && names.includes(item.value))
