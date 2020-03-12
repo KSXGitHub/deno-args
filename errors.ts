@@ -72,3 +72,30 @@ export class UnexpectedFlag extends ErrorBase {
     return `Option ${flag(this.name)} requires a value but received flag ${flag(this.unexpectedFlag)} instead`
   }
 }
+
+// TODO: Distinguish flag error and value error
+
+export class NotANumber extends ErrorBase {
+  constructor (
+    public readonly raw: string
+  ) {
+    super()
+  }
+
+  public toString () {
+    return `Not a number: ${this.raw}`
+  }
+}
+
+export class NotAnInteger extends ErrorBase {
+  constructor (
+    public readonly raw: string,
+    public readonly error: SyntaxError
+  ) {
+    super()
+  }
+
+  public toString () {
+    return `Not an integer: ${this.raw} (${this.error})`
+  }
+}
