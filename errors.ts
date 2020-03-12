@@ -59,3 +59,16 @@ export class MissingValue extends ErrorBase {
     return `Option ${flag(this.name)} requires a value but none was found`
   }
 }
+
+export class UnexpectedFlag extends ErrorBase {
+  constructor (
+    public readonly name: string,
+    public readonly unexpectedFlag: string
+  ) {
+    super()
+  }
+
+  public toString () {
+    return `Option ${flag(this.name)} requires a value but received flag ${flag(this.unexpectedFlag)} instead`
+  }
+}
