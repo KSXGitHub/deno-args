@@ -1,6 +1,6 @@
 # Deno Args
 
-CLI arguments parser for [Deno](https://deno.land) with TypeScript inference.
+Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent TypeScript inference.
 
 ## Usage
 
