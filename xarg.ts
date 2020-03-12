@@ -13,6 +13,10 @@ const fmtAliasList = (alias?: readonly string[]) => alias?.length
   ? ` (alias ${alias.map(flag).join(' ')})`
   : ''
 
+const fmtDescSuffix = (describe?: string) => describe
+  ? `:\t${describe}`
+  : ''
+
 export const Flag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
@@ -36,10 +40,7 @@ export const Flag = <Name extends string> (
     })
   },
   help () {
-    const suffix = descriptor.describe
-      ? `:\t${descriptor.describe}`
-      : ''
-    return `${flag(name)}${fmtAliasList(descriptor.alias)}${suffix}`
+    return `${flag(name)}${fmtAliasList(descriptor.alias)}${fmtDescSuffix(descriptor.describe)}`
   }
 })
 
@@ -73,10 +74,7 @@ export const Option = <Name extends string, Value> (
   },
   help () {
     const typeName = descriptor.type.help()
-    const suffix = descriptor.describe
-      ? `:\t${descriptor.describe}`
-      : ''
-    return `${flag(name)} <${typeName}>${fmtAliasList(descriptor.alias)}${suffix}`
+    return `${flag(name)} <${typeName}>${fmtAliasList(descriptor.alias)}${fmtDescSuffix(descriptor.describe)}`
   }
 })
 
