@@ -72,3 +72,16 @@ export class UnexpectedFlag extends FlagError {
     return `Option ${flag(this.name)} requires a value but received flag ${flag(this.unexpectedFlag)} instead`
   }
 }
+
+export class ValueParsingFailure extends FlagError {
+  constructor (
+    public readonly name: string,
+    public readonly error: ParseError
+  ) {
+    super()
+  }
+
+  public toString () {
+    return `Failed to parse ${this.name}: ${this.error.toString()}`
+  }
+}
