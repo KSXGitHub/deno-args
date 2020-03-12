@@ -9,6 +9,10 @@ import {
   find
 } from './utils.ts'
 
+const fmtAliasList = (alias?: readonly string[]) => alias?.length
+  ? ` (alias ${alias.map(flag).join(' ')})`
+  : ''
+
 export const Flag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
@@ -32,13 +36,10 @@ export const Flag = <Name extends string> (
     })
   },
   help () {
-    const aliases = descriptor.alias?.length
-      ? ` (alias ${descriptor.alias.map(flag).join(' ')})`
-      : ''
     const suffix = descriptor.describe
       ? `:\t${descriptor.describe}`
       : ''
-    return `${flag(name)}${aliases}${suffix}`
+    return `${flag(name)}${fmtAliasList(descriptor.alias)}${suffix}`
   }
 })
 
@@ -72,13 +73,10 @@ export const Option = <Name extends string, Value> (
   },
   help () {
     const typeName = descriptor.type.help()
-    const aliases = descriptor.alias?.length
-      ? ` (alias ${descriptor.alias.map(flag).join(' ')})`
-      : ''
     const suffix = descriptor.describe
       ? `:\t${descriptor.describe}`
       : ''
-    return `${flag(name)} <${typeName}>${aliases}${suffix}`
+    return `${flag(name)} <${typeName}>${fmtAliasList(descriptor.alias)}${suffix}`
   }
 })
 
