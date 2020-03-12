@@ -17,8 +17,6 @@ const fmtDescSuffix = (describe?: string) => describe
   ? `:\t${describe}`
   : ''
 
-// TODO: extract by alias
-
 export const Flag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
