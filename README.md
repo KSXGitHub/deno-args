@@ -34,6 +34,7 @@ const parser = build()
         describe: 'Subtract two numbers'
       }
     ),
+    alias: ['o'],
     describe: 'Operator to use'
   }))
 
