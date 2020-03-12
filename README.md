@@ -8,7 +8,7 @@ CLI arguments parser for [Deno](https://deno.land) with TypeScript inference.
 import build from 'https://deno.land/x/args/build.ts'
 import help from 'https://deno.land/x/args/help.ts'
 import { Flag, Option } from 'https://deno.land/x/args/flags.ts'
-import { Number, Choice } from 'https://deno.land/x/args/values.ts'
+import { FiniteNumber, Choice } from 'https://deno.land/x/args/values.ts'
 
 const parser = build()
   .with(Flag('help', {
@@ -16,11 +16,11 @@ const parser = build()
     describe: 'Show help'
   }))
   .with(Option('a', {
-    type: Number,
+    type: FiniteNumber,
     describe: 'Value of a'
   }))
   .with(Option('b', {
-    type: Number,
+    type: FiniteNumber,
     describe: 'Value of b'
   }))
 
