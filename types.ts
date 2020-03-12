@@ -9,7 +9,7 @@ export interface ArgumentExtractor<Name extends string, Value> {
 
 export interface ValueExtractor<Value, Raw extends readonly string[]> {
   extract (raw: Raw): ParseResult<Value>
-  help (): string | null
+  help (): string
 }
 
 export type ParseResult<Value> = ParseSuccess<Value> | ParseFailure
