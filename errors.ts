@@ -8,36 +8,36 @@ abstract class ErrorBase implements ParseError {
 
 export class UnknownFlags extends ErrorBase {
   constructor (
-    public readonly options: readonly string[]
+    public readonly names: readonly string[]
   ) {
     super()
   }
 
   public toString () {
-    return `Unknown options: ${this.options.join(', ')}`
+    return `Unknown options: ${this.names.join(', ')}`
   }
 }
 
 export class MissingFlag extends ErrorBase {
   constructor (
-    public readonly optionName: string
+    public readonly name: string
   ) {
     super()
   }
 
   public toString () {
-    return `Option ${this.optionName} is required but missing`
+    return `Option ${this.name} is required but missing`
   }
 }
 
 export class ConflictFlags extends ErrorBase {
   constructor (
-    public readonly options: readonly string[]
+    public readonly names: readonly string[]
   ) {
     super()
   }
 
   public toString () {
-    return `Conflicting options: ${this.options.join(', ')}`
+    return `Conflicting options: ${this.names.join(', ')}`
   }
 }
