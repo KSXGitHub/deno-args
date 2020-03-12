@@ -5,10 +5,15 @@ import {
 
 import {
   ok,
+  err,
   flag,
   partitionFlags,
   findFlags
 } from './utils.ts'
+
+import {
+  MissingOption
+} from './errors.ts'
 
 const listFlags = <Name extends string> (
   name: Name,
@@ -62,7 +67,7 @@ export const Option = <Name extends string, Value> (
   name,
   extract (args) {
     const findRes = findFlags(args, listFlags(name, descriptor))
-    if (!findRes.length) throw new Error('Unimplemented') // TODO
+    if (!findRes.length) return err(new MissingOption(name))
     if (findRes.length !== 1) throw new Error('Unimplemented') // TODO
     const [res] = findRes
     const valPos = res.index + 1
