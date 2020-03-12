@@ -12,7 +12,8 @@ import {
 } from './utils.ts'
 
 import {
-  MissingOption
+  MissingOption,
+  ConflictOptions
 } from './errors.ts'
 
 const listFlags = <Name extends string> (
@@ -66,9 +67,10 @@ export const Option = <Name extends string, Value> (
 ): ArgumentExtractor<Name, Value> => ({
   name,
   extract (args) {
-    const findRes = findFlags(args, listFlags(name, descriptor))
+    const flags = listFlags(name, descriptor)
+    const findRes = findFlags(args, flags)
     if (!findRes.length) return err(new MissingOption(name))
-    if (findRes.length !== 1) throw new Error('Unimplemented') // TODO
+    if (findRes.length !== 1) return err(new ConflictOptions(flags))
     const [res] = findRes
     const valPos = res.index + 1
     if (args.length <= valPos) throw new Error('Unimplemented') // TODO

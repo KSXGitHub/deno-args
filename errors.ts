@@ -29,3 +29,15 @@ export class MissingOption extends ErrorBase {
     return `Option ${this.optionName} is required but missing`
   }
 }
+
+export class ConflictOptions extends ErrorBase {
+  constructor (
+    public readonly options: readonly string[]
+  ) {
+    super()
+  }
+
+  public toString () {
+    return `Conflicting options: ${this.options.join(', ')}`
+  }
+}
