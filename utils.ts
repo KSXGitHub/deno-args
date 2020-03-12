@@ -50,7 +50,7 @@ export function * iterateArguments (args: readonly string[]) {
   }
 }
 
-export function partition<X> (xs: Iterable<X>, fn: (x: X) => boolean) {
+export function partition<X> (xs: Iterable<X>, fn: (x: X) => boolean): [X[], X[]] {
   const left: X[] = []
   const right: X[] = []
   for (const x of xs) {
@@ -59,11 +59,10 @@ export function partition<X> (xs: Iterable<X>, fn: (x: X) => boolean) {
   return [left, right]
 }
 
-export function find<X> (xs: Iterable<X>, fn: (x: X) => boolean) {
-  let index = 0
-  for (const value of xs) {
-    if (fn(value)) return { index, value }
-    index += 1
-  }
-  return null
-}
+export const partitionFlags = (
+  args: Iterable<ArgvItem>,
+  names: readonly string[]
+) => partition(
+  [...args].map((item, index) => ({ ...item, index })),
+  item => item.isFlag && names.includes(item.value)
+)

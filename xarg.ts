@@ -6,7 +6,7 @@ import {
 import {
   ok,
   flag,
-  find
+  partitionFlags
 } from './utils.ts'
 
 const fmtAliasList = (alias?: readonly string[]) => alias?.length
@@ -25,17 +25,16 @@ export const Flag = <Name extends string> (
 ): ArgumentExtractor<Name, boolean> => ({
   name,
   extract (args) {
-    const res = find(args, x => x.isFlag && x.value === name)
-    if (!res) {
+    const [findRes, remainingArgs] = partitionFlags(
+      args,
+      [name, ...descriptor.alias || []]
+    )
+    if (!findRes.length) {
       return ok({
         value: false,
         remainingArgs: args
       })
     }
-    const remainingArgs = [
-      ...args.slice(0, res.index),
-      ...args.slice(res.index + 1)
-    ]
     return ok({
       value: true,
       remainingArgs
@@ -59,8 +58,13 @@ export const Option = <Name extends string, Value> (
 ): ArgumentExtractor<Name, Value> => ({
   name,
   extract (args) {
-    const res = find(args, x => x.isFlag && x.value === name)
-    if (!res) throw new Error('Unimplemented') // TODO
+    const [findRes] = partitionFlags(
+      args,
+      [name, ...descriptor.alias || []]
+    ) // TODO: Change this line to something more efficient
+    if (!findRes.length) throw new Error('Unimplemented') // TODO
+    if (findRes.length !== 1) throw new Error('Unimplemented') // TODO
+    const [res] = findRes
     const valPos = res.index + 1
     if (args.length <= valPos) throw new Error('Unimplemented') // TODO
     const { isFlag, value: raw } = args[valPos]
