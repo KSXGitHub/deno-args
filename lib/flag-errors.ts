@@ -6,6 +6,10 @@ import {
   flag
 } from './utils.ts'
 
+import {
+  ValueError
+} from './value-errors.ts'
+
 const fmtFlagList = (names: readonly string[]) => names.map(flag).join(' ')
 
 export abstract class FlagError implements ParseError {
@@ -76,7 +80,7 @@ export class UnexpectedFlag extends FlagError {
 export class ValueParsingFailure extends FlagError {
   constructor (
     public readonly name: string,
-    public readonly error: ParseError
+    public readonly error: ValueError
   ) {
     super()
   }
