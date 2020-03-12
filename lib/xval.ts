@@ -10,7 +10,7 @@ import {
 import {
   NotANumber,
   NotAnInteger
-} from './flag-errors.ts'
+} from './value-errors.ts'
 
 export const FiniteNumber: ValueExtractor<number, readonly [string]> = {
   extract ([raw]) {
