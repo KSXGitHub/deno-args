@@ -9,7 +9,8 @@ import {
 
 import {
   NotANumber,
-  NotAnInteger
+  NotAnInteger,
+  InvalidChoice
 } from './value-errors.ts'
 
 export const Text: ValueExtractor<string, readonly [string]> = {
@@ -37,3 +38,20 @@ export const Integer: ValueExtractor<BigInt, readonly [string]> = {
   },
   help: () => 'integer'
 }
+
+export const Choice = <
+  Value extends number | string
+> (...choices: {
+  readonly value: Value
+  readonly describe?: string
+}[]): ValueExtractor<Value, readonly [string]> => ({
+  extract ([raw]) {
+    for (const { value } of choices) {
+      if (value === raw || value === Number(raw)) return ok(value)
+    }
+    return err(new InvalidChoice(raw, choices.map(x => x.value)))
+  },
+  help () {
+    return choices.map(x => x.value).join('|') // TODO: add describe
+  }
+})

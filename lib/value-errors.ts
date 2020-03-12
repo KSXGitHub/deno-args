@@ -31,3 +31,16 @@ export class NotAnInteger extends ValueError {
     return `Not an integer: ${this.raw} (${this.error})`
   }
 }
+
+export class InvalidChoice<ValidChoice extends string | number> extends ValueError {
+  constructor (
+    public readonly raw: string,
+    public readonly choices: readonly ValidChoice[]
+  ) {
+    super()
+  }
+
+  public toString () {
+    return `Invalid choice: ${this.raw} is not one of ${this.choices.join(', ')}`
+  }
+}
