@@ -40,14 +40,8 @@ export const BinaryFlag = <Name extends string> (
   name,
   extract (args) {
     const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
-    if (!findRes.length) {
-      return ok({
-        value: false,
-        remainingArgs: args
-      })
-    }
     return ok({
-      value: true,
+      value: Boolean(findRes.length),
       remainingArgs
     })
   },
