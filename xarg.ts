@@ -75,7 +75,7 @@ export const CountFlag = <Name extends string> (
   help () {
     const alias = fmtAliasList(descriptor.alias)
     const suffix = fmtDescSuffix(descriptor.describe)
-    return `${flag(name)}${alias}${suffix}`
+    return `${flag(name)}... ${alias}${suffix}`
   }
 })
 
