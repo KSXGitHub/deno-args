@@ -30,7 +30,22 @@ export interface ParseError {
   toString (): string
 }
 
-export interface ArgvItem {
-  readonly isFlag: boolean
-  readonly value: string
+export type ArgvItem = ArgvItem.Flag | ArgvItem.Value
+
+export namespace ArgvItem {
+  interface Base {
+    readonly isFlag: boolean
+    readonly raw: string
+    readonly name?: string | null
+  }
+
+  export interface Flag extends Base {
+    readonly isFlag: true
+    readonly name: string
+  }
+
+  export interface Value extends Base {
+    readonly isFlag: false
+    readonly name?: null
+  }
 }

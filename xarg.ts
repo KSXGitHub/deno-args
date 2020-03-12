@@ -75,9 +75,9 @@ export const Option = <Name extends string, Value> (
     if (findRes.length !== 1) return err(new ConflictFlags(flags))
     const [res] = findRes
     const valPos = res.index + 1
-    if (args.length <= valPos) return err(new MissingValue(res.value))
-    const { isFlag, value: raw } = args[valPos]
-    if (isFlag) return err(new UnexpectedFlag(res.value, raw))
+    if (args.length <= valPos) return err(new MissingValue(res.name!))
+    const { isFlag, raw } = args[valPos]
+    if (isFlag) return err(new UnexpectedFlag(res.name!, raw))
     const parseResult = descriptor.type.extract([raw])
     if (!parseResult.tag) return parseResult
     const remainingArgs = [

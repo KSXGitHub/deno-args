@@ -96,11 +96,11 @@ class EmptyParser extends ParserBase<never, never, never> {
   public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const [flags, nonFlags] = partition(args, x => x.isFlag)
     if (flags.length) {
-      return err(new UnknownFlags(flags.map(x => x.value)))
+      return err(new UnknownFlags(flags.map(x => x.name!)))
     }
     return ok({
       value: {} as never,
-      remainingArgs: nonFlags.map(x => x.value)
+      remainingArgs: nonFlags.map(x => x.raw)
     })
   }
 
