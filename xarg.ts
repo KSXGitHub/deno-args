@@ -9,7 +9,10 @@ import {
   find
 } from './utils.ts'
 
-export const Flag = <Name extends string> (name: Name): ArgumentExtractor<Name, boolean> => ({
+export const Flag = <Name extends string> (
+  name: Name,
+  descriptor: FlagDescriptor = {}
+): ArgumentExtractor<Name, boolean> => ({
   name,
   extract (args) {
     const res = find(args, x => x.isFlag && x.value === name)
@@ -30,6 +33,11 @@ export const Flag = <Name extends string> (name: Name): ArgumentExtractor<Name, 
   },
   help () {}
 })
+
+export interface FlagDescriptor {
+  readonly describe?: string
+  readonly alias?: readonly string[]
+}
 
 export const Option = <Name extends string, Value> (
   name: Name,
