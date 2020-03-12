@@ -1,18 +1,21 @@
+import { FlagError } from './flag-errors.ts'
+import { ValueError } from './value-errors.ts'
+
 export interface ArgumentExtractor<Name extends string, Value> {
   readonly name: Name
   extract (args: ArgvItem[]): ParseResult<{
     value: Value
     remainingArgs: ArgvItem[]
-  }>
+  }, FlagError>
   help (): string
 }
 
 export interface ValueExtractor<Value, Raw extends readonly string[]> {
-  extract (raw: Raw): ParseResult<Value>
+  extract (raw: Raw): ParseResult<Value, ValueError>
   help (): string
 }
 
-export type ParseResult<Value> = ParseSuccess<Value> | ParseFailure
+export type ParseResult<Value, Error extends ParseError> = ParseSuccess<Value> | ParseFailure<Error>
 
 export interface ParseSuccess<Value> {
   readonly tag: true
@@ -20,10 +23,10 @@ export interface ParseSuccess<Value> {
   readonly error?: null
 }
 
-export interface ParseFailure {
+export interface ParseFailure<Error extends ParseError> {
   readonly tag: false
   readonly value?: null
-  readonly error: ParseError
+  readonly error: Error
 }
 
 export interface ParseError {

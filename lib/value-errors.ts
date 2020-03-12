@@ -2,7 +2,7 @@ import {
   ParseError
 } from './types.ts'
 
-abstract class ValueError implements ParseError {
+export abstract class ValueError implements ParseError {
   public abstract readonly raw: string
   public abstract toString (): string
 }

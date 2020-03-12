@@ -12,6 +12,7 @@ import {
 } from './types.ts'
 
 import {
+  FlagError,
   UnknownFlags
 } from './flag-errors.ts'
 
@@ -27,7 +28,7 @@ type __help = typeof __help
 type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
   value: This[__parseResult]
   remainingArgs: string[]
-}>
+}, FlagError>
 
 abstract class ParserBase<
   Name extends string,
@@ -39,7 +40,7 @@ abstract class ParserBase<
   protected abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
   protected abstract [__help] (): string
 
-  public parse (args: readonly string[]): ParseResult<this[__parseResult]> {
+  public parse (args: readonly string[]): ParseResult<this[__parseResult], FlagError> {
     const res = this[__parse]([...iterateArguments(args)])
     if (!res.tag) return res
     return ok({

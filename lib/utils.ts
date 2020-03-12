@@ -10,7 +10,7 @@ export const ok = <Value> (value: Value): ParseSuccess<Value> => ({
   value
 })
 
-export const err = (error: ParseError): ParseFailure => ({
+export const err = <Error extends ParseError> (error: Error): ParseFailure<Error> => ({
   tag: false,
   error
 })

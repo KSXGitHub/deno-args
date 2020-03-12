@@ -8,7 +8,7 @@ import {
 
 const fmtFlagList = (names: readonly string[]) => names.map(flag).join(' ')
 
-abstract class FlagError implements ParseError {
+export abstract class FlagError implements ParseError {
   public abstract toString (): string
 }
 
