@@ -1,10 +1,10 @@
 export interface ArgumentExtractor<Name extends string, Value> {
   readonly name: Name
-  readonly extract: (args: ArgvItem[]) => ParseResult<{
+  extract (args: ArgvItem[]): ParseResult<{
     value: Value
     remainingArgs: ArgvItem[]
   }>
-  readonly help: () => string | null
+  help (): string | null
 }
 
 export interface ValueExtractor<Value, Raw extends readonly string[]> {
