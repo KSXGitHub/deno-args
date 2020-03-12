@@ -4,10 +4,12 @@ export interface ArgumentExtractor<Name extends string, Value> {
     value: Value
     remainingArgs: ArgvItem[]
   }>
+  readonly help: () => string | null
 }
 
 export interface ValueExtractor<Value, Raw extends readonly string[]> {
-  (raw: Raw): ParseResult<Value>
+  extract (raw: Raw): ParseResult<Value>
+  help (): string | null
 }
 
 export type ParseResult<Value> = ParseSuccess<Value> | ParseFailure
