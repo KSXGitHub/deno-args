@@ -2,6 +2,12 @@ import {
   ParseError
 } from './types.ts'
 
+import {
+  flag
+} from './utils.ts'
+
+const fmtFlagList = (names: readonly string[]) => names.map(flag).join(' ')
+
 abstract class ErrorBase implements ParseError {
   public abstract toString (): string
 }
@@ -14,7 +20,7 @@ export class UnknownFlags extends ErrorBase {
   }
 
   public toString () {
-    return `Unknown options: ${this.names.join(', ')}`
+    return `Unknown options: ${fmtFlagList(this.names)}`
   }
 }
 
@@ -26,7 +32,7 @@ export class MissingFlag extends ErrorBase {
   }
 
   public toString () {
-    return `Option ${this.name} is required but missing`
+    return `Option ${flag(this.name)} is required but missing`
   }
 }
 
@@ -38,6 +44,6 @@ export class ConflictFlags extends ErrorBase {
   }
 
   public toString () {
-    return `Conflicting options: ${this.names.join(', ')}`
+    return `Conflicting options: ${fmtFlagList(this.names)}`
   }
 }
