@@ -60,6 +60,25 @@ export const BinaryFlag = <Name extends string> (
 
 export { BinaryFlag as Flag }
 
+export const CountFlag = <Name extends string> (
+  name: Name,
+  descriptor: FlagDescriptor
+): ArgumentExtractor<Name, number> => ({
+  name,
+  extract (args) {
+    const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
+    return ok({
+      value: findRes.length,
+      remainingArgs
+    })
+  },
+  help () {
+    const alias = fmtAliasList(descriptor.alias)
+    const suffix = fmtDescSuffix(descriptor.describe)
+    return `${flag(name)}${alias}${suffix}`
+  }
+})
+
 export interface FlagDescriptor {
   readonly describe?: string
   readonly alias?: readonly string[]
