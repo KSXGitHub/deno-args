@@ -13,9 +13,14 @@ import {
   InvalidChoice
 } from './value-errors.ts'
 
+const sharedProps = (typeName: string) => ({
+  [Symbol.toStringTag]: 'values::' + typeName
+})
+
 export const Text: ValueExtractor<string, readonly [string]> = {
   extract: ([raw]) => ok(raw),
-  getTypeName: () => 'text'
+  getTypeName: () => 'text',
+  ...sharedProps('Text')
 }
 
 export const FiniteNumber: ValueExtractor<number, readonly [string]> = {
@@ -25,7 +30,8 @@ export const FiniteNumber: ValueExtractor<number, readonly [string]> = {
       ? ok(value)
       : err(new NotANumber(raw))
   },
-  getTypeName: () => 'number'
+  getTypeName: () => 'number',
+  ...sharedProps('FiniteNumber')
 }
 
 export const Integer: ValueExtractor<BigInt, readonly [string]> = {
@@ -36,7 +42,8 @@ export const Integer: ValueExtractor<BigInt, readonly [string]> = {
       return err(new NotAnInteger(raw, error))
     }
   },
-  getTypeName: () => 'integer'
+  getTypeName: () => 'integer',
+  ...sharedProps('Integer')
 }
 
 export function Choice<
@@ -72,6 +79,7 @@ export function Choice<
         if (describe) text += describe + '\n'
       }
       return text
-    }
+    },
+    ...sharedProps('Choice')
   }
 }

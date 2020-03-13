@@ -38,6 +38,10 @@ const fmtTypeHelp = (help?: () => string) => help
   ? '\n' + help()
   : ''
 
+const sharedProps = (typeName: string) => ({
+  [Symbol.toStringTag]: 'flags::' + typeName
+})
+
 export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
@@ -54,7 +58,8 @@ export const BinaryFlag = <Name extends string> (
     const alias = fmtAliasList(descriptor.alias)
     const suffix = fmtDescSuffix(descriptor.describe)
     return `${flag(name)}${alias}${suffix}`
-  }
+  },
+  ...sharedProps('BinaryFlag')
 })
 
 export { BinaryFlag as Flag }
@@ -75,7 +80,8 @@ export const CountFlag = <Name extends string> (
     const alias = fmtAliasList(descriptor.alias)
     const suffix = fmtDescSuffix(descriptor.describe)
     return `${flag(name)}... ${alias}${suffix}`
-  }
+  },
+  ...sharedProps('CountFlag')
 })
 
 export interface FlagDescriptor {
@@ -117,7 +123,8 @@ export const Option = <Name extends string, Value> (
     const suffix = fmtDescSuffix(descriptor.describe)
     const typeHelp = fmtTypeHelp(descriptor.type.help)
     return `${flag(name)} <${typeName}>${alias}${suffix}${typeHelp}`
-  }
+  },
+  ...sharedProps('Option')
 })
 
 export interface OptionDescriptor<Value> {
