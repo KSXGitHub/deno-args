@@ -51,7 +51,5 @@ export const Choice = <
     }
     return err(new InvalidChoice(raw, choices.map(x => x.value)))
   },
-  getTypeName () {
-    return choices.map(x => x.value).join('|')
-  }
+  getTypeName: () => choices.map(x => x.value).join('|')
 })
