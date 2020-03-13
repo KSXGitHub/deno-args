@@ -65,6 +65,13 @@ export function Choice<
       }
       return err(new InvalidChoice(raw, values))
     },
-    getTypeName: () => valueStrings.join('|')
+    getTypeName: () => valueStrings.join('|'),
+    help () {
+      let text = ''
+      for (const { describe } of choices) {
+        if (describe) text += describe + '\n'
+      }
+      return text
+    }
   }
 }
