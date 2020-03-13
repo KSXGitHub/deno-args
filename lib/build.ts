@@ -70,9 +70,6 @@ class ParserNode<
   Value,
   Rest extends ParserBase<any, any, any>
 > extends ParserBase<Name, Value, Rest> {
-  /** Type helper */
-  declare public [__parseResult]: Record<Name, Value> & Rest[__parseResult]
-
   constructor (
     private readonly _extractor: ArgumentExtractor<Name, Value>,
     private readonly _next: Rest
