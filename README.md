@@ -14,7 +14,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [ ] Type test
   * [ ] Make sure TypeScript infer the right type
 
-## Usage
+## Usage Examples
 
 ```typescript
 import build from 'https://deno.land/x/args/build.ts'
