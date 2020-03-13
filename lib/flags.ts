@@ -108,7 +108,7 @@ export const Option = <Name extends string, Value> (
     })
   },
   help () {
-    const typeName = descriptor.type.help()
+    const typeName = descriptor.type.getTypeName()
     const alias = fmtAliasList(descriptor.alias)
     const suffix = fmtDescSuffix(descriptor.describe)
     return `${flag(name)} <${typeName}>${alias}${suffix}`

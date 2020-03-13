@@ -15,7 +15,7 @@ import {
 
 export const Text: ValueExtractor<string, readonly [string]> = {
   extract: ([raw]) => ok(raw),
-  help: () => 'text'
+  getTypeName: () => 'text'
 }
 
 export const FiniteNumber: ValueExtractor<number, readonly [string]> = {
@@ -25,7 +25,7 @@ export const FiniteNumber: ValueExtractor<number, readonly [string]> = {
       ? ok(value)
       : err(new NotANumber(raw))
   },
-  help: () => 'number'
+  getTypeName: () => 'number'
 }
 
 export const Integer: ValueExtractor<BigInt, readonly [string]> = {
@@ -36,7 +36,7 @@ export const Integer: ValueExtractor<BigInt, readonly [string]> = {
       return err(new NotAnInteger(raw, error))
     }
   },
-  help: () => 'integer'
+  getTypeName: () => 'integer'
 }
 
 export const Choice = <
@@ -51,7 +51,7 @@ export const Choice = <
     }
     return err(new InvalidChoice(raw, choices.map(x => x.value)))
   },
-  help () {
+  getTypeName () {
     return choices.map(x => x.value).join('|') // TODO: add describe
   }
 })

@@ -12,7 +12,7 @@ export interface ArgumentExtractor<Name extends string, Value> {
 
 export interface ValueExtractor<Value, Raw extends readonly string[]> {
   extract (raw: Raw): ParseResult<Value, ValueError>
-  help (): string // TODO: Rename to 'getTypeName' and add second "help"
+  getTypeName (): string
 }
 
 export type ParseResult<Value, Error extends ParseError> = ParseSuccess<Value> | ParseFailure<Error>
