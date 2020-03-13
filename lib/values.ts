@@ -10,8 +10,7 @@ import {
 import {
   NotANumber,
   NotAnInteger,
-  InvalidChoice,
-  ValueError
+  InvalidChoice
 } from './value-errors.ts'
 
 export const Text: ValueExtractor<string, readonly [string]> = {
