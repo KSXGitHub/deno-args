@@ -70,7 +70,7 @@ if (res.error) {
 
 ### More Examples
 
-Go to [preview folder](./preview) for more examples.
+Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/preview) for more examples.
 
 ## License
 
