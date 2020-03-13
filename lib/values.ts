@@ -75,8 +75,8 @@ export function Choice<
     getTypeName: () => valueStrings.map(x => JSON.stringify(x)).join('|'),
     help () {
       let text = ''
-      for (const { describe } of choices) {
-        if (describe) text += describe + '\n'
+      for (const { value, describe } of choices) {
+        if (describe) text += `${value}: ${describe}\n`
       }
       return text
     },
