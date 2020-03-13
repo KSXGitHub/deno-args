@@ -13,9 +13,9 @@ for (const args of [
   const parsingResult = parser.parse(args)
   console.log('parser.parse(args)', parsingResult)
   if (parsingResult.tag) {
-    console.log('=> value', parsingResult.value)
+    console.log('  => value', parsingResult.value)
     for (const [key, value] of Object.entries(parsingResult.value)) {
-      console.log('=> value.' + key, value)
+      console.log('    =>', key, value)
     }
   } else {
     console.log('=> error', parsingResult.error)
