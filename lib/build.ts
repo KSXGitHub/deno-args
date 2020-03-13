@@ -43,11 +43,11 @@ abstract class ParserBase<
   public parse (args: readonly string[]): ParseResult<this[__parseResult], FlagError> {
     const res = this[__parse]([...iterateArguments(args)])
     if (!res.tag) return res
-    const result: any = Object.fromEntries(
+    const result: this[__parseResult] = Object.fromEntries(
       Object
         .entries(res.value.value)
         .map(([key, value]) => [key, (value as any).value])
-    )
+    ) as any
     return ok({
       ...result,
       _: res.value.remainingArgs
