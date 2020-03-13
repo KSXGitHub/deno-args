@@ -10,7 +10,8 @@ import {
 import {
   NotANumber,
   NotAnInteger,
-  InvalidChoice
+  InvalidChoice,
+  ValueError
 } from './value-errors.ts'
 
 export const Text: ValueExtractor<string, readonly [string]> = {
@@ -39,31 +40,32 @@ export const Integer: ValueExtractor<BigInt, readonly [string]> = {
   getTypeName: () => 'integer'
 }
 
-/**
- * Assert that there is no duplicated choice.
- * If there is duplication, throw an error.
- * @param choices Arguments that {@link Choice} received
- */
-function checkDuplicatedChoices (choices: readonly {
-  readonly value: number | string
-}[]) {
-  const values = choices.map(x => String(x.value))
-  const duplications = values.filter((x, i) => values.indexOf(x) !== i)
-  if (duplications.length) throw new Error(`Duplicated choices: ${duplications.join(' ')}`)
-}
-
-export const Choice = <
+export function Choice<
   Value extends number | string
 > (...choices: {
   readonly value: Value
   readonly describe?: string
-}[]): ValueExtractor<Value, readonly [string]> => ({
-  extract ([raw]) {
-    checkDuplicatedChoices(choices)
-    for (const { value } of choices) {
-      if (value === raw || value === Number(raw)) return ok(value)
-    }
-    return err(new InvalidChoice(raw, choices.map(x => x.value)))
-  },
-  getTypeName: () => choices.map(x => x.value).join('|')
-})
+}[]): ValueExtractor<Value, readonly [string]> {
+  const values = choices.map(x => x.value)
+  const valueStrings = values.map(x => String(x))
+
+  { // check for duplication
+    const duplications = valueStrings.filter((x, i) => valueStrings.indexOf(x) !== i)
+    if (duplications.length) throw new RangeError(`Duplicated choices: ${duplications.join(' ')}`)
+  }
+
+  { // check for invalid numbers
+    const invalidNumbers = values.filter(x => typeof x === 'number' && !isFinite(x))
+    if (invalidNumbers.length) throw new RangeError(`Invalid numbers: ${invalidNumbers.join(' ')}`)
+  }
+
+  return {
+    extract ([raw]) {
+      for (const value of values) {
+        if (value === raw || value === Number(raw)) return ok(value)
+      }
+      return err(new InvalidChoice(raw, values))
+    },
+    getTypeName: () => valueStrings.join('|')
+  }
+}
