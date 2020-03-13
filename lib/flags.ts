@@ -34,6 +34,10 @@ const fmtDescSuffix = (describe?: string) => describe
   ? `:\t${describe}`
   : ''
 
+const fmtTypeHelp = (help?: () => string) => help
+  ? '\n' + help()
+  : ''
+
 export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
@@ -111,7 +115,8 @@ export const Option = <Name extends string, Value> (
     const typeName = descriptor.type.getTypeName()
     const alias = fmtAliasList(descriptor.alias)
     const suffix = fmtDescSuffix(descriptor.describe)
-    return `${flag(name)} <${typeName}>${alias}${suffix}`
+    const typeHelp = fmtTypeHelp(descriptor.type.help)
+    return `${flag(name)} <${typeName}>${alias}${suffix}${typeHelp}`
   }
 })
 
