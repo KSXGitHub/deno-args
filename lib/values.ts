@@ -39,6 +39,19 @@ export const Integer: ValueExtractor<BigInt, readonly [string]> = {
   getTypeName: () => 'integer'
 }
 
+/**
+ * Assert that there is no duplicated choice.
+ * If there is duplication, throw an error.
+ * @param choices Arguments that {@link Choice} received
+ */
+function checkDuplicatedChoices (choices: readonly {
+  readonly value: number | string
+}[]) {
+  const values = choices.map(x => String(x.value))
+  const duplications = values.filter((x, i) => values.indexOf(x) !== i)
+  if (duplications.length) throw new Error(`Duplicated choices: ${duplications.join(' ')}`)
+}
+
 export const Choice = <
   Value extends number | string
 > (...choices: {
@@ -46,6 +59,7 @@ export const Choice = <
   readonly describe?: string
 }[]): ValueExtractor<Value, readonly [string]> => ({
   extract ([raw]) {
+    checkDuplicatedChoices(choices)
     for (const { value } of choices) {
       if (value === raw || value === Number(raw)) return ok(value)
     }
