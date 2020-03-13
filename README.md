@@ -68,6 +68,10 @@ if (res.error) {
 }
 ```
 
+### More Examples
+
+Go to [preview folder](./preview) for more examples.
+
 ## License
 
 [MIT](https://git.io/JvK1f) © [Hoàng Văn Khải](https://github.com/KSXGitHub)
