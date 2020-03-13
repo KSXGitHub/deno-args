@@ -72,7 +72,7 @@ export function Choice<
       }
       return err(new InvalidChoice(raw, values))
     },
-    getTypeName: () => valueStrings.join('|'),
+    getTypeName: () => valueStrings.map(x => JSON.stringify(x)).join('|'),
     help () {
       let text = ''
       for (const { describe } of choices) {
