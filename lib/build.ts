@@ -45,7 +45,7 @@ abstract class ParserBase<
     if (!res.tag) return res
     return ok({
       ...res.value.value,
-      _: res.value?.remainingArgs
+      _: res.value.remainingArgs
     })
   }
 
