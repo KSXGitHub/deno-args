@@ -2,6 +2,18 @@
 
 Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent TypeScript inference.
 
+## TODO
+
+* [ ] Improve help
+  * [ ] Proper indentation
+  * [ ] Categories
+  * Reference [clap](https://clap.rs/)'s
+* [ ] Support subcommands
+* [ ] Release for Node.js
+* [ ] Test
+* [ ] Type test
+  * [ ] Make sure TypeScript infer the right type
+
 ## Usage
 
 ```typescript
