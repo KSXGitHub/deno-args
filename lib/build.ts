@@ -25,8 +25,8 @@ type __parse = typeof __parse
 const __help = Symbol()
 type __help = typeof __help
 
-type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
-  value: This[__parseResult]
+type _ParseReturn = ParseResult<{
+  value: any
   remainingArgs: string[]
 }, FlagError>
 
@@ -37,7 +37,7 @@ abstract class ParserBase<
 > {
   /** Type helper */
   declare public [__parseResult]: Record<Name, Value> & Next[__parseResult]
-  protected abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
+  protected abstract [__parse] (args: ArgvItem[]): _ParseReturn
   protected abstract [__help] (): string
 
   public parse (args: readonly string[]): ParseResult<this[__parseResult], FlagError> {
@@ -77,7 +77,7 @@ class ParserNode<
     super()
   }
 
-  protected [__parse] (args: ArgvItem[]): _ParseReturn<this> {
+  protected [__parse] (args: ArgvItem[]): _ParseReturn {
     const current = this._extractor.extract(args)
     if (!current.tag) return current
     const next = this._next[__parse](current.value.remainingArgs)
@@ -98,7 +98,7 @@ class ParserNode<
 }
 
 class EmptyParser extends ParserBase<never, never, never> {
-  public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
+  public [__parse] (args: ArgvItem[]): _ParseReturn {
     const [flags, nonFlags] = partition(args, x => x.isFlag)
     if (flags.length) {
       return err(new UnknownFlags(flags.map(x => x.name!)))
