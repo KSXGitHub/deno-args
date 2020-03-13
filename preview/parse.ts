@@ -7,6 +7,16 @@ for (const args of [
     '--integer', '777',
     '--number', '57.3'
   ],
+
+  [
+    '--choice', 'foo',
+    '--text', 'This is another piece of text',
+    '--integer', '33',
+    '--number', '57.3',
+    '--foo',
+    '--bar'
+  ],
+
   []
 ]) {
   console.log('args', args)
