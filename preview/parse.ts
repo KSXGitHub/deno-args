@@ -18,7 +18,7 @@ for (const args of [
       console.log('    =>', key, value)
     }
   } else {
-    console.log('=> error', parsingResult.error)
+    console.log('  => error', parsingResult.error)
   }
   console.log()
 }
