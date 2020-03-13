@@ -6,7 +6,6 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 ```typescript
 import build from 'https://deno.land/x/args/build.ts'
-import help from 'https://deno.land/x/args/help.ts'
 import { Flag, Option } from 'https://deno.land/x/args/flags.ts'
 import { FiniteNumber, Choice } from 'https://deno.land/x/args/values.ts'
 
@@ -45,7 +44,7 @@ if (res.error) {
   console.error(res.error)
   Deno.exit(1)
 } else if (res.value.help) {
-  console.log(help(args))
+  console.log(parser.help())
 } else {
   const { a, b, operator } = res.value
   switch (operator) {
