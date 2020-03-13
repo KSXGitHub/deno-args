@@ -97,7 +97,10 @@ class ParserNode<
   }
 }
 
-class EmptyParser extends ParserBase<never, never, never> {
+class EmptyParser extends ParserBase<never, never, any> {
+  /** Type helper */
+  declare public [__parseResult]: {}
+
   public [__parse] (args: ArgvItem[]): _ParseReturn {
     const [flags, nonFlags] = partition(args, x => x.isFlag)
     if (flags.length) {
