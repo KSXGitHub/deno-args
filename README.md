@@ -26,14 +26,11 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 ```typescript
 import build from 'https://deno.land/x/args/build.ts'
-import { Flag, Option } from 'https://deno.land/x/args/flags.ts'
+import { HelpFlag, Option } from 'https://deno.land/x/args/flags.ts'
 import { FiniteNumber, Choice } from 'https://deno.land/x/args/values.ts'
 
 const parser = build()
-  .with(Flag('help', {
-    alias: ['h'],
-    describe: 'Show help'
-  }))
+  .with(HelpFlag(Deno.exit))
   .with(Option('a', {
     type: FiniteNumber,
     describe: 'Value of a'
