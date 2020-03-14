@@ -33,7 +33,7 @@ export function * iterateArguments (args: readonly string[]) {
       }]
     }
 
-    if (raw.startsWith('-')) {
+    if (raw.startsWith('-') && isNaN(raw as any)) {
       return [...raw.slice('_'.length)].map(name => ({
         isFlag: true,
         name,
