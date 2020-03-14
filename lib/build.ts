@@ -42,7 +42,7 @@ export abstract class ParserBase<
   declare public [__parseResult]: Record<Name, Value> & Next[__parseResult]
   protected abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
   protected abstract [__help] (): string
-  protected abstract [__toString] (): string
+  protected abstract [__toString] (): readonly string[]
 
   public parse (args: readonly string[]): ParseResult<this[__parseResult], FlagError> {
     const res = this[__parse]([...iterateArguments(args)])
@@ -64,8 +64,10 @@ export abstract class ParserBase<
   }
 
   public toString () {
-    const text = this[__toString]().trim()
-    return text ? `Parser { ${text} }` : 'Parser {}'
+    const segments = this[__toString]()
+    if (!segments.length) return 'Parser {}'
+    const middle = segments.map(segment => '  ' + segment).join('\n')
+    return `Parser {\n${middle}\n}`
   }
 }
 
@@ -104,9 +106,12 @@ class ParserNode<
     return current + '\n' + next
   }
 
-  protected [__toString] (): string {
+  protected [__toString] (): string[] {
     const { _next, _extractor } = this
-    return `${_next[__toString]()}, ${_extractor.name}: ${_extractor[Symbol.toStringTag]}`
+    return [
+      `${_extractor.name}: ${_extractor[Symbol.toStringTag]}`,
+      ..._next[__toString]()
+    ]
   }
 }
 
@@ -129,8 +134,8 @@ export class EmptyParser extends ParserBase<never, never, any> {
     return ''
   }
 
-  protected [__toString] (): string {
-    return ''
+  protected [__toString] (): [] {
+    return []
   }
 }
 
