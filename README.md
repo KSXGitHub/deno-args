@@ -32,8 +32,6 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [ ] Re-structure
   * [ ] Create sub-directories for `{argument,value}-{errors,extractors}` and `utils`
   * [ ] Convert import URLs to point to original files when sub-directories are created
-  * [ ] Use `jest` to test
-  * [ ] Maybe use `parcel` to bundle test file for `jest`
 * [ ] When all is done, remove warning
 
 ## Usage Examples
