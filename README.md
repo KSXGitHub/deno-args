@@ -2,7 +2,7 @@
 
 Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent TypeScript inference.
 
-**⚠ Warning:** This project is under heavy development. Things may break without notice. Be sure to specify exact version when use.
+**⚠ Warning:** This project is in an early stage of development. Things may break without notice. Be sure to specify exact version when use.
 
 ## TODO
 
