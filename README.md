@@ -6,10 +6,13 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 ## TODO
 
+* [ ] Report multiple errors at the same time
 * [ ] Improve help
+  * [ ] Support both flag and subcommand (`--help` and `help`)
   * [ ] Proper indentation
   * [ ] Categories
   * Reference [clap](https://clap.rs/)'s
+* [ ] TSDoc
 * [ ] Support subcommands
 * [ ] Release for Node.js
 * [ ] Test
