@@ -73,6 +73,12 @@ export interface EarlyExitDescriptor {
   readonly exit: () => never
 }
 
+export const HelpFlag = (exit: () => never) => EarlyExitFlag('help', {
+  alias: ['?'],
+  describe: 'Show help',
+  exit
+})
+
 export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
