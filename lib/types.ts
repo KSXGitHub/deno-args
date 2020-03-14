@@ -8,12 +8,14 @@ export interface ArgumentExtractor<Name extends string, Value> {
     remainingArgs: ArgvItem[]
   }, FlagError>
   help (): string
+  readonly [Symbol.toStringTag]: string
 }
 
 export interface ValueExtractor<Value, Raw extends readonly string[]> {
   extract (raw: Raw): ParseResult<Value, ValueError>
   getTypeName (): string
   help? (): string
+  readonly [Symbol.toStringTag]: string
 }
 
 export type ParseResult<Value, Error extends ParseError> = ParseSuccess<Value> | ParseFailure<Error>
