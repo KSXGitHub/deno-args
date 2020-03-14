@@ -6,7 +6,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 ## TODO
 
-* [ ] Report multiple errors at the same time
+* [x] Report multiple errors at the same time
 * [ ] Improve help
   * [ ] Implement as `EarlyExit`
   * [ ] Support both flag and subcommand (`--help` and `help`)
