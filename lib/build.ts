@@ -1,3 +1,5 @@
+import './polyfill.js'
+
 import {
   ok,
   err,
