@@ -25,6 +25,9 @@ type __parse = typeof __parse
 const __help = Symbol()
 type __help = typeof __help
 
+const __toString = Symbol()
+type __toString = typeof __toString
+
 type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
   value: This[__parseResult]
   remainingArgs: string[]
@@ -39,6 +42,7 @@ export abstract class ParserBase<
   declare public [__parseResult]: Record<Name, Value> & Next[__parseResult]
   protected abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
   protected abstract [__help] (): string
+  protected abstract [__toString] (): string
 
   public parse (args: readonly string[]): ParseResult<this[__parseResult], FlagError> {
     const res = this[__parse]([...iterateArguments(args)])
@@ -57,6 +61,11 @@ export abstract class ParserBase<
 
   public help (): string {
     return this[__help]()
+  }
+
+  public toString () {
+    const text = this[__toString]().trim()
+    return text ? `Parser { ${text} }` : 'Parser {}'
   }
 }
 
@@ -94,6 +103,11 @@ class ParserNode<
     const next = this._next[__help]()
     return current + '\n' + next
   }
+
+  protected [__toString] (): string {
+    const { _next, _extractor } = this
+    return `${_next[__toString]()}, ${_extractor.name}: ${_extractor[Symbol.toStringTag]}`
+  }
 }
 
 export class EmptyParser extends ParserBase<never, never, any> {
@@ -112,6 +126,10 @@ export class EmptyParser extends ParserBase<never, never, any> {
   }
 
   protected [__help] (): string {
+    return ''
+  }
+
+  protected [__toString] (): string {
     return ''
   }
 }
