@@ -25,8 +25,8 @@ type __parse = typeof __parse
 const __help = Symbol()
 type __help = typeof __help
 
-type _ParseReturn = ParseResult<{
-  value: any
+type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
+  value: This[__parseResult]
   remainingArgs: string[]
 }, FlagError>
 
@@ -37,19 +37,14 @@ abstract class ParserBase<
 > {
   /** Type helper */
   declare public [__parseResult]: Record<Name, Value> & Next[__parseResult]
-  protected abstract [__parse] (args: ArgvItem[]): _ParseReturn
+  protected abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
   protected abstract [__help] (): string
 
   public parse (args: readonly string[]): ParseResult<this[__parseResult], FlagError> {
     const res = this[__parse]([...iterateArguments(args)])
     if (!res.tag) return res
-    const result: this[__parseResult] = Object.fromEntries(
-      Object
-        .entries(res.value.value)
-        .map(([key, value]) => [key, (value as any).value])
-    ) as any
     return ok({
-      ...result,
+      ...res.value.value,
       _: res.value.remainingArgs
     })
   }
@@ -77,13 +72,13 @@ class ParserNode<
     super()
   }
 
-  protected [__parse] (args: ArgvItem[]): _ParseReturn {
+  protected [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const current = this._extractor.extract(args)
     if (!current.tag) return current
     const next = this._next[__parse](current.value.remainingArgs)
     if (!next.tag) return next
     const value = {
-      [this._extractor.name]: current.value,
+      [this._extractor.name]: current.value.value,
       ...next.value.value
     }
     const remainingArgs = next.value.remainingArgs
@@ -101,7 +96,7 @@ class EmptyParser extends ParserBase<never, never, any> {
   /** Type helper */
   declare public [__parseResult]: {}
 
-  public [__parse] (args: ArgvItem[]): _ParseReturn {
+  public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const [flags, nonFlags] = partition(args, x => x.isFlag)
     if (flags.length) {
       return err(new UnknownFlags(flags.map(x => x.name!)))
