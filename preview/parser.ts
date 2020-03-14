@@ -1,8 +1,11 @@
 import build from '../lib/build.ts'
-import { Flag, CountFlag, Option } from '../lib/flags.ts'
+import { HelpFlag, Flag, CountFlag, Option } from '../lib/flags.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../lib/values.ts'
 
 const parser = build()
+  .with(HelpFlag(() => {
+    throw 'exit'
+  }))
   .with(Flag('foo', {
     alias: ['f'],
     describe: 'Boolean flag of foo'
