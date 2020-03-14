@@ -14,7 +14,7 @@ import {
 } from './value-errors.ts'
 
 const sharedProps = (typeName: string) => ({
-  [Symbol.toStringTag]: 'values::' + typeName
+  [Symbol.toStringTag]: typeName
 })
 
 export const Text: ValueExtractor<string, readonly [string]> = {

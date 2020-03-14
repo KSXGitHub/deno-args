@@ -44,7 +44,7 @@ const sharedProps = (
     readonly type: ValueExtractor<any, any>
   }
 ) => ({
-  [Symbol.toStringTag]: 'flags::' + typeName + (
+  [Symbol.toStringTag]: typeName + (
     descriptor ? `(${descriptor.type[Symbol.toStringTag]})` : ''
   )
 })
