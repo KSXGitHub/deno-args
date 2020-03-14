@@ -65,7 +65,7 @@ export abstract class ParserBase<
     return this[__help]()
   }
 
-  public toString () {
+  public [Deno.symbols.customInspect] () {
     const segments = this[__toString]()
     if (!segments.length) return 'Parser {}'
     const middle = segments.map(segment => '  ' + segment).join('\n')
