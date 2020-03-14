@@ -49,6 +49,30 @@ const sharedProps = (
   )
 })
 
+export const EarlyExitFlag = <Name extends string> (
+  name: Name,
+  descriptor: EarlyExitDescriptor
+): ArgumentExtractor<Name, void> => ({
+  name,
+  extract (args) {
+    const findRes = findFlags(args, listFlags(name, descriptor))
+    if (findRes.length) return descriptor.exit()
+    return ok({ value: undefined, remainingArgs: args })
+  },
+  help () {
+    const alias = fmtAliasList(descriptor.alias)
+    const suffix = fmtDescSuffix(descriptor.describe)
+    return `${flag(name)}${alias}${suffix}`
+  },
+  ...sharedProps('EarlyExitFlag')
+})
+
+export interface EarlyExitDescriptor {
+  readonly describe?: string
+  readonly alias?: readonly string[]
+  readonly exit: () => never
+}
+
 export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
