@@ -182,7 +182,12 @@ export const Command = <
     if (!args.length) return NIL
     const [maybeCommand, ...rest] = args
     if (maybeCommand.isFlag) return NIL
-    if ([name, ...descriptor.alias || []].includes(maybeCommand.raw)) {
+    if (
+      [
+        name,
+        ...descriptor.alias || []
+      ].includes(maybeCommand.raw)
+    ) {
       const result = descriptor.type.parse(rest.map(x => x.raw))
       if (!result.tag) return result // TODO: custom error wrapper
       return ok({
