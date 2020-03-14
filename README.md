@@ -61,7 +61,9 @@ const res = parser.parse(Deno.args)
 
 if (res.error) {
   console.error('Failed to parse CLI arguments')
-  console.error(res.error)
+  for (const e of res.error) {
+    console.error(e.toString)
+  }
   Deno.exit(1)
 } else if (res.value.help) {
   console.log(parser.help())
