@@ -1,4 +1,4 @@
-import { FlagError } from './flag-errors.ts'
+import { FlagError } from './argument-errors.ts'
 import { ValueError } from './value-errors.ts'
 
 export interface ArgumentExtractor<Name extends string, Value> {

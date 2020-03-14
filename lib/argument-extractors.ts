@@ -17,7 +17,7 @@ import {
   MissingValue,
   UnexpectedFlag,
   ValueParsingFailure
-} from './flag-errors.ts'
+} from './argument-errors.ts'
 
 const listFlags = <Name extends string> (
   name: Name,
