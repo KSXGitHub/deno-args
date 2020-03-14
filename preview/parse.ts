@@ -55,10 +55,8 @@ for (const args of [
 
 function nameType (value: unknown) {
   const typeName = typeof value
-  if (typeName === 'object') {
-    if (!value) return 'null' as const
-    if (Array.isArray(value)) return 'array' as const
-    return 'object' as const
-  }
-  return typeName
+  if (typeName !== 'object') return typeName
+  if (!value) return 'null' as const
+  if (Array.isArray(value)) return 'array' as const
+  return 'object' as const
 }
