@@ -28,6 +28,15 @@ for (const args of [
     'ghi'
   ],
 
+  [
+    'aliases',
+    '-fccc',
+    '-N', '45.4',
+    '--integer', '123',
+    '--text', 'hello there',
+    '--choice', '789'
+  ],
+
   []
 ]) {
   console.log('args', args)
