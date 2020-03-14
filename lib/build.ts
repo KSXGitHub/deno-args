@@ -30,7 +30,7 @@ type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
   remainingArgs: string[]
 }, FlagError>
 
-abstract class ParserBase<
+export abstract class ParserBase<
   Name extends string,
   Value,
   Next extends ParserBase<any, any, any>
@@ -51,7 +51,7 @@ abstract class ParserBase<
 
   public with<NextName extends string, NextValue> (
     extractor: ArgumentExtractor<NextName, NextValue>
-  ): ParserNode<NextName, NextValue, this> {
+  ): ParserBase<NextName, NextValue, this> {
     return new ParserNode(extractor, this)
   }
 
@@ -92,7 +92,7 @@ class ParserNode<
   }
 }
 
-class EmptyParser extends ParserBase<never, never, any> {
+export class EmptyParser extends ParserBase<never, never, any> {
   /** Type helper */
   declare public [__parseResult]: {}
 
