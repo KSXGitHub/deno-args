@@ -30,7 +30,13 @@ import { HelpFlag, Option } from 'https://deno.land/x/args/flags.ts'
 import { FiniteNumber, Choice } from 'https://deno.land/x/args/values.ts'
 
 const parser = build()
-  .with(HelpFlag(Deno.exit))
+  .with(EarlyExitFlag('help', {
+    describe: 'Show help',
+    exit () {
+      console.log(parser.help())
+      return Deno.exit()
+    }
+  }))
   .with(Option('a', {
     type: FiniteNumber,
     describe: 'Value of a'
