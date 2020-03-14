@@ -80,6 +80,6 @@ export function Choice<
       }
       return text
     },
-    ...sharedProps('Choice')
+    ...sharedProps(`Choice(${values.join(',')})`)
   }
 }

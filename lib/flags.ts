@@ -38,8 +38,15 @@ const fmtTypeHelp = (help?: () => string) => help
   ? '\n' + help()
   : ''
 
-const sharedProps = (typeName: string) => ({
-  [Symbol.toStringTag]: 'flags::' + typeName
+const sharedProps = (
+  typeName: string,
+  descriptor?: {
+    readonly type: ValueExtractor<any, any>
+  }
+) => ({
+  [Symbol.toStringTag]: 'flags::' + typeName + (
+    descriptor ? `(${descriptor.type[Symbol.toStringTag]})` : ''
+  )
 })
 
 export const BinaryFlag = <Name extends string> (
@@ -124,7 +131,7 @@ export const Option = <Name extends string, Value> (
     const typeHelp = fmtTypeHelp(descriptor.type.help)
     return `${flag(name)} <${typeName}>${alias}${suffix}${typeHelp}`
   },
-  ...sharedProps('Option')
+  ...sharedProps('Option', descriptor)
 })
 
 export interface OptionDescriptor<Value> {
