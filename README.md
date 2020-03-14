@@ -8,6 +8,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 * [ ] Report multiple errors at the same time
 * [ ] Improve help
+  * [ ] Implement as `EarlyExit`
   * [ ] Support both flag and subcommand (`--help` and `help`)
   * [ ] Proper indentation
   * [ ] Categories
