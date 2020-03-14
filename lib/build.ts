@@ -28,7 +28,7 @@ type __help = typeof __help
 type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
   value: This[__parseResult]
   remainingArgs: string[]
-}, FlagError>
+}, readonly FlagError[]>
 
 export abstract class ParserBase<
   Name extends string,
@@ -74,9 +74,13 @@ class ParserNode<
 
   protected [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const current = this._extractor.extract(args)
-    if (!current.tag) return current
-    const next = this._next[__parse](current.value.remainingArgs)
-    if (!next.tag) return next
+    const next = this._next[__parse](current.value?.remainingArgs || [])
+    if (!current.tag || !next.tag) {
+      const errors = []
+      if (current.error) errors.push(current.error)
+      if (next.error) errors.push(...next.error)
+      return err(errors)
+    }
     const value = {
       [this._extractor.name]: current.value.value,
       ...next.value.value
@@ -99,7 +103,7 @@ export class EmptyParser extends ParserBase<never, never, any> {
   public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const [flags, nonFlags] = partition(args, x => x.isFlag)
     if (flags.length) {
-      return err(new UnknownFlags(flags.map(x => x.name!)))
+      return err([new UnknownFlags(flags.map(x => x.name!))])
     }
     return ok({
       value: {} as never,
