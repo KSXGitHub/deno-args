@@ -17,9 +17,23 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [ ] TSDoc
 * [ ] Support subcommands
 * [ ] Release for Node.js
+  * [ ] Compile TypeScript files to JavaScript
+  * [ ] Create both CommonJS and ESM modules
+  * [ ] May use `parcel`
+* [ ] Add CI
+  * [ ] GitHub actions
+  * [ ] Travis CI
+  * [ ] Deploy on Netlify, now.sh, surge.sh
 * [ ] Test
+  * [ ] Use `jest` (Deno test ecosystem is yet matured)
+* [ ] Use `prettier` to format
 * [ ] Type test
   * [ ] Make sure TypeScript infer the right type
+* [ ] Re-structure
+  * [ ] Create sub-directories for `{argument,value}-{errors,extractors}` and `utils`
+  * [ ] Convert import URLs to point to original files when sub-directories are created
+  * [ ] Use `jest` to test
+  * [ ] Maybe use `parcel` to bundle test file for `jest`
 * [ ] When all is done, remove warning
 
 ## Usage Examples
