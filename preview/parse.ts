@@ -31,8 +31,8 @@ for (const args of [
   [
     'aliases',
     '-fccc',
-    '-N', '45.4',
-    '--integer', '123',
+    '-N', '-45.4',
+    '--integer', '-123',
     '--text', 'hello there',
     '--choice', '789'
   ],
