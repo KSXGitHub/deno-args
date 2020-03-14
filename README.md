@@ -18,6 +18,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [ ] Test
 * [ ] Type test
   * [ ] Make sure TypeScript infer the right type
+* [ ] When all is done, remove warning
 
 ## Usage Examples
 
