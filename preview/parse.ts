@@ -17,6 +17,17 @@ for (const args of [
     '--bar'
   ],
 
+  [
+    '--choice', '789',
+    '--text', 'Text Text Text',
+    '--integer', '22',
+    '--number', '517.3',
+    '--bar',
+    'abc',
+    'def',
+    'ghi'
+  ],
+
   []
 ]) {
   console.log('args', args)
