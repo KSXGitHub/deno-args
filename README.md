@@ -38,8 +38,8 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 ```typescript
 import build from 'https://deno.land/x/args/build.ts'
-import { HelpFlag, Option } from 'https://deno.land/x/args/flags.ts'
-import { FiniteNumber, Choice } from 'https://deno.land/x/args/values.ts'
+import { HelpFlag, Option } from 'https://deno.land/x/args/argument-extractors.ts'
+import { FiniteNumber, Choice } from 'https://deno.land/x/args/value-extractors.ts'
 
 const parser = build()
   .with(EarlyExitFlag('help', {
