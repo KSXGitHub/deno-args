@@ -40,10 +40,10 @@ export type TypeOf<Parser extends ParserBase<any, any, any>> = Parser[__parseRes
 export abstract class ParserBase<
   Name extends string,
   Value,
-  Next extends ParserBase<any, any, any>
+  Rest extends ParserBase<any, any, any>
 > {
   /** Type helper */
-  declare public [__parseResult]: Record<Name, Value> & Next[__parseResult]
+  declare public [__parseResult]: Record<Name, Value> & Rest[__parseResult]
   protected abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
   protected abstract [__help] (): string
   protected abstract [__toString] (): readonly string[]
@@ -82,14 +82,14 @@ class ParserNode<
 > extends ParserBase<Name, Value, Rest> {
   constructor (
     private readonly _extractor: ArgumentExtractor<Name, Value>,
-    private readonly _next: Rest
+    private readonly _rest: Rest
   ) {
     super()
   }
 
   protected [__parse] (args: ArgvItem[]): _ParseReturn<this> {
     const current = this._extractor.extract(args)
-    const next = this._next[__parse](current.value?.remainingArgs || [])
+    const next = this._rest[__parse](current.value?.remainingArgs || [])
     if (!current.tag || !next.tag) {
       const errors = []
       if (current.error) errors.push(current.error)
@@ -106,12 +106,12 @@ class ParserNode<
 
   protected [__help] (): string {
     const current = this._extractor.help()
-    const next = this._next[__help]()
+    const next = this._rest[__help]()
     return current + '\n' + next
   }
 
   protected [__toString] (): string[] {
-    const { _next, _extractor } = this
+    const { _rest: _next, _extractor } = this
     return [
       `${_extractor.name}: ${_extractor[Symbol.toStringTag]}`,
       ..._next[__toString]()
