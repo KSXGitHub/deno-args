@@ -31,7 +31,8 @@ const parser = build()
       { value: 456, describe: 'Not 123' },
       { value: 'bar', describe: 'Not Foo' },
       { value: '789', describe: 'Not a number' }
-    )
+    ),
+    describe: 'Choice to make'
   }))
 
 export { parser, parser as default }
