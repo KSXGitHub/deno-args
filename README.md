@@ -68,8 +68,6 @@ if (res.error) {
     console.error(e.toString)
   }
   Deno.exit(1)
-} else if (res.value.help) {
-  console.log(parser.help())
 } else {
   const { a, b, operator } = res.value
   switch (operator) {
