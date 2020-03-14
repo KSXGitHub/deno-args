@@ -45,10 +45,20 @@ for (const args of [
   if (parsingResult.tag) {
     console.log('  => value', parsingResult.value)
     for (const [key, value] of Object.entries(parsingResult.value)) {
-      console.log('    =>', key, value)
+      console.log('    =>', key, `(${nameType(value)})`, value)
     }
   } else {
     console.log('  => error', parsingResult.error)
   }
   console.log()
+}
+
+function nameType (value: unknown) {
+  const typeName = typeof value
+  if (typeName === 'object') {
+    if (!value) return 'null' as const
+    if (Array.isArray(value)) return 'array' as const
+    return 'object' as const
+  }
+  return typeName
 }
