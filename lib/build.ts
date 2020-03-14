@@ -35,6 +35,8 @@ type _ParseReturn<This extends ParserBase<any, any, any>> = ParseResult<{
   remainingArgs: string[]
 }, readonly FlagError[]>
 
+export type TypeOf<Parser extends ParserBase<any, any, any>> = Parser[__parseResult]
+
 export abstract class ParserBase<
   Name extends string,
   Value,

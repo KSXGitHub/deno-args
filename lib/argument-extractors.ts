@@ -19,6 +19,11 @@ import {
   ValueParsingFailure
 } from './argument-errors.ts'
 
+import {
+  ParserBase,
+  TypeOf
+} from './build.ts'
+
 const listFlags = <Name extends string> (
   name: Name,
   descriptor: {
@@ -162,4 +167,39 @@ export interface OptionDescriptor<Value> {
   readonly type: ValueExtractor<Value, [string]>
   readonly describe?: string
   readonly alias?: readonly string[]
+}
+
+export const Command = <
+  Name extends string,
+  Parser extends ParserBase<any, any, any>
+> (
+  name: Name,
+  descriptor: CommandDescriptor<Parser>
+): ArgumentExtractor<Name, TypeOf<Parser> | null> => ({
+  name,
+  extract (args) {
+    const NIL = ok({ value: null, remainingArgs: args })
+    if (!args.length) return NIL
+    const [maybeCommand, ...rest] = args
+    if (maybeCommand.isFlag) return NIL
+    if ([name, ...descriptor.alias || []].includes(maybeCommand.raw)) {
+      const result = descriptor.type.parse(rest.map(x => x.raw))
+      if (!result.tag) return result // TODO: custom error wrapper
+      return ok({
+        value: result.value,
+        remainingArgs: []
+      })
+    }
+    return NIL
+  },
+  help () {
+    return descriptor.type.help() // TODO: improve
+  },
+  [Symbol.toStringTag]: 'Command({ ... })'
+})
+
+export interface CommandDescriptor<Parser extends ParserBase<any, any, any>> {
+  readonly describe?: string
+  readonly alias?: readonly string[]
+  readonly type: Parser
 }
