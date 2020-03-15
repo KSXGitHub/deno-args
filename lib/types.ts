@@ -40,6 +40,7 @@ export type ArgvItem = ArgvItem.Flag | ArgvItem.Value
 
 export namespace ArgvItem {
   interface Base {
+    readonly index: number
     readonly isFlag: boolean
     readonly raw: string
     readonly name?: string | null

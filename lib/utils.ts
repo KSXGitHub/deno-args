@@ -19,9 +19,9 @@ export const flagPrefix = (name: string): '-' | '--' => name.length === 1 ? '-' 
 export const flag = (name: string) => flagPrefix(name) + name
 
 export function * iterateArguments (args: readonly string[]) {
-  let fn = (raw: string): ArgvItem[] => {
+  let fn = (raw: string, index: number): ArgvItem[] => {
     if (raw === '--') {
-      fn = raw => ([{ isFlag: false, raw }])
+      fn = (raw, index) => ([{ isFlag: false, index, raw }])
       return []
     }
 
@@ -29,6 +29,7 @@ export function * iterateArguments (args: readonly string[]) {
       return [{
         isFlag: true,
         name: raw.slice('--'.length),
+        index,
         raw
       }]
     }
@@ -37,18 +38,20 @@ export function * iterateArguments (args: readonly string[]) {
       return [...raw.slice('_'.length)].map(name => ({
         isFlag: true,
         name,
+        index,
         raw
       }))
     }
 
     return [{
       isFlag: false,
+      index,
       raw
     }]
   }
 
-  for (const x of args) {
-    yield * fn(x)
+  for (let i = 0; i !== args.length; ++i) {
+    yield * fn(args[i], i)
   }
 }
 
