@@ -1,4 +1,7 @@
-import './polyfill.js'
+import {
+  inspect,
+  __denoInspect
+} from './symbols.ts'
 
 import {
   ok,
@@ -67,11 +70,15 @@ export abstract class ParserBase<
     return this[__help]()
   }
 
-  public [Deno.symbols.customInspect] () {
+  public [inspect] () {
     const segments = this[__toString]()
     if (!segments.length) return 'Parser {}'
     const middle = segments.map(segment => '  ' + segment).join('\n')
     return `Parser {\n${middle}\n}`
+  }
+
+  public [__denoInspect] () {
+    return this[inspect]()
   }
 }
 
