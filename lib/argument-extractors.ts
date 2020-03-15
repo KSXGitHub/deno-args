@@ -137,12 +137,12 @@ export const Option = <Name extends string, Value> (
     if (findRes.length !== 1) return err(new ConflictFlags(flags))
     const [res] = findRes
     const valPos = res.index + 1
-    if (args.length <= valPos) return err(new MissingValue(res.name!))
+    if (args.length <= valPos) return err(new MissingValue(res.name))
     const { isFlag, raw } = args[valPos]
-    if (isFlag) return err(new UnexpectedFlag(res.name!, raw))
+    if (isFlag) return err(new UnexpectedFlag(res.name, raw))
     const parseResult = descriptor.type.extract([raw])
     if (!parseResult.tag) {
-      return err(new ValueParsingFailure(res.name!, parseResult.error))
+      return err(new ValueParsingFailure(res.name, parseResult.error))
     }
     const remainingArgs = [
       ...args.slice(0, res.index),
