@@ -43,22 +43,22 @@ import { HelpFlag, Option } from 'https://deno.land/x/args/argument-extractors.t
 import { FiniteNumber, Choice } from 'https://deno.land/x/args/value-extractors.ts'
 
 const parser = build()
-  .with(EarlyExitFlag('help', {
+  .and(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
       console.log(parser.help())
       return Deno.exit()
     }
   }))
-  .with(Option('a', {
+  .and(Option('a', {
     type: FiniteNumber,
     describe: 'Value of a'
   }))
-  .with(Option('b', {
+  .and(Option('b', {
     type: FiniteNumber,
     describe: 'Value of b'
   }))
-  .with(Option('operator', {
+  .and(Option('operator', {
     type: Choice<'add' | 'sub'>(
       {
         value: 'add',
