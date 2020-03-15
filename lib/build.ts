@@ -57,7 +57,7 @@ export abstract class ParserBase<
     })
   }
 
-  public with<NextName extends string, NextValue> (
+  public and<NextName extends string, NextValue> (
     extractor: ArgumentExtractor<NextName, NextValue>
   ): ParserBase<NextName, NextValue, this> {
     return new ParserNode(extractor, this)

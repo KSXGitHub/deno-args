@@ -3,34 +3,34 @@ import { EarlyExitDescriptor, Flag, CountFlag, Option, EarlyExitFlag } from '../
 import { FiniteNumber, Integer, Text, Choice } from '../lib/value-extractors.ts'
 
 const parser = build()
-  .with(EarlyExitFlag('help', {
+  .and(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
       throw parser.help()
     }
   }))
-  .with(Flag('foo', {
+  .and(Flag('foo', {
     alias: ['f'],
     describe: 'Boolean flag of foo'
   }))
-  .with(Flag('bar'))
-  .with(CountFlag('count', {
+  .and(Flag('bar'))
+  .and(CountFlag('count', {
     alias: ['c'],
     describe: 'Counting'
   }))
-  .with(Option('number', {
+  .and(Option('number', {
     alias: ['N'],
     type: FiniteNumber,
     describe: 'An integer or a floating-point number'
   }))
-  .with(Option('integer', {
+  .and(Option('integer', {
     type: Integer,
     describe: 'An arbitrary large integer'
   }))
-  .with(Option('text', {
+  .and(Option('text', {
     type: Text
   }))
-  .with(Option('choice', {
+  .and(Option('choice', {
     type: Choice<123 | 'foo' | 456 | 'bar' | '789'>(
       { value: 123 },
       { value: 'foo' },
