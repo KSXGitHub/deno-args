@@ -36,12 +36,17 @@ type __toString = typeof __toString
 
 type CmdTypeBound = MAIN_COMMAND | string
 
+type _ParseResult<Val> = ParseResult<{
+  readonly value: Val
+  readonly consumedArgs: WeakSet<ArgvItem>
+}, readonly FlagError[]>
+
 export abstract class CommandBase<
   CmdType extends CmdTypeBound,
   Val
 > {
   public abstract readonly commandType: CmdType
-  protected abstract [__parse] (args: readonly ArgvItem[]): ParseResult<Val, readonly FlagError[]>
+  protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
   protected abstract [__help] (): string
   protected abstract [__toString] (): readonly string[]
 
