@@ -1,5 +1,5 @@
 import build from '../lib/build.ts'
-import { EarlyExitDescriptor, Flag, CountFlag, Option, EarlyExitFlag } from '../lib/argument-extractors.ts'
+import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/argument-extractors.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../lib/value-extractors.ts'
 
 const parser = build()
