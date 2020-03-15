@@ -55,31 +55,27 @@ export function * iterateArguments (args: readonly string[]) {
   }
 }
 
-export function partition<X> (xs: Iterable<X>, fn: (x: X) => boolean): [X[], X[]] {
-  const left: X[] = []
-  const right: X[] = []
+export function partition<X0, X1 extends X0> (
+  xs: Iterable<X0>,
+  fn: (x: X0) => x is X1
+): [X1[], X0[]] {
+  const left: X1[] = []
+  const right: X0[] = []
   for (const x of xs) {
     (fn(x) ? left : right).push(x)
   }
   return [left, right]
 }
 
-const flagMapFn = (item: ArgvItem, index: number) => ({ ...item, index })
-
 const flagPredicate = (names: readonly string[]) =>
-  (item: ArgvItem) => item.isFlag && names.includes(item.name)
+  (item: ArgvItem): item is ArgvItem.Flag => item.isFlag && names.includes(item.name)
 
 export const partitionFlags = (
   args: Iterable<ArgvItem>,
   names: readonly string[]
-) => partition(
-  [...args].map(flagMapFn),
-  flagPredicate(names)
-)
+) => partition(args, flagPredicate(names))
 
 export const findFlags = (
   args: readonly ArgvItem[],
   names: readonly string[]
-) => args
-  .map(flagMapFn)
-  .filter(flagPredicate(names))
+) => args.filter(flagPredicate(names))
