@@ -39,21 +39,21 @@ type _ParseResult<Val> = ParseResult<{
   readonly consumedArgs: WeakSet<ArgvItem>
 }, readonly FlagError[]>
 
-export abstract class CommandBase<CmdType, Val> {
-  public abstract readonly commandType: CmdType
+export abstract class CommandBase<Tag, Val> {
+  public abstract readonly commandType: Tag
   protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
   protected abstract [__help] (): string
   protected abstract [__toString] (): readonly string[]
 
-  public and<NextCmdType extends string, NextVal> (
-    next: CommandBase<NextCmdType, NextVal>
-  ): CommandBase<CmdType, Val & NextVal> {
+  public and<NextTag extends string, NextVal> (
+    next: CommandBase<NextTag, NextVal>
+  ): CommandBase<Tag, Val & NextVal> {
     return new Intersection(this, next)
   }
 
-  public or<NextCmdType extends string, NextVal> (
-    next: CommandBase<NextCmdType, NextVal>
-  ): CommandBase<CmdType, Val | NextVal> {
+  public or<NextTag extends string, NextVal> (
+    next: CommandBase<NextTag, NextVal>
+  ): CommandBase<Tag, Val | NextVal> {
     return new Union(this, next)
   }
 }
