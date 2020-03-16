@@ -73,15 +73,19 @@ abstract class CommandBase<Val> {
     name: NextTag,
     define: (command: NamedSubCommand<NextTag>) => Command<TaggedVal<NextTag, NextVal>>
   ): Command<Val | TaggedVal<NextTag, NextVal>> {
-    const nextCommand = define(new NamedSubCommand(name))
-    return this.or(nextCommand)
+    return this.or(new SubCommandWrapper(
+      item => !item.isFlag && item.raw === name,
+      define(new NamedSubCommand(name))
+    ))
   }
 
   public unknownSubCommand<NextVal> (
     define: (command: UnknownSubCommand) => Command<TaggedVal<UNKNOWN_COMMAND, NextVal>>
   ) {
-    const nextCommand = define(new UnknownSubCommand())
-    return this.or(nextCommand)
+    return this.or(new SubCommandWrapper(
+      item => !item.isFlag,
+      define(new UnknownSubCommand())
+    ))
   }
 
   public parse (args: readonly string[]) {
@@ -176,6 +180,21 @@ class NamedSubCommand<Name extends string> extends NamedCommand<Name> {
 
 class UnknownSubCommand extends NamedCommand<UNKNOWN_COMMAND> {
   public readonly name: UNKNOWN_COMMAND = UNKNOWN_COMMAND
+}
+
+class SubCommandWrapper<Val> extends CommandBase<Val> {
+  constructor (
+    private readonly _isSubCommand: (item: ArgvItem) => boolean,
+    private readonly _subCommand: Command<Val>
+  ) {
+    super()
+  }
+
+  public [__parse] (args: readonly ArgvItem[]): _ParseResult<Val> {
+    const [first, ...rest] = args
+    if (!this._isSubCommand(first)) return err([]) // TODO: Define sub command error
+    return this._subCommand[__parse](rest) // TODO: Define an error wrapper
+  }
 }
 
 export interface Command<Val> extends CommandBase<Val> {}
