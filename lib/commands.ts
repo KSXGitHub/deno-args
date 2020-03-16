@@ -43,6 +43,8 @@ type _ParseResult<
   readonly consumedArgs: Set<ArgvItem>
 }, ErrArr>
 
+type TaggedVal<Tag, Val> = Val & Record<command, Tag>
+
 abstract class CommandBase<Val> {
   protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
   // protected abstract [__help] (): string
@@ -68,9 +70,10 @@ abstract class CommandBase<Val> {
 
   public subCommand<NextTag extends string, NextVal> (
     name: NextTag,
-    parser: Command<NextVal>
-  ): Command<Val |TaggedVal<NextTag, NextVal>> {
-    return this.or(new NamedSubCommand(name, parser))
+    define: (command: Command<Record<command, NextTag>>) => Command<TaggedVal<NextTag, NextVal>>
+  ): Command<Val | TaggedVal<NextTag, NextVal>> {
+    const nextCommand = define(new NamedSubCommand(name))
+    return this.or(nextCommand)
   }
 
   public parse (args: readonly string[]) {
@@ -143,22 +146,20 @@ class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<Tagged
   }
 }
 
-type TaggedVal<Tag, Val> = Val & Record<command, Tag>
-
-abstract class NamedCommand<Name, Val>
-extends CommandBase<TaggedVal<Name, Val>> {
+abstract class NamedCommand<Name>
+extends CommandBase<Record<command, Name>> {
   abstract readonly name: Name
-  protected abstract [__parse] (): _ParseResult<TaggedVal<Name, Val>>
+  protected abstract [__parse] (): _ParseResult<Record<command, Name>>
 }
 
-class MainCommand extends NamedCommand<MAIN_COMMAND, {}> {
+class MainCommand extends NamedCommand<MAIN_COMMAND> {
   public readonly name: MAIN_COMMAND = MAIN_COMMAND
   protected [__parse] (): _ParseResult<Record<command, MAIN_COMMAND>, never> {
     return ok({ value: { [command]: MAIN_COMMAND }, consumedArgs: new Set() })
   }
 }
 
-class NamedSubCommand<Name extends string> extends NamedCommand<Name, {}> {
+class NamedSubCommand<Name extends string> extends NamedCommand<Name> {
   constructor (
     public readonly name: Name
   ) {
