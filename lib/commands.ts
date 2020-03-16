@@ -41,8 +41,8 @@ type _ParseResult<Val> = ParseResult<{
 
 export abstract class CommandBase<Val> {
   protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
-  protected abstract [__help] (): string
-  protected abstract [__toString] (): readonly string[]
+  // protected abstract [__help] (): string
+  // protected abstract [__toString] (): readonly string[]
 
   public and<NextVal> (
     next: CommandBase<NextVal>
