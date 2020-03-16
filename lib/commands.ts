@@ -63,6 +63,13 @@ export abstract class CommandBase<Val> {
     return this.and(new ExtractorWrapper(extractor))
   }
 
+  public subCommand<NextTag extends string, NextVal> (
+    name: NextTag,
+    parser: CommandBase<NextVal>
+  ): CommandBase<Val |TaggedVal<NextTag, NextVal>> {
+    return this.or<TaggedVal<NextTag, NextVal>>(new SubCommand(name, parser))
+  }
+
   public parse (args: readonly string[]) {
     const result = this[__parse]([...iterateArguments(args)])
     if (!result.tag) return result
