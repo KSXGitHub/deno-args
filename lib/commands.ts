@@ -151,10 +151,10 @@ extends CommandBase<TaggedVal<Name, Val>> {
   protected abstract [__parse] (): _ParseResult<TaggedVal<Name, Val>>
 }
 
-class MainCommand<Val> extends NamedCommand<MAIN_COMMAND, Val> {
+class MainCommand extends NamedCommand<MAIN_COMMAND, {}> {
   public readonly name: MAIN_COMMAND = MAIN_COMMAND
-  protected [__parse] (): _ParseResult<TaggedVal<MAIN_COMMAND, Val>> {
-
+  protected [__parse] (): _ParseResult<TaggedVal<MAIN_COMMAND, {}>, never> {
+    return ok({ value: { [command]: MAIN_COMMAND }, consumedArgs: new Set() })
   }
 }
 
