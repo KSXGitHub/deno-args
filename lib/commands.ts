@@ -41,7 +41,7 @@ type _ParseResult<Tag, Val> = ParseResult<{
 }, readonly FlagError[]>
 
 export abstract class CommandBase<Tag, Val> {
-  public abstract readonly commandType: Tag
+  public abstract readonly tag: Tag
   protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Tag, Val>
   protected abstract [__help] (): string
   protected abstract [__toString] (): readonly string[]
