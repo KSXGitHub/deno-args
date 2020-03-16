@@ -40,7 +40,7 @@ type _ParseResult<Val> = ParseResult<{
   readonly consumedArgs: Set<ArgvItem>
 }, readonly FlagError[]>
 
-export abstract class CommandBase<Val> {
+abstract class CommandBase<Val> {
   protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
   // protected abstract [__help] (): string
   // protected abstract [__toString] (): readonly string[]
@@ -160,3 +160,7 @@ class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> 
 
   }
 }
+
+export interface Command<Val> extends CommandBase<Val> {}
+
+export default Command
