@@ -36,7 +36,7 @@ type __toString = typeof __toString
 
 type _ParseResult<Val> = ParseResult<{
   readonly value: Val
-  readonly consumedArgs: WeakSet<ArgvItem>
+  readonly consumedArgs: Set<ArgvItem>
 }, readonly FlagError[]>
 
 export abstract class CommandBase<Val> {
@@ -79,7 +79,20 @@ abstract class Combine<A, B, C> extends CommandBase<C> {
 }
 
 class Intersection<A, B> extends Combine<A, B, A & B> {
-  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<A & B> {}
+  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<A & B> {
+    const [A, B] = this[__combine]
+    const a = A[__parse](args)
+    const b = B[__parse](args)
+    if (a.tag && b.tag) {
+      const value = { ...a.value.value, ...b.value.value }
+      const consumedArgs = new Set([...a.value.consumedArgs, ...b.value.consumedArgs])
+      return ok({ value, consumedArgs })
+    }
+    return err([
+      ...a.error || [],
+      ...b.error || []
+    ])
+  }
 }
 
 class Union<A, B> extends Combine<A, B, A | B> {
