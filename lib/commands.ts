@@ -34,17 +34,12 @@ type __help = typeof __help
 const __toString = Symbol()
 type __toString = typeof __toString
 
-type CmdTypeBound = MAIN_COMMAND | string
-
 type _ParseResult<Val> = ParseResult<{
   readonly value: Val
   readonly consumedArgs: WeakSet<ArgvItem>
 }, readonly FlagError[]>
 
-export abstract class CommandBase<
-  CmdType extends CmdTypeBound,
-  Val
-> {
+export abstract class CommandBase<CmdType, Val> {
   public abstract readonly commandType: CmdType
   protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
   protected abstract [__help] (): string
@@ -65,7 +60,7 @@ export abstract class CommandBase<
 
 const __combine = Symbol()
 type __combine = typeof __combine
-abstract class Combine<AT extends CmdTypeBound, BT extends string, AV, BV, C> extends CommandBase<AT, C> {
+abstract class Combine<AT, BT extends string, AV, BV, C> extends CommandBase<AT, C> {
   protected readonly [__combine]: readonly [
     CommandBase<AT, AV>,
     CommandBase<BT, BV>
@@ -80,10 +75,10 @@ abstract class Combine<AT extends CmdTypeBound, BT extends string, AV, BV, C> ex
   }
 }
 
-class Intersection<AT extends CmdTypeBound, BT extends string, AV, BV> extends Combine<AT, BT, AV, BV, AV & BV> {
+class Intersection<AT, BT extends string, AV, BV> extends Combine<AT, BT, AV, BV, AV & BV> {
 
 }
 
-class Union<AT extends CmdTypeBound, BT extends string, AV, BV> extends Combine<AT, BT, AV, BV, AV | BV> {
+class Union<AT, BT extends string, AV, BV> extends Combine<AT, BT, AV, BV, AV | BV> {
 
 }
