@@ -132,3 +132,18 @@ class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<Tagged
 
   }
 }
+
+type TaggedVal<Tag, Val> = Val & Record<command, Tag>
+
+class SubCommand<Tag extends string, Val> extends CommandBase<TaggedVal<Val>> {
+  constructor (
+    public readonly name: Tag,
+    private readonly _parser: CommandBase<Val>
+  ) {
+    super()
+  }
+
+  protected [__parse] (): _ParseResult<TaggedVal<Val>> {
+
+  }
+}
