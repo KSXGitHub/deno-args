@@ -162,5 +162,5 @@ class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> 
 }
 
 export interface Command<Val> extends CommandBase<Val> {}
-
+export const Command = (): Command<never> => ({})
 export default Command
