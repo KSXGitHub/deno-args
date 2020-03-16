@@ -145,7 +145,7 @@ class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<Tagged
 
 type TaggedVal<Tag, Val> = Val & Record<command, Tag>
 
-abstract class NamedCommand<Name extends string | MAIN_COMMAND, Val>
+abstract class NamedCommand<Name, Val>
 extends CommandBase<TaggedVal<Name, Val>> {
   abstract readonly name: Name
   protected abstract [__parse] (): _ParseResult<TaggedVal<Name, Val>>
