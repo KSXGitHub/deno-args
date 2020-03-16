@@ -34,15 +34,14 @@ type __help = typeof __help
 const __toString = Symbol()
 type __toString = typeof __toString
 
-type _ParseResult<Tag, Val> = ParseResult<{
-  readonly tag: Tag
+type _ParseResult<Val> = ParseResult<{
   readonly value: Val
   readonly consumedArgs: WeakSet<ArgvItem>
 }, readonly FlagError[]>
 
 export abstract class CommandBase<Tag, Val> {
   public abstract readonly tag: Tag
-  protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Tag, Val>
+  protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
   protected abstract [__help] (): string
   protected abstract [__toString] (): readonly string[]
 
