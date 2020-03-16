@@ -56,7 +56,9 @@ export abstract class CommandBase<Val> {
     return new Union(this, next)
   }
 
-  public parse (): ParseResult<Val, readonly FlagError[]> {}
+  public parse (args: readonly string[]): _ParseResult<Val> {
+    return this[__parse]([...iterateArguments(args)])
+  }
 }
 
 const __combine = Symbol()
