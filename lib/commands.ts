@@ -81,7 +81,7 @@ abstract class CommandBase<Val> {
 
   public unknownSubCommand<NextVal> (
     define: (command: UnknownSubCommand) => Command<TaggedVal<UNKNOWN_COMMAND, NextVal>>
-  ) {
+  ): Command<Val | TaggedVal<UNKNOWN_COMMAND, NextVal>> {
     return this.or(new SubCommandWrapper(
       item => !item.isFlag,
       define(new UnknownSubCommand())
