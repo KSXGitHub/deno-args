@@ -96,5 +96,12 @@ class Intersection<A, B> extends Combine<A, B, A & B> {
 }
 
 class Union<A, B> extends Combine<A, B, A | B> {
-  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<A | B> {}
+  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<A | B> {
+    const [A, B] = this[__combine]
+    const a = A[__parse](args)
+    if (a.tag) return a
+    const b = B[__parse](args)
+    if (b.tag) return b
+    return err([...a.error, ...b.error])
+  }
 }
