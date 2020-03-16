@@ -57,6 +57,12 @@ export abstract class CommandBase<Val> {
     return new Union(this, next)
   }
 
+  public with<NextName extends string, NextVal> (
+    extractor: ArgumentExtractor<NextName, NextVal>
+  ): CommandBase<Val & Record<NextName, NextVal>> {
+    return this.and(new ExtractorWrapper(extractor))
+  }
+
   public parse (args: readonly string[]) {
     const result = this[__parse]([...iterateArguments(args)])
     if (!result.tag) return result
@@ -65,12 +71,6 @@ export abstract class CommandBase<Val> {
       consumedArgs: result.value.consumedArgs,
       tag: true
     } as const
-  }
-
-  public with<NextName extends string, NextVal> (
-    extractor: ArgumentExtractor<NextName, NextVal>
-  ): CommandBase<Val & Record<NextName, NextVal>> {
-    return this.and(new ExtractorWrapper(extractor))
   }
 }
 
