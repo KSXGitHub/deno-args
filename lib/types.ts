@@ -5,7 +5,7 @@ export interface ArgumentExtractor<Name extends string, Value> {
   readonly name: Name
   extract (args: ArgvItem[]): ParseResult<{
     value: Value
-    consumedArgs: WeakSet<ArgvItem>
+    consumedArgs: ReadonlySet<ArgvItem>
   }, FlagError>
   help (): string
   readonly [Symbol.toStringTag]: string

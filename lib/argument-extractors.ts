@@ -61,7 +61,7 @@ export const EarlyExitFlag = <Name extends string> (
   extract (args) {
     const findRes = findFlags(args, listFlags(name, descriptor))
     if (findRes.length) return descriptor.exit()
-    return ok({ value: undefined, consumedArgs: new WeakSet() })
+    return ok({ value: undefined, consumedArgs: new Set() })
   },
   help () {
     const alias = fmtAliasList(descriptor.alias)
@@ -86,7 +86,7 @@ export const BinaryFlag = <Name extends string> (
     const findRes = findFlags(args, listFlags(name, descriptor))
     return ok({
       value: Boolean(findRes.length),
-      consumedArgs: new WeakSet(findRes)
+      consumedArgs: new Set(findRes)
     })
   },
   help () {
@@ -108,7 +108,7 @@ export const CountFlag = <Name extends string> (
     const findRes = findFlags(args, listFlags(name, descriptor))
     return ok({
       value: findRes.length,
-      consumedArgs: new WeakSet(findRes)
+      consumedArgs: new Set(findRes)
     })
   },
   help () {
@@ -145,7 +145,7 @@ export const Option = <Name extends string, Value> (
     }
     return ok({
       value: parseResult.value,
-      consumedArgs: new WeakSet(findRes)
+      consumedArgs: new Set(findRes)
     })
   },
   help () {
@@ -173,7 +173,7 @@ export const Command = <
 ): ArgumentExtractor<Name, TypeOf<Parser> | null> => ({
   name,
   extract (args) {
-    const NIL = ok({ value: null, consumedArgs: new WeakSet() })
+    const NIL = ok({ value: null, consumedArgs: new Set<never>() })
     if (!args.length) return NIL
     const [maybeCommand, ...rest] = args
     if (maybeCommand.isFlag) return NIL
@@ -187,7 +187,7 @@ export const Command = <
       if (!result.tag) return result // TODO: custom error wrapper
       return ok({
         value: result.value,
-        consumedArgs: new WeakSet(rest)
+        consumedArgs: new Set(rest)
       })
     }
     return NIL
