@@ -157,14 +157,13 @@ class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<Tagged
 abstract class NamedCommand<Name>
 extends CommandBase<Record<command, Name>> {
   abstract readonly name: Name
-  protected abstract [__parse] (): _ParseResult<Record<command, Name>>
+  protected [__parse] (): _ParseResult<Record<command, Name>, never> {
+    return ok({ value: { [command]: this.name }, consumedArgs: new Set() })
+  }
 }
 
 class MainCommand extends NamedCommand<MAIN_COMMAND> {
   public readonly name: MAIN_COMMAND = MAIN_COMMAND
-  protected [__parse] (): _ParseResult<Record<command, MAIN_COMMAND>, never> {
-    return ok({ value: { [command]: MAIN_COMMAND }, consumedArgs: new Set() })
-  }
 }
 
 class NamedSubCommand<Name extends string> extends NamedCommand<Name> {
@@ -173,18 +172,10 @@ class NamedSubCommand<Name extends string> extends NamedCommand<Name> {
   ) {
     super()
   }
-
-  protected [__parse] (): _ParseResult<Record<command, Name>> {
-    return ok({ value: { [command]: this.name }, consumedArgs: new Set() })
-  }
 }
 
 class UnknownSubCommand extends NamedCommand<UNKNOWN_COMMAND> {
   public readonly name: UNKNOWN_COMMAND = UNKNOWN_COMMAND
-
-  protected [__parse] (): _ParseResult<Record<command, UNKNOWN_COMMAND>> {
-    return ok({ value: { [command]: UNKNOWN_COMMAND }, consumedArgs: new Set() })
-  }
 }
 
 export interface Command<Val> extends CommandBase<Val> {}
