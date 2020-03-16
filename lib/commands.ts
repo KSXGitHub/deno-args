@@ -79,9 +79,9 @@ abstract class Combine<A, B, C> extends CommandBase<C> {
 }
 
 class Intersection<A, B> extends Combine<A, B, A & B> {
-
+  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<A & B> {}
 }
 
 class Union<A, B> extends Combine<A, B, A | B> {
-
+  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<A | B> {}
 }
