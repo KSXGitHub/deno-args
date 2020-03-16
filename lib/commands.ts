@@ -193,7 +193,10 @@ class SubCommandWrapper<Val> extends CommandBase<Val> {
   public [__parse] (args: readonly ArgvItem[]): _ParseResult<Val> {
     const [first, ...rest] = args
     if (!this._isSubCommand(first)) return err([]) // TODO: Define sub command error
-    return this._subCommand[__parse](rest) // TODO: Define an error wrapper
+    const result = this._subCommand[__parse](rest)
+    if (!result.tag) return result // TODO: Define an error wrapper
+    const consumedArgs = new Set([first, ...result.value.consumedArgs])
+    return ok({ value: result.value.value, consumedArgs })
   }
 }
 
