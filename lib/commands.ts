@@ -71,14 +71,14 @@ abstract class CommandBase<Val> {
 
   public subCommand<NextTag extends string, NextVal> (
     name: NextTag,
-    define: (command: Command<Record<command, NextTag>>) => Command<TaggedVal<NextTag, NextVal>>
+    define: (command: NamedSubCommand<NextTag>) => Command<TaggedVal<NextTag, NextVal>>
   ): Command<Val | TaggedVal<NextTag, NextVal>> {
     const nextCommand = define(new NamedSubCommand(name))
     return this.or(nextCommand)
   }
 
   public unknownSubCommand<NextVal> (
-    define: (command: Command<Record<command, UNKNOWN_COMMAND>>) => Command<TaggedVal<UNKNOWN_COMMAND, NextVal>>
+    define: (command: UnknownSubCommand) => Command<TaggedVal<UNKNOWN_COMMAND, NextVal>>
   ) {
     const nextCommand = define(new UnknownSubCommand())
     return this.or(nextCommand)
