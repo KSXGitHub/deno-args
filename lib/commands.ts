@@ -164,9 +164,9 @@ class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> 
   }
 }
 
-class EmptyCommand extends CommandBase<never> {
-  protected [__parse] (): _ParseResult<never, []> {
-    return err([])
+class EmptyCommand extends CommandBase<{}> {
+  protected [__parse] (): _ParseResult<{}, never> {
+    return ok({ value: {}, consumedArgs: new Set() })
   }
 }
 
