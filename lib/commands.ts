@@ -35,10 +35,13 @@ type __help = typeof __help
 const __toString = Symbol()
 type __toString = typeof __toString
 
-type _ParseResult<Val> = ParseResult<{
+type _ParseResult<
+  Val,
+  ErrArr extends readonly FlagError[] = readonly FlagError[]
+> = ParseResult<{
   readonly value: Val
   readonly consumedArgs: Set<ArgvItem>
-}, readonly FlagError[]>
+}, ErrArr>
 
 abstract class CommandBase<Val> {
   protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
