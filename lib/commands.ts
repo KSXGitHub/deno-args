@@ -46,27 +46,27 @@ abstract class CommandBase<Val> {
   // protected abstract [__toString] (): readonly string[]
 
   public and<NextVal> (
-    next: CommandBase<NextVal>
-  ): CommandBase<Val & NextVal> {
+    next: Command<NextVal>
+  ): Command<Val & NextVal> {
     return new Intersection(this, next)
   }
 
   public or<NextVal> (
-    next: CommandBase<NextVal>
-  ): CommandBase<Val | NextVal> {
+    next: Command<NextVal>
+  ): Command<Val | NextVal> {
     return new Union(this, next)
   }
 
   public with<NextName extends string, NextVal> (
     extractor: ArgumentExtractor<NextName, NextVal>
-  ): CommandBase<Val & Record<NextName, NextVal>> {
+  ): Command<Val & Record<NextName, NextVal>> {
     return this.and(new ExtractorWrapper(extractor))
   }
 
   public subCommand<NextTag extends string, NextVal> (
     name: NextTag,
-    parser: CommandBase<NextVal>
-  ): CommandBase<Val |TaggedVal<NextTag, NextVal>> {
+    parser: Command<NextVal>
+  ): Command<Val |TaggedVal<NextTag, NextVal>> {
     return this.or(new NamedSubCommand(name, parser))
   }
 
@@ -85,13 +85,13 @@ const __combine = Symbol()
 type __combine = typeof __combine
 abstract class Combine<A, B, C> extends CommandBase<C> {
   protected readonly [__combine]: readonly [
-    CommandBase<A>,
-    CommandBase<B>
+    Command<A>,
+    Command<B>
   ]
 
   constructor (
-    a: CommandBase<A>,
-    b: CommandBase<B>
+    a: Command<A>,
+    b: Command<B>
   ) {
     super()
     this[__combine] = [a, b]
@@ -151,7 +151,7 @@ extends CommandBase<TaggedVal<Name, Val>> {
 class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> {
   constructor (
     public readonly name: Name,
-    private readonly _parser: CommandBase<Val>
+    private readonly _parser: Command<Val>
   ) {
     super()
   }
