@@ -158,16 +158,15 @@ class MainCommand extends NamedCommand<MAIN_COMMAND, {}> {
   }
 }
 
-class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> {
+class NamedSubCommand<Name extends string> extends NamedCommand<Name, {}> {
   constructor (
-    public readonly name: Name,
-    private readonly _parser: Command<Val>
+    public readonly name: Name
   ) {
     super()
   }
 
-  protected [__parse] (): _ParseResult<TaggedVal<Name, Val>> {
-
+  protected [__parse] (): _ParseResult<Record<command, Name>> {
+    return ok({ value: { [command]: this.name }, consumedArgs: new Set() })
   }
 }
 
