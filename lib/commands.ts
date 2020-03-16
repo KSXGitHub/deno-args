@@ -160,7 +160,7 @@ class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<Tagged
 
 abstract class NamedCommand<Name>
 extends CommandBase<Record<command, Name>> {
-  abstract readonly name: Name
+  public abstract readonly name: Name
   protected [__parse] (): _ParseResult<Record<command, Name>, never> {
     return ok({ value: { [command]: this.name }, consumedArgs: new Set() })
   }
