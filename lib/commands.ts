@@ -39,46 +39,47 @@ type _ParseResult<Val> = ParseResult<{
   readonly consumedArgs: WeakSet<ArgvItem>
 }, readonly FlagError[]>
 
-export abstract class CommandBase<Tag, Val> {
-  public abstract readonly tag: Tag
+export abstract class CommandBase<Val> {
   protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
   protected abstract [__help] (): string
   protected abstract [__toString] (): readonly string[]
 
-  public and<NextTag, NextVal> (
-    next: CommandBase<NextTag, NextVal>
-  ): CommandBase<Tag, Val & NextVal> {
+  public and<NextVal> (
+    next: CommandBase<NextVal>
+  ): CommandBase<Val & NextVal> {
     return new Intersection(this, next)
   }
 
-  public or<NextTag, NextVal> (
-    next: CommandBase<NextTag, NextVal>
-  ): CommandBase<Tag, Val | NextVal> {
+  public or<NextVal> (
+    next: CommandBase<NextVal>
+  ): CommandBase<Val | NextVal> {
     return new Union(this, next)
   }
+
+  public parse (): ParseResult<Val, readonly FlagError[]> {}
 }
 
 const __combine = Symbol()
 type __combine = typeof __combine
-abstract class Combine<AT, BT, AV, BV, C> extends CommandBase<AT, C> {
+abstract class Combine<A, B, C> extends CommandBase<C> {
   protected readonly [__combine]: readonly [
-    CommandBase<AT, AV>,
-    CommandBase<BT, BV>
+    CommandBase<A>,
+    CommandBase<B>
   ]
 
   constructor (
-    a: CommandBase<AT, AV>,
-    b: CommandBase<BT, BV>
+    a: CommandBase<A>,
+    b: CommandBase<B>
   ) {
     super()
     this[__combine] = [a, b]
   }
 }
 
-class Intersection<AT, BT, AV, BV> extends Combine<AT, BT, AV, BV, AV & BV> {
+class Intersection<A, B> extends Combine<A, B, A & B> {
 
 }
 
-class Union<AT, BT, AV, BV> extends Combine<AT, BT, AV, BV, AV | BV> {
+class Union<A, B> extends Combine<A, B, A | B> {
 
 }
