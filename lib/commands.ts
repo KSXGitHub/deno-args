@@ -1,5 +1,6 @@
 import {
   MAIN_COMMAND,
+  UNKNOWN_COMMAND,
   command,
   inspect,
   __denoInspect
@@ -73,6 +74,13 @@ abstract class CommandBase<Val> {
     define: (command: Command<Record<command, NextTag>>) => Command<TaggedVal<NextTag, NextVal>>
   ): Command<Val | TaggedVal<NextTag, NextVal>> {
     const nextCommand = define(new NamedSubCommand(name))
+    return this.or(nextCommand)
+  }
+
+  public unknownSubCommand<NextVal> (
+    define: (command: Command<Record<command, UNKNOWN_COMMAND>>) => Command<TaggedVal<UNKNOWN_COMMAND, NextVal>>
+  ) {
+    const nextCommand = define(new UnknownSubCommand())
     return this.or(nextCommand)
   }
 
@@ -168,6 +176,14 @@ class NamedSubCommand<Name extends string> extends NamedCommand<Name> {
 
   protected [__parse] (): _ParseResult<Record<command, Name>> {
     return ok({ value: { [command]: this.name }, consumedArgs: new Set() })
+  }
+}
+
+class UnknownSubCommand extends NamedCommand<UNKNOWN_COMMAND> {
+  public readonly name: UNKNOWN_COMMAND = UNKNOWN_COMMAND
+
+  protected [__parse] (): _ParseResult<Record<command, UNKNOWN_COMMAND>> {
+    return ok({ value: { [command]: UNKNOWN_COMMAND }, consumedArgs: new Set() })
   }
 }
 
