@@ -161,6 +161,12 @@ class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> 
   }
 }
 
+class EmptyCommand extends CommandBase<never> {
+  protected [__parse] (): _ParseResult<never> {
+    return err([])
+  }
+}
+
 export interface Command<Val> extends CommandBase<Val> {}
-export const Command = (): Command<never> => ({})
+export const Command = (): Command<never> => new EmptyCommand()
 export default Command
