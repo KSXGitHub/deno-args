@@ -67,7 +67,7 @@ export abstract class CommandBase<Val> {
     name: NextTag,
     parser: CommandBase<NextVal>
   ): CommandBase<Val |TaggedVal<NextTag, NextVal>> {
-    return this.or<TaggedVal<NextTag, NextVal>>(new SubCommand(name, parser))
+    return this.or(new NamedSubCommand(name, parser))
   }
 
   public parse (args: readonly string[]) {
@@ -142,7 +142,13 @@ class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<Tagged
 
 type TaggedVal<Tag, Val> = Val & Record<command, Tag>
 
-class SubCommand<Name extends string, Val> extends CommandBase<TaggedVal<Name, Val>> {
+abstract class NamedCommand<Name extends string | MAIN_COMMAND, Val>
+extends CommandBase<TaggedVal<Name, Val>> {
+  abstract readonly name: Name
+  protected abstract [__parse] (): _ParseResult<TaggedVal<Name, Val>>
+}
+
+class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> {
   constructor (
     public readonly name: Name,
     private readonly _parser: CommandBase<Val>
@@ -150,7 +156,7 @@ class SubCommand<Name extends string, Val> extends CommandBase<TaggedVal<Name, V
     super()
   }
 
-  protected [__parse] (): _ParseResult<TaggedVal<Val>> {
+  protected [__parse] (): _ParseResult<TaggedVal<Name, Val>> {
 
   }
 }
