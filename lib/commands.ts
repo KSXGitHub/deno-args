@@ -142,9 +142,9 @@ class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<Tagged
 
 type TaggedVal<Tag, Val> = Val & Record<command, Tag>
 
-class SubCommand<Tag extends string, Val> extends CommandBase<TaggedVal<Tag, Val>> {
+class SubCommand<Name extends string, Val> extends CommandBase<TaggedVal<Name, Val>> {
   constructor (
-    public readonly name: Tag,
+    public readonly name: Name,
     private readonly _parser: CommandBase<Val>
   ) {
     super()
