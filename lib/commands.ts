@@ -46,13 +46,13 @@ export abstract class CommandBase<Tag, Val> {
   protected abstract [__help] (): string
   protected abstract [__toString] (): readonly string[]
 
-  public and<NextTag extends string, NextVal> (
+  public and<NextTag, NextVal> (
     next: CommandBase<NextTag, NextVal>
   ): CommandBase<Tag, Val & NextVal> {
     return new Intersection(this, next)
   }
 
-  public or<NextTag extends string, NextVal> (
+  public or<NextTag, NextVal> (
     next: CommandBase<NextTag, NextVal>
   ): CommandBase<Tag, Val | NextVal> {
     return new Union(this, next)
@@ -61,7 +61,7 @@ export abstract class CommandBase<Tag, Val> {
 
 const __combine = Symbol()
 type __combine = typeof __combine
-abstract class Combine<AT, BT extends string, AV, BV, C> extends CommandBase<AT, C> {
+abstract class Combine<AT, BT, AV, BV, C> extends CommandBase<AT, C> {
   protected readonly [__combine]: readonly [
     CommandBase<AT, AV>,
     CommandBase<BT, BV>
@@ -76,10 +76,10 @@ abstract class Combine<AT, BT extends string, AV, BV, C> extends CommandBase<AT,
   }
 }
 
-class Intersection<AT, BT extends string, AV, BV> extends Combine<AT, BT, AV, BV, AV & BV> {
+class Intersection<AT, BT, AV, BV> extends Combine<AT, BT, AV, BV, AV & BV> {
 
 }
 
-class Union<AT, BT extends string, AV, BV> extends Combine<AT, BT, AV, BV, AV | BV> {
+class Union<AT, BT, AV, BV> extends Combine<AT, BT, AV, BV, AV | BV> {
 
 }
