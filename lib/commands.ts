@@ -56,8 +56,14 @@ export abstract class CommandBase<Val> {
     return new Union(this, next)
   }
 
-  public parse (args: readonly string[]): _ParseResult<Val> {
-    return this[__parse]([...iterateArguments(args)])
+  public parse (args: readonly string[]) {
+    const result = this[__parse]([...iterateArguments(args)])
+    if (!result.tag) return result
+    return {
+      value: result.value.value,
+      consumedArgs: result.value.consumedArgs,
+      tag: true
+    } as const
   }
 }
 
