@@ -153,7 +153,7 @@ extends CommandBase<TaggedVal<Name, Val>> {
 
 class MainCommand extends NamedCommand<MAIN_COMMAND, {}> {
   public readonly name: MAIN_COMMAND = MAIN_COMMAND
-  protected [__parse] (): _ParseResult<TaggedVal<MAIN_COMMAND, {}>, never> {
+  protected [__parse] (): _ParseResult<Record<command, MAIN_COMMAND>, never> {
     return ok({ value: { [command]: MAIN_COMMAND }, consumedArgs: new Set() })
   }
 }
@@ -171,12 +171,6 @@ class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> 
   }
 }
 
-class EmptyCommand extends CommandBase<{}> {
-  protected [__parse] (): _ParseResult<{}, never> {
-    return ok({ value: {}, consumedArgs: new Set() })
-  }
-}
-
 export interface Command<Val> extends CommandBase<Val> {}
-export const Command = (): Command<never> => new EmptyCommand()
+export const Command = (): Command<Record<command, MAIN_COMMAND>> => new MainCommand()
 export default Command
