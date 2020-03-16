@@ -151,6 +151,13 @@ extends CommandBase<TaggedVal<Name, Val>> {
   protected abstract [__parse] (): _ParseResult<TaggedVal<Name, Val>>
 }
 
+class MainCommand<Val> extends NamedCommand<MAIN_COMMAND, Val> {
+  public readonly name: MAIN_COMMAND = MAIN_COMMAND
+  protected [__parse] (): _ParseResult<TaggedVal<MAIN_COMMAND, Val>> {
+
+  }
+}
+
 class NamedSubCommand<Name extends string, Val> extends NamedCommand<Name, Val> {
   constructor (
     public readonly name: Name,
