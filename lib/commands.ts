@@ -65,7 +65,7 @@ export const SubCommand = <
     return ok({
       name,
       type: 'sub',
-      value: result.value.value
+      value: result.value
     })
   }
 })
