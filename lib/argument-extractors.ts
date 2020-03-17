@@ -18,11 +18,6 @@ import {
   ValueParsingFailure
 } from './argument-errors.ts'
 
-import {
-  ParserBase,
-  TypeOf
-} from './build.ts'
-
 const listFlags = <Name extends string> (
   name: Name,
   descriptor: {
