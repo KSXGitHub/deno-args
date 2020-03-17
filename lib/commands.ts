@@ -47,7 +47,7 @@ type _ParseResult<
 type TaggedVal<Tag, Val> = Val & Record<command, Tag>
 
 abstract class CommandBase<Val> {
-  protected abstract [__parse] (args: readonly ArgvItem[]): _ParseResult<Val>
+  protected abstract [__parse] (args: ArgvItem[]): _ParseResult<Val>
   // protected abstract [__help] (): string
   // protected abstract [__toString] (): readonly string[]
 
@@ -117,7 +117,7 @@ abstract class Combine<A, B, C> extends CommandBase<C> {
 }
 
 class Intersection<A, B> extends Combine<A, B, A & B> {
-  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<A & B> {
+  protected [__parse] (args: ArgvItem[]): _ParseResult<A & B> {
     const [A, B] = this[__combine]
     const a = A[__parse](args)
     const b = B[__parse](args)
@@ -134,7 +134,7 @@ class Intersection<A, B> extends Combine<A, B, A & B> {
 }
 
 class Union<A, B> extends Combine<A, B, A | B> {
-  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<A | B> {
+  protected [__parse] (args: ArgvItem[]): _ParseResult<A | B> {
     const [A, B] = this[__combine]
     const b = B[__parse](args)
     if (b.tag) return b
@@ -153,7 +153,7 @@ class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<Tagged
     super()
   }
 
-  protected [__parse] (args: readonly ArgvItem[]): _ParseResult<TaggedRec<Tag, Name, Val>> {
+  protected [__parse] (args: ArgvItem[]): _ParseResult<TaggedRec<Tag, Name, Val>> {
 
   }
 }
@@ -190,7 +190,7 @@ class SubCommandWrapper<Val> extends CommandBase<Val> {
     super()
   }
 
-  public [__parse] (args: readonly ArgvItem[]): _ParseResult<Val> {
+  public [__parse] (args: ArgvItem[]): _ParseResult<Val> {
     const [first, ...rest] = args
     if (!this._isSubCommand(first)) return err([]) // TODO: Define sub command error
     const result = this._subCommand[__parse](rest)
