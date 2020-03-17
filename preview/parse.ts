@@ -1,4 +1,4 @@
-import parser from './parser.ts'
+import command from './command.ts'
 
 for (const args of [
   [
@@ -40,7 +40,7 @@ for (const args of [
   []
 ]) {
   console.log('args', args)
-  const parsingResult = parser.parse(args)
+  const parsingResult = command.parse(args)
   console.log('parser.parse(args)', parsingResult)
   if (parsingResult.tag) {
     console.log('  => value', parsingResult.value)

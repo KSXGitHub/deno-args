@@ -1,2 +1,2 @@
-import parser from './parser.ts'
+import parser from './command.ts'
 console.log(parser)
