@@ -3,6 +3,7 @@ import {
   ParseResult,
   ParseError
 } from './types.ts'
+import { ok } from './utils'
 
 type CommandReturn<
   Main,
@@ -56,6 +57,15 @@ export const SubCommand = <
   ErrList
 > => ({
   extract (args): ParseResult<SubCommandReturn<Main, Name, SubVal>, ErrList> {
-
+    if (args.length === 0) return main.extract(args)
+    const [first, ...rest] = args
+    if (first.isFlag || first.raw !== name) return main.extract(args)
+    const result = sub.extract(rest)
+    if (!result.tag) return result
+    return ok({
+      name,
+      type: 'sub',
+      value: result.value.value
+    })
   }
 })
