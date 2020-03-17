@@ -37,12 +37,24 @@ export interface Command<
   extract (args: readonly ArgvItem[]): ParseResult<Return, ErrList>
 }
 
+type SubCommandReturn<
+  Main extends CommandReturn.Main<any>,
+  Name extends string,
+  SubVal extends CommandReturn<any, any, any>
+> = Main | CommandReturn.Sub<Name, SubVal>
 export const SubCommand = <
   Main extends CommandReturn.Main<any>,
-  Sub extends CommandReturn<any, any, any>,
-  MainError extends ParseError,
-  SubError extends ParseError
+  Name extends string,
+  SubVal extends CommandReturn<any, any, any>,
+  ErrList extends readonly ParseError[]
 > (
-  main: Command<Main, readonly MainError[]>,
-  sub: Command<Sub, readonly SubError[]>
-): Command<Main | Sub, ReadonlyArray<MainError | SubError>> => ({})
+  main: Command<Main, ErrList>,
+  sub: Command<SubVal, ErrList>
+): Command<
+  Main | CommandReturn.Sub<Name, SubVal>,
+  ErrList
+> => ({
+  extract (args): ParseResult<SubCommandReturn<Main, Name, SubVal>, ErrList> {
+
+  }
+})
