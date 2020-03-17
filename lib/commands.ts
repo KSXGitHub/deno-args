@@ -3,7 +3,10 @@ import {
   ParseResult,
   ParseError
 } from './types.ts'
-import { ok } from './utils'
+
+import {
+  ok
+} from './utils.ts'
 
 type CommandReturn<
   Main,
