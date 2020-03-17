@@ -6,7 +6,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 ## TODO
 
-* [ ] Re-design: Move tag out of value
+* [ ] Re-design: Rename files
 * [x] Report multiple errors at the same time
 * [ ] Improve help
   * [x] Implement as `EarlyExit`
