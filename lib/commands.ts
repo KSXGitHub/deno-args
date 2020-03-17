@@ -200,6 +200,7 @@ class SubCommandWrapper<Val> extends CommandBase<Val> {
 
   public [__parse] (args: ArgvItem[]): _ParseResult<Val> {
     const [first, ...rest] = args
+    if (!first) return err([]) // TODO: Define an error
     if (!this._isSubCommand(first)) return err([]) // TODO: Define sub command error
     const result = this._subCommand[__parse](rest)
     if (!result.tag) return result // TODO: Define an error wrapper
