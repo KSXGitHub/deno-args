@@ -49,6 +49,7 @@ export const SubCommand = <
   ErrList extends readonly ParseError[]
 > (
   main: Command<Main, ErrList>,
+  name: Name,
   sub: Command<SubVal, ErrList>
 ): Command<
   SubCommandReturn<Main, Name, SubVal>,
