@@ -131,7 +131,7 @@ export class EmptyParser extends ParserBase<never, never, any> {
   declare public [__parseResult]: {}
 
   public [__parse] (args: ArgvItem[]): _ParseReturn<this> {
-    const [flags, nonFlags] = partition(args, x => x.isFlag)
+    const [flags, nonFlags] = partition(args, (x): x is ArgvItem.Flag => x.isFlag)
     if (flags.length) {
       return err([new UnknownFlags(flags.map(x => x.name!))])
     }
