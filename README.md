@@ -40,27 +40,27 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 ## Usage Examples
 
 ```typescript
-import build from 'https://deno.land/x/args/build.ts'
+import { Command } from 'https://deno.land/x/args/command.ts'
 import { HelpFlag, Option } from 'https://deno.land/x/args/argument-extractors.ts'
 import { FiniteNumber, Choice } from 'https://deno.land/x/args/value-extractors.ts'
 
-const parser = build()
-  .and(EarlyExitFlag('help', {
+const parser = Command()
+  .with(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
       console.log(parser.help())
       return Deno.exit()
     }
   }))
-  .and(Option('a', {
+  .with(Option('a', {
     type: FiniteNumber,
     describe: 'Value of a'
   }))
-  .and(Option('b', {
+  .with(Option('b', {
     type: FiniteNumber,
     describe: 'Value of b'
   }))
-  .and(Option('operator', {
+  .with(Option('operator', {
     type: Choice<'add' | 'sub'>(
       {
         value: 'add',
