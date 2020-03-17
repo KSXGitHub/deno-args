@@ -37,6 +37,16 @@ for (const args of [
     '--choice', '789'
   ],
 
+  [
+    'foo',
+    '--def', 'This is --def'
+  ],
+
+  [
+    'bar',
+    '--ghi', 'G'
+  ],
+
   []
 ]) {
   console.log('args', args)

@@ -41,5 +41,19 @@ const command = Command()
     ),
     describe: 'Choice to make'
   }))
+  .subCommand('foo', subCmd => subCmd
+    .with(Flag('abc', {
+      describe: 'Description of --abc'
+    }))
+    .with(Option('def', {
+      type: Text,
+      describe: 'Description of --def'
+    }))
+  )
+  .subCommand('bar', subCmd => subCmd
+    .with(Option('ghi', {
+      type: Choice({ value: 'G' }, { value: 'H' }, { value: 'I' })
+    }))
+  )
 
 export { command, command as default }
