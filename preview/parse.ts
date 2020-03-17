@@ -1,4 +1,3 @@
-import { command as tag } from '../lib/symbols.ts'
 import command from './command.ts'
 
 for (const args of [
@@ -48,7 +47,6 @@ for (const args of [
     for (const [key, value] of Object.entries(parsingResult.value)) {
       console.log('    =>', key, `(${nameType(value)})`, value)
     }
-    console.log('    => [symbols.command]', parsingResult.value[tag])
   } else {
     console.log('  => error', parsingResult.error)
   }

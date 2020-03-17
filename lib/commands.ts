@@ -1,7 +1,6 @@
 import {
   MAIN_COMMAND,
   UNKNOWN_COMMAND,
-  command,
   inspect,
   __denoInspect
 } from './symbols.ts'
@@ -44,7 +43,7 @@ type _ParseResult<
   readonly consumedArgs: ReadonlySet<ArgvItem>
 }, ErrArr>
 
-type TaggedVal<Tag, Val> = Val & Record<command, Tag>
+type TaggedVal<Tag, Val> = Val & Record<'_tag', Tag>
 
 abstract class CommandBase<Val> {
   protected abstract [__parse] (args: ArgvItem[]): _ParseResult<Val>
@@ -168,10 +167,10 @@ class ExtractorWrapper<Name extends string, Val> extends CommandBase<Record<Name
 }
 
 abstract class NamedCommand<Name>
-extends CommandBase<Record<command, Name>> {
+extends CommandBase<Record<'_tag', Name>> {
   public abstract readonly name: Name
-  protected [__parse] (): _ParseResult<Record<command, Name>, never> {
-    return ok({ value: { [command]: this.name }, consumedArgs: new Set() })
+  protected [__parse] (): _ParseResult<Record<'_tag', Name>, never> {
+    return ok({ value: { _tag: this.name }, consumedArgs: new Set() })
   }
 }
 
@@ -210,5 +209,5 @@ class SubCommandWrapper<Val> extends CommandBase<Val> {
 }
 
 export interface Command<Val> extends CommandBase<Val> {}
-export const Command = (): Command<Record<command, MAIN_COMMAND>> => new MainCommand()
+export const Command = (): Command<Record<'_tag', MAIN_COMMAND>> => new MainCommand()
 export default Command
