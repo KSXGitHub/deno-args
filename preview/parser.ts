@@ -1,36 +1,37 @@
-import build from '../lib/build.ts'
+import Command from '../lib/commands.ts'
 import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/argument-extractors.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../lib/value-extractors.ts'
 
-const parser = build()
-  .and(EarlyExitFlag('help', {
+const parser = Command()
+  .with(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
-      throw parser.help()
+      // throw parser.help()
+      throw new Error('Unimplemented')
     }
   }))
-  .and(Flag('foo', {
+  .with(Flag('foo', {
     alias: ['f'],
     describe: 'Boolean flag of foo'
   }))
-  .and(Flag('bar'))
-  .and(CountFlag('count', {
+  .with(Flag('bar'))
+  .with(CountFlag('count', {
     alias: ['c'],
     describe: 'Counting'
   }))
-  .and(Option('number', {
+  .with(Option('number', {
     alias: ['N'],
     type: FiniteNumber,
     describe: 'An integer or a floating-point number'
   }))
-  .and(Option('integer', {
+  .with(Option('integer', {
     type: Integer,
     describe: 'An arbitrary large integer'
   }))
-  .and(Option('text', {
+  .with(Option('text', {
     type: Text
   }))
-  .and(Option('choice', {
+  .with(Option('choice', {
     type: Choice<123 | 'foo' | 456 | 'bar' | '789'>(
       { value: 123 },
       { value: 'foo' },
