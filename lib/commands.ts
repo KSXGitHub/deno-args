@@ -144,16 +144,14 @@ class Union<A, B> extends Combine<A, B, A | B> {
   }
 }
 
-type TaggedRec<Tag, Name extends string, Val> = Record<command, Tag> & Record<Name, Val>
-
-class ExtractorWrapper<Tag, Name extends string, Val> extends CommandBase<TaggedRec<Tag, Name, Val>> {
+class ExtractorWrapper<Name extends string, Val> extends CommandBase<Record<Name, Val>> {
   constructor (
     private readonly _extractor: ArgumentExtractor<Name, Val>
   ) {
     super()
   }
 
-  protected [__parse] (args: ArgvItem[]): _ParseResult<TaggedRec<Tag, Name, Val>> {
+  protected [__parse] (args: ArgvItem[]): _ParseResult<Record<Name, Val>> {
 
   }
 }
