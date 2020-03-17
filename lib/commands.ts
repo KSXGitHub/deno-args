@@ -51,7 +51,7 @@ export const SubCommand = <
   main: Command<Main, ErrList>,
   sub: Command<SubVal, ErrList>
 ): Command<
-  Main | CommandReturn.Sub<Name, SubVal>,
+  SubCommandReturn<Main, Name, SubVal>,
   ErrList
 > => ({
   extract (args): ParseResult<SubCommandReturn<Main, Name, SubVal>, ErrList> {
