@@ -2,7 +2,7 @@ import Command from '../lib/commands.ts'
 import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/argument-extractors.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../lib/value-extractors.ts'
 
-const parser = Command()
+const command = Command()
   .with(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
@@ -42,4 +42,4 @@ const parser = Command()
     describe: 'Choice to make'
   }))
 
-export { parser, parser as default }
+export { command, command as default }
