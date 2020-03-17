@@ -41,7 +41,7 @@ type _ParseResult<
   ErrArr extends readonly FlagError[] = readonly FlagError[]
 > = ParseResult<{
   readonly value: Val
-  readonly consumedArgs: Set<ArgvItem>
+  readonly consumedArgs: ReadonlySet<ArgvItem>
 }, ErrArr>
 
 type TaggedVal<Tag, Val> = Val & Record<command, Tag>
