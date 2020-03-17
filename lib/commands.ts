@@ -151,8 +151,19 @@ class ExtractorWrapper<Name extends string, Val> extends CommandBase<Record<Name
     super()
   }
 
-  protected [__parse] (args: ArgvItem[]): _ParseResult<Record<Name, Val>> {
-
+  protected [__parse] (args: ArgvItem[]): _ParseResult<
+    Record<Name, Val>,
+    readonly [FlagError]
+  > {
+    const result = this._extractor.extract(args)
+    if (!result.tag) return err([result.error])
+    const value = {
+      [this._extractor.name]: result.value.value
+    } as Record<Name, Val>
+    return ok({
+      value,
+      consumedArgs: result.value.consumedArgs
+    })
   }
 }
 
