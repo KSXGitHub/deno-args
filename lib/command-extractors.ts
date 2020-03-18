@@ -1,7 +1,6 @@
 import {
   ArgvItem,
   ParseResult,
-  ParseSuccess,
   ParseError,
   ArgumentExtractor
 } from './types.ts'
@@ -45,7 +44,7 @@ export interface Command<
 }
 
 type BlankReturn = CommandReturn.Main<{}>
-const BLANK_PARSE_RESULT: ParseSuccess<BlankReturn> = ok({
+const BLANK_PARSE_RESULT = ok<BlankReturn>({
   sub: false,
   value: {}
 })
