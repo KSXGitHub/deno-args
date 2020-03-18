@@ -15,6 +15,14 @@ export const err = <Error extends ParseError> (error: Error): ParseFailure<Error
   error
 })
 
+export const record = <
+  Key extends string | number | symbol,
+  Value
+> (
+  key: Key,
+  value: Value
+) => ({ [key]: value }) as Record<Key, Value>
+
 export const flagPrefix = (name: string): '-' | '--' => name.length === 1 ? '-' : '--'
 export const flag = (name: string) => flagPrefix(name) + name
 
