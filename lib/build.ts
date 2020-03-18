@@ -47,7 +47,7 @@ export abstract class ParserBase<
 > {
   /** Type helper */
   declare public [__parseResult]: Record<Name, Value> & Rest[__parseResult]
-  protected abstract [__parse] (args: ArgvItem[]): _ParseReturn<this>
+  protected abstract [__parse] (args: readonly ArgvItem[]): _ParseReturn<this>
   protected abstract [__help] (): string
   protected abstract [__toString] (): readonly string[]
 
