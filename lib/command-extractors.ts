@@ -1,6 +1,7 @@
 import {
   ArgvItem,
   ParseResult,
+  ParseSuccess,
   ParseError,
   ArgumentExtractor
 } from './types.ts'
@@ -42,6 +43,16 @@ export interface Command<
 > {
   extract (args: readonly ArgvItem[]): ParseResult<Return, ErrList>
 }
+
+type BlankReturn = CommandReturn.Main<{}>
+const BLANK_PARSE_RESULT: ParseSuccess<BlankReturn> = ok({
+  sub: false,
+  value: {}
+})
+
+export const Blank = (): Command<BlankReturn, []> => ({
+  extract: () => BLANK_PARSE_RESULT
+})
 
 type EntryReaderReturn<Name extends string, Value> = CommandReturn.Main<Record<Name, Value>>
 
