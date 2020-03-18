@@ -43,18 +43,18 @@ export interface Command<
   extract (args: readonly ArgvItem[]): ParseResult<Return, ErrList>
 }
 
-type MainCommandReturn<Name extends string, Value> = CommandReturn.Main<Record<Name, Value>>
+type EntryReaderReturn<Name extends string, Value> = CommandReturn.Main<Record<Name, Value>>
 
-export const MainCommand = <Name extends string, Value> (
+export const EntryReader = <Name extends string, Value> (
   extractor: ArgumentExtractor<Name, Value>
 ): Command<
-  MainCommandReturn<Name, Value>,
+  EntryReaderReturn<Name, Value>,
   readonly ParseError[]
 > => ({
-  extract (args): ParseResult<MainCommandReturn<Name, Value>, readonly ParseError[]> {
+  extract (args): ParseResult<EntryReaderReturn<Name, Value>, readonly ParseError[]> {
     const result = extractor.extract(args)
     return result.tag
-      ? ok<MainCommandReturn<Name, Value>>({
+      ? ok<EntryReaderReturn<Name, Value>>({
         sub: false,
         value: record(extractor.name, result.value.value)
       })
