@@ -48,7 +48,11 @@ export const MainCommand = <Name extends string, Value> (
 ): Command<
   MainCommandReturn<Name, Value>,
   readonly ParseError[]
-> => ({})
+> => ({
+  extract (args): ParseResult<MainCommandReturn<Name, Value>, readonly ParseError[]> {
+
+  }
+})
 
 type SubCommandReturn<
   Main extends CommandReturn.Main<any>,
