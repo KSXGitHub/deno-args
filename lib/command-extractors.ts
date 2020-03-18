@@ -11,6 +11,10 @@ import {
   record
 } from './utils.ts'
 
+import {
+  MAIN_COMMAND
+} from './symbols.ts'
+
 type CommandReturn<
   Main,
   Name extends string,
@@ -19,12 +23,12 @@ type CommandReturn<
 
 namespace CommandReturn {
   interface Base<Value> {
-    readonly tag: string | false
+    readonly tag: string | MAIN_COMMAND
     readonly value: Value
   }
 
   export interface Main<Value> extends Base<Value> {
-    readonly tag: false
+    readonly tag: MAIN_COMMAND
     readonly name?: null
   }
 
@@ -45,7 +49,7 @@ export interface Command<
 
 type BlankReturn = CommandReturn.Main<{}>
 const BLANK_PARSE_RESULT = ok<BlankReturn>({
-  tag: false,
+  tag: MAIN_COMMAND,
   value: {}
 })
 export const BLANK: Command<BlankReturn, []> = ({
@@ -78,7 +82,7 @@ export const FlaggedCommand = <
       ...record(extractor.name, nextResult.value.value)
     }
     return ok<FlaggedCommandReturn<MainVal, Name, Value>>({
-      tag: false,
+      tag: MAIN_COMMAND,
       value
     })
   }
