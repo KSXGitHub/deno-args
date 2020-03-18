@@ -3,7 +3,7 @@ import { ValueError } from './value-errors.ts'
 
 export interface ArgumentExtractor<Name extends string, Value> {
   readonly name: Name
-  extract (args: ArgvItem[]): ParseResult<{
+  extract (args: readonly ArgvItem[]): ParseResult<{
     value: Value
     remainingArgs: ArgvItem[]
   }, FlagError>
