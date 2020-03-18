@@ -46,6 +46,7 @@ type SubCommandReturn<
   Name extends string,
   SubVal extends CommandReturn<any, any, any>
 > = Main | CommandReturn.Sub<Name, SubVal>
+
 export const SubCommand = <
   Main extends CommandReturn.Main<any>,
   Name extends string,
