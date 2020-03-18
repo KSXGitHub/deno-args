@@ -53,7 +53,6 @@ export const Blank = (): Command<BlankReturn, []> => ({
 })
 
 type EntryReaderReturn<Name extends string, Value> = CommandReturn.Main<Record<Name, Value>>
-
 export const EntryReader = <Name extends string, Value> (
   extractor: ArgumentExtractor<Name, Value>
 ): Command<
@@ -76,7 +75,6 @@ type SubCommandReturn<
   Name extends string,
   SubVal extends CommandReturn<any, any, any>
 > = Main | CommandReturn.Sub<Name, SubVal>
-
 export const SubCommand = <
   Main extends CommandReturn.Main<any>,
   Name extends string,
