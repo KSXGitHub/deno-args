@@ -6,7 +6,9 @@ import {
 } from './types.ts'
 
 import {
-  ok
+  ok,
+  err,
+  record
 } from './utils.ts'
 
 type CommandReturn<
@@ -50,7 +52,13 @@ export const MainCommand = <Name extends string, Value> (
   readonly ParseError[]
 > => ({
   extract (args): ParseResult<MainCommandReturn<Name, Value>, readonly ParseError[]> {
-
+    const result = extractor.extract(args)
+    return result.tag
+      ? ok<MainCommandReturn<Name, Value>>({
+        sub: false,
+        value: record(extractor.name, result.value.value)
+      })
+      : err([result.error])
   }
 })
 
