@@ -1,7 +1,8 @@
 import {
   ArgvItem,
   ParseResult,
-  ParseError
+  ParseError,
+  ArgumentExtractor
 } from './types.ts'
 
 import {
@@ -39,6 +40,15 @@ export interface Command<
 > {
   extract (args: readonly ArgvItem[]): ParseResult<Return, ErrList>
 }
+
+type MainCommandReturn<Name extends string, Value> = CommandReturn.Main<Record<Name, Value>>
+
+export const MainCommand = <Name extends string, Value> (
+  extractor: ArgumentExtractor<Name, Value>
+): Command<
+  MainCommandReturn<Name, Value>,
+  readonly ParseError[]
+> => ({})
 
 type SubCommandReturn<
   Main extends CommandReturn.Main<any>,
