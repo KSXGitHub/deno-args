@@ -136,7 +136,7 @@ export class EmptyParser extends ParserBase<never, never, any> {
       return err([new UnknownFlags(flags.map(x => x.name!))])
     }
     return ok({
-      value: {} as never,
+      value: {},
       remainingArgs: nonFlags.map(x => x.raw)
     })
   }
