@@ -52,21 +52,35 @@ export const Blank = (): Command<BlankReturn, []> => ({
   extract: () => BLANK_PARSE_RESULT
 })
 
-type EntryReaderReturn<Name extends string, Value> = CommandReturn.Main<Record<Name, Value>>
-export const EntryReader = <Name extends string, Value> (
+type EntryReaderReturn<
+  MainVal,
+  Name extends string,
+  Value
+> = CommandReturn.Main<MainVal & Record<Name, Value>>
+export const EntryReader = <
+  MainVal,
+  Name extends string,
+  Value
+> (
+  main: Command<CommandReturn.Main<MainVal>, readonly ParseError[]>,
   extractor: ArgumentExtractor<Name, Value>
 ): Command<
-  EntryReaderReturn<Name, Value>,
+  EntryReaderReturn<MainVal, Name, Value>,
   readonly ParseError[]
 > => ({
-  extract (args): ParseResult<EntryReaderReturn<Name, Value>, readonly ParseError[]> {
-    const result = extractor.extract(args)
-    return result.tag
-      ? ok<EntryReaderReturn<Name, Value>>({
-        sub: false,
-        value: record(extractor.name, result.value.value)
-      })
-      : err([result.error])
+  extract (args): ParseResult<EntryReaderReturn<MainVal, Name, Value>, readonly ParseError[]> {
+    const prevResult = main.extract(args)
+    if (!prevResult.tag) return prevResult
+    const nextResult = extractor.extract(args)
+    if (!nextResult.tag) return err([nextResult.error])
+    const value = {
+      ...prevResult.value.value,
+      ...record(extractor.name, nextResult.value.value)
+    }
+    return ok<EntryReaderReturn<MainVal, Name, Value>>({
+      sub: false,
+      value
+    })
   }
 })
 
