@@ -48,7 +48,7 @@ const BLANK_PARSE_RESULT = ok<BlankReturn>({
   sub: false,
   value: {}
 })
-export const Blank = (): Command<BlankReturn, []> => ({
+export const Blank: Command<BlankReturn, []> = ({
   extract: () => BLANK_PARSE_RESULT
 })
 
