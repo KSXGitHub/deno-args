@@ -19,12 +19,12 @@ type CommandReturn<
 
 namespace CommandReturn {
   interface Base<Value> {
-    readonly sub: string | false
+    readonly tag: string | false
     readonly value: Value
   }
 
   export interface Main<Value> extends Base<Value> {
-    readonly sub: false
+    readonly tag: false
     readonly name?: null
   }
 
@@ -32,7 +32,7 @@ namespace CommandReturn {
     Name extends string,
     Value extends CommandReturn<any, any, any>
   > extends Base<Value> {
-    readonly sub: Name
+    readonly tag: Name
   }
 }
 
@@ -45,7 +45,7 @@ export interface Command<
 
 type BlankReturn = CommandReturn.Main<{}>
 const BLANK_PARSE_RESULT = ok<BlankReturn>({
-  sub: false,
+  tag: false,
   value: {}
 })
 export const BLANK: Command<BlankReturn, []> = ({
@@ -78,7 +78,7 @@ export const FlaggedCommand = <
       ...record(extractor.name, nextResult.value.value)
     }
     return ok<FlaggedCommandReturn<MainVal, Name, Value>>({
-      sub: false,
+      tag: false,
       value
     })
   }
@@ -109,7 +109,7 @@ export const SubCommand = <
     const result = sub.extract(rest)
     if (!result.tag) return result
     return ok({
-      sub: name,
+      tag: name,
       value: result.value
     })
   }
