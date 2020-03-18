@@ -16,12 +16,12 @@ type CommandReturn<
 
 namespace CommandReturn {
   interface Base<Value> {
-    readonly type: 'main' | 'sub'
+    readonly sub: string | false
     readonly value: Value
   }
 
   export interface Main<Value> extends Base<Value> {
-    readonly type: 'main'
+    readonly sub: false
     readonly name?: null
   }
 
@@ -29,8 +29,7 @@ namespace CommandReturn {
     Name extends string,
     Value extends CommandReturn<any, any, any>
   > extends Base<Value> {
-    readonly type: 'sub'
-    readonly name: Name
+    readonly sub: Name
   }
 }
 
@@ -67,8 +66,7 @@ export const SubCommand = <
     const result = sub.extract(rest)
     if (!result.tag) return result
     return ok({
-      name,
-      type: 'sub',
+      sub: name,
       value: result.value
     })
   }
