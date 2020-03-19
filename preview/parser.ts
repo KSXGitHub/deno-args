@@ -1,12 +1,14 @@
-import build from '../lib/build.ts'
+// import build from '../lib/build.ts'
+import args from '../lib/wrapper.ts'
 import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/argument-extractors.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../lib/value-extractors.ts'
 
-const parser = build()
+const parser = args
   .with(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
-      throw parser.help()
+      // throw parser.help()
+      throw new Error('Unimplemented')
     }
   }))
   .with(Flag('foo', {

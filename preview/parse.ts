@@ -1,3 +1,4 @@
+import { MAIN_COMMAND } from '../lib/symbols.ts'
 import parser from './parser.ts'
 
 for (const args of [
@@ -43,9 +44,12 @@ for (const args of [
   const parsingResult = parser.parse(args)
   console.log('parser.parse(args)', parsingResult)
   if (parsingResult.tag) {
-    console.log('  => value', parsingResult.value)
-    for (const [key, value] of Object.entries(parsingResult.value)) {
-      console.log('    =>', key, `(${nameType(value)})`, value)
+    console.log('  => value.tag', parsingResult.value.tag)
+    console.log('  => value.value', parsingResult.value.value)
+    if (parsingResult.value.tag === MAIN_COMMAND) {
+      for (const [key, value] of Object.entries(parsingResult.value.value)) {
+        console.log('    =>', key, `(${nameType(value)})`, value)
+      }
     }
   } else {
     console.log('  => error', parsingResult.error)
