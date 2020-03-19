@@ -24,7 +24,8 @@ export const record = <
 ) => ({ [key]: value }) as Record<Key, Value>
 
 export const flagPrefix = (name: string): '-' | '--' => name.length === 1 ? '-' : '--'
-export const flag = (name: string | readonly string[]) => {
+
+export function flag (name: string | readonly string[]) {
   switch (typeof name) {
     case 'string':
       return flagPrefix(name)
