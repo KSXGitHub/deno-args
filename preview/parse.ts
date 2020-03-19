@@ -38,6 +38,25 @@ for (const args of [
     '--choice', '789'
   ],
 
+  [
+    'sub0'
+  ],
+
+  [
+    'sub1'
+  ],
+
+  [
+    'sub1',
+    '--test'
+  ],
+
+  [
+    'sub2',
+    '--number', '123',
+    '--text', 'This is Text'
+  ],
+
   []
 ]) {
   console.log('args', args)
