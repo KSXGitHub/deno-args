@@ -133,8 +133,8 @@ export const Option = <Name extends string, Value> (
     const [res] = findRes
     const valPos = res.index + 1
     if (args.length <= valPos) return err(new MissingValue(res.name))
-    const { isFlag, raw } = args[valPos]
-    if (isFlag) return err(new UnexpectedFlag(res.name, raw))
+    const { type, raw } = args[valPos]
+    if (type !== 'value') return err(new UnexpectedFlag(res.name, raw))
     const parseResult = descriptor.type.extract([raw])
     if (!parseResult.tag) {
       return err(new ValueParsingFailure(res.name, parseResult.error))

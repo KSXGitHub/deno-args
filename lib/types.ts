@@ -36,23 +36,28 @@ export interface ParseError {
   toString (): string
 }
 
-export type ArgvItem = ArgvItem.Flag | ArgvItem.Value
+export type ArgvItem = ArgvItem.SingleFlag | ArgvItem.MultiFlag | ArgvItem.Value
 
 export namespace ArgvItem {
   interface Base {
     readonly index: number
-    readonly isFlag: boolean
+    readonly type: 'single-flag' | 'multi-flag' | 'value'
     readonly raw: string
-    readonly name?: string | null
+    readonly name?: string | readonly string[] | null
   }
 
-  export interface Flag extends Base {
-    readonly isFlag: true
+  export interface SingleFlag extends Base {
+    readonly type: 'single-flag'
     readonly name: string
   }
 
+  export interface MultiFlag extends Base {
+    readonly type: 'multi-flag'
+    readonly name: readonly string[]
+  }
+
   export interface Value extends Base {
-    readonly isFlag: false
+    readonly type: 'value'
     readonly name?: null
   }
 }
