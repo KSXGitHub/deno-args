@@ -97,7 +97,7 @@ export { BinaryFlag as Flag }
 
 export const CountFlag = <Name extends string> (
   name: Name,
-  descriptor: FlagDescriptor
+  descriptor: FlagDescriptor = {}
 ): ArgumentExtractor<Name, number> => ({
   name,
   extract (args) {
