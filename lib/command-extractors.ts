@@ -15,13 +15,13 @@ import {
   MAIN_COMMAND
 } from './symbols.ts'
 
-type CommandReturn<
+export type CommandReturn<
   Main,
   Name extends string,
   Sub extends CommandReturn<any, any, any>
 > = CommandReturn.Main<Main> | CommandReturn.Sub<Name, Sub>
 
-namespace CommandReturn {
+export namespace CommandReturn {
   interface Base<Value> {
     readonly tag: string | MAIN_COMMAND
     readonly value: Value
@@ -56,7 +56,7 @@ export const BLANK: Command<BlankReturn, []> = ({
   extract: () => BLANK_PARSE_RESULT
 })
 
-type FlaggedCommandReturn<
+export type FlaggedCommandReturn<
   MainVal,
   Name extends string,
   Value
@@ -88,13 +88,13 @@ export const FlaggedCommand = <
   }
 })
 
-type SubCommandReturn<
-  Main extends CommandReturn.Main<any>,
+export type SubCommandReturn<
+  Main extends CommandReturn<any, any, any>,
   Name extends string,
   SubVal extends CommandReturn<any, any, any>
 > = Main | CommandReturn.Sub<Name, SubVal>
 export const SubCommand = <
-  Main extends CommandReturn.Main<any>,
+  Main extends CommandReturn<any, any, any>,
   Name extends string,
   SubVal extends CommandReturn<any, any, any>,
   ErrList extends readonly ParseError[]
