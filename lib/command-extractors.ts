@@ -110,7 +110,7 @@ export const SubCommand = <
     if (args.length === 0) return main.extract(args)
     const [first, ...rest] = args
     if (first.isFlag || first.raw !== name) return main.extract(args)
-    const result = sub.extract(rest)
+    const result = sub.extract(rest.map((item, index) => ({ ...item, index })))
     if (!result.tag) return result
     return ok({
       tag: name,
