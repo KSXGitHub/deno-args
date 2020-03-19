@@ -11,6 +11,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
   * [ ] --help
   * [ ] `Deno.symbols.customInspect`
   * [ ] Remaining Arguments (`_`)
+  * [ ] Remaining Flags
 * [ ] Improve help
   * [x] Implement as `EarlyExit`
   * [ ] Support both flag and subcommand (`--help` and `help`)
