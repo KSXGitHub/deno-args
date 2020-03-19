@@ -42,5 +42,21 @@ const parser = args
     ),
     describe: 'Choice to make'
   }))
+  .sub('sub0', args)
+  .sub('sub1', args
+    .with(Flag('test', {
+      describe: 'Test flag for sub1'
+    }))
+  )
+  .sub('sub2', args
+    .with(Option('number', {
+      type: FiniteNumber,
+      describe: 'Number option for sub2'
+    }))
+    .with(Option('text', {
+      type: Text,
+      describe: 'Text option for sub2'
+    }))
+  )
 
 export { parser, parser as default }
