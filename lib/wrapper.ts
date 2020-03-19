@@ -1,7 +1,7 @@
 import {
   ParseError,
   ParseResult,
-  ArgumentExtractor
+  FlagType
 } from './types.ts'
 
 import {
@@ -16,7 +16,7 @@ import {
   CommandReturn,
   FlaggedCommandReturn,
   SubCommandReturn
-} from './command-extractors.ts'
+} from './command-types.ts'
 
 class Wrapper<Main extends CommandReturn<any, any, any>, ErrList extends readonly ParseError[]> {
   constructor (
@@ -31,7 +31,7 @@ class Wrapper<Main extends CommandReturn<any, any, any>, ErrList extends readonl
     Name extends string,
     Value
   > (
-    extractor: ArgumentExtractor<Name, Value>
+    extractor: FlagType<Name, Value>
   ): Wrapper<FlaggedCommandReturn<Main, Name, Value>, readonly ParseError[]> {
     return new Wrapper(FlaggedCommand<Main, Name, Value>(this._command, extractor))
   }

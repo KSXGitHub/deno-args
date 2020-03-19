@@ -1,7 +1,7 @@
 // import build from '../lib/build.ts'
 import args from '../lib/wrapper.ts'
-import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/argument-extractors.ts'
-import { FiniteNumber, Integer, Text, Choice } from '../lib/value-extractors.ts'
+import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/flag-types.ts'
+import { FiniteNumber, Integer, Text, Choice } from '../lib/value-types.ts'
 
 const parser = args
   .with(EarlyExitFlag('help', {

@@ -2,7 +2,7 @@ import {
   ArgvItem,
   ParseResult,
   ParseError,
-  ArgumentExtractor
+  FlagType
 } from './types.ts'
 
 import {
@@ -67,7 +67,7 @@ export const FlaggedCommand = <
   Value
 > (
   main: Command<CommandReturn.Main<MainVal>, readonly ParseError[]>,
-  extractor: ArgumentExtractor<Name, Value>
+  extractor: FlagType<Name, Value>
 ): Command<
   FlaggedCommandReturn<MainVal, Name, Value>,
   readonly ParseError[]

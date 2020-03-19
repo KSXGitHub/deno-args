@@ -1,6 +1,6 @@
 import {
-  ArgumentExtractor,
-  ValueExtractor
+  FlagType,
+  ValueType
 } from './types.ts'
 
 import {
@@ -17,7 +17,7 @@ import {
   MissingValue,
   UnexpectedFlag,
   ValueParsingFailure
-} from './argument-errors.ts'
+} from './flag-errors.ts'
 
 const listFlags = <Name extends string> (
   name: Name,
@@ -41,7 +41,7 @@ const fmtTypeHelp = (help?: () => string) => help
 const sharedProps = (
   typeName: string,
   descriptor?: {
-    readonly type: ValueExtractor<any, any>
+    readonly type: ValueType<any, any>
   }
 ) => ({
   [Symbol.toStringTag]: typeName + (
@@ -52,7 +52,7 @@ const sharedProps = (
 export const EarlyExitFlag = <Name extends string> (
   name: Name,
   descriptor: EarlyExitDescriptor
-): ArgumentExtractor<Name, void> => ({
+): FlagType<Name, void> => ({
   name,
   extract (args) {
     const findRes = findFlags(args, listFlags(name, descriptor))
@@ -76,7 +76,7 @@ export interface EarlyExitDescriptor {
 export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
-): ArgumentExtractor<Name, boolean> => ({
+): FlagType<Name, boolean> => ({
   name,
   extract (args) {
     const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
@@ -98,7 +98,7 @@ export { BinaryFlag as Flag }
 export const CountFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
-): ArgumentExtractor<Name, number> => ({
+): FlagType<Name, number> => ({
   name,
   extract (args) {
     const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
@@ -123,7 +123,7 @@ export interface FlagDescriptor {
 export const Option = <Name extends string, Value> (
   name: Name,
   descriptor: OptionDescriptor<Value>
-): ArgumentExtractor<Name, Value> => ({
+): FlagType<Name, Value> => ({
   name,
   extract (args) {
     const flags = listFlags(name, descriptor)
@@ -159,7 +159,7 @@ export const Option = <Name extends string, Value> (
 })
 
 export interface OptionDescriptor<Value> {
-  readonly type: ValueExtractor<Value, [string]>
+  readonly type: ValueType<Value, [string]>
   readonly describe?: string
   readonly alias?: readonly string[]
 }

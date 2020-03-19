@@ -1,7 +1,7 @@
-import { FlagError } from './argument-errors.ts'
+import { FlagError } from './flag-errors.ts'
 import { ValueError } from './value-errors.ts'
 
-export interface ArgumentExtractor<Name extends string, Value> {
+export interface FlagType<Name extends string, Value> {
   readonly name: Name
   extract (args: readonly ArgvItem[]): ParseResult<{
     value: Value
@@ -11,7 +11,7 @@ export interface ArgumentExtractor<Name extends string, Value> {
   readonly [Symbol.toStringTag]: string
 }
 
-export interface ValueExtractor<Value, Raw extends readonly string[]> {
+export interface ValueType<Value, Raw extends readonly string[]> {
   extract (raw: Raw): ParseResult<Value, ValueError>
   getTypeName (): string
   help? (): string
