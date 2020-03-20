@@ -12,6 +12,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
   * [ ] `Deno.symbols.customInspect`
   * [ ] Remaining Arguments (`_`)
   * [ ] Remaining Flags (unknown flags)
+  * [ ] Remaining Values (unprocessed values)
   * [ ] Proper error classes for `command-types.ts`
   * [x] Simplify `ParseResult`: Flatten to eliminate `.value.value`
 * [ ] Improve help
