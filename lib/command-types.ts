@@ -14,6 +14,29 @@ import {
   PARSE_FAILURE
 } from './symbols.ts'
 
+interface ExtraProps {
+  readonly rawRemainingArgs: readonly string[]
+  readonly _: this['rawRemainingArgs']
+}
+
+const addExtraProps = <Main extends {
+  readonly consumedArgs: ReadonlySet<ArgvItem>
+}> (
+  main: Main,
+  args: readonly ArgvItem[]
+): Main & ExtraProps => ({
+  get rawRemainingArgs (): readonly string[] {
+    const { consumedArgs } = this
+    return args
+      .filter(item => !consumedArgs.has(item))
+      .map(item => item.raw)
+  },
+  get _ (): ExtraProps['rawRemainingArgs'] {
+    return this.rawRemainingArgs
+  },
+  ...main
+})
+
 export type CommandReturn<
   MainVal,
   Name extends string,
@@ -38,7 +61,7 @@ export namespace CommandReturn {
     readonly error?: null | readonly ParseError[]
   }
 
-  interface SuccessBase<Value> extends Base {
+  interface SuccessBase<Value> extends Base, ExtraProps {
     readonly tag: string | MAIN_COMMAND
     readonly value: Value
     readonly error?: null
@@ -77,11 +100,11 @@ export interface Command<
 
 type BlankReturn = CommandReturn.Main<{}>
 export const BLANK: Command<BlankReturn, never> = ({
-  extract: (args) => ({
+  extract: (args) => addExtraProps({
     tag: MAIN_COMMAND,
     value: {},
     consumedArgs: new Set(args)
-  })
+  } as const, args)
 })
 
 export type FlaggedCommandReturn<
@@ -117,11 +140,11 @@ export const FlaggedCommand = <
       ...prevResult.consumedArgs,
       ...nextResult.value.consumedFlags
     ])
-    return {
+    return addExtraProps({
       tag: MAIN_COMMAND,
       value,
       consumedArgs
-    }
+    } as const, args)
   }
 })
 
@@ -147,10 +170,10 @@ export const SubCommand = <
     const result = sub.extract(rest.map((item, index) => ({ ...item, index })))
     if (result.tag === PARSE_FAILURE) return result as ParseFailure<ErrList>
     const value = result as Sub
-    return {
+    return addExtraProps({
       tag: name,
       consumedArgs: value.consumedArgs,
       value
-    } as CommandReturn.Sub<Name, Sub>
+    } as const, args) as CommandReturn.Sub<Name, Sub>
   }
 })
