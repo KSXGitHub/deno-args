@@ -68,12 +68,20 @@ for (const args of [
       console.log('  => error', parsingResult.error)
       break
     case MAIN_COMMAND:
+      console.log('  => consumedArgs', parsingResult.consumedArgs)
+      for (const item of parsingResult.consumedArgs) {
+        console.log('    =>', item)
+      }
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
         console.log('    =>', key, `(${nameType(value)})`, value)
       }
       break
     default:
+      console.log('  => consumedArgs', parsingResult.consumedArgs)
+      for (const item of parsingResult.consumedArgs) {
+        console.log('    =>', item)
+      }
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
         console.log('    =>', key, `(${nameType(value)})`, value)
