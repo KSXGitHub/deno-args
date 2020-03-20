@@ -76,6 +76,8 @@ for (const args of [
         console.log('    =>', item)
       }
       console.log()
+      console.log('  => _', parsingResult._)
+      console.log()
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
         console.log('    =>', key, `(${nameType(value)})`, value)
@@ -87,6 +89,8 @@ for (const args of [
       for (const item of parsingResult.consumedArgs) {
         console.log('    =>', item)
       }
+      console.log()
+      console.log('  => _', parsingResult._)
       console.log()
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
