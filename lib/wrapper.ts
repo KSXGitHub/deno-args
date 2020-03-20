@@ -1,6 +1,6 @@
 import {
   ParseError,
-  ParseResult,
+  Result,
   FlagType
 } from './types.ts'
 
@@ -23,7 +23,7 @@ class Wrapper<Main extends CommandReturn<any, any, any>, ErrList extends readonl
     private readonly _command: Command<Main, ErrList>
   ) {}
 
-  public parse (args: readonly string[]): ParseResult<Main, ErrList> {
+  public parse (args: readonly string[]): Result<Main, ErrList> {
     return this._command.extract([...iterateArguments(args)])
   }
 

@@ -3,7 +3,7 @@ import { ValueError } from './value-errors.ts'
 
 export interface FlagType<Name extends string, Value> {
   readonly name: Name
-  extract (args: readonly ArgvItem[]): ParseResult<{
+  extract (args: readonly ArgvItem[]): Result<{
     value: Value
     remainingArgs: readonly ArgvItem[]
   }, FlagError>
@@ -12,21 +12,21 @@ export interface FlagType<Name extends string, Value> {
 }
 
 export interface ValueType<Value, Raw extends readonly string[]> {
-  extract (raw: Raw): ParseResult<Value, ValueError>
+  extract (raw: Raw): Result<Value, ValueError>
   getTypeName (): string
   help? (): string
   readonly [Symbol.toStringTag]: string
 }
 
-export type ParseResult<Value, Error extends ParseError> = ParseSuccess<Value> | ParseFailure<Error>
+export type Result<Value, Error extends ParseError> = Ok<Value> | Err<Error>
 
-export interface ParseSuccess<Value> {
+export interface Ok<Value> {
   readonly tag: true
   readonly value: Value
   readonly error?: null
 }
 
-export interface ParseFailure<Error extends ParseError> {
+export interface Err<Error extends ParseError> {
   readonly tag: false
   readonly value?: null
   readonly error: Error

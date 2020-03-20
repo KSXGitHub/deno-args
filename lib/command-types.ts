@@ -1,6 +1,6 @@
 import {
   ArgvItem,
-  ParseResult,
+  Result,
   ParseError,
   FlagType
 } from './types.ts'
@@ -44,7 +44,7 @@ export interface Command<
   Return extends CommandReturn<any, any, any>,
   ErrList extends readonly ParseError[]
 > {
-  extract (args: readonly ArgvItem[]): ParseResult<Return, ErrList>
+  extract (args: readonly ArgvItem[]): Result<Return, ErrList>
 }
 
 type BlankReturn = CommandReturn.Main<{}>
@@ -72,7 +72,7 @@ export const FlaggedCommand = <
   FlaggedCommandReturn<MainVal, Name, Value>,
   readonly ParseError[]
 > => ({
-  extract (args): ParseResult<FlaggedCommandReturn<MainVal, Name, Value>, readonly ParseError[]> {
+  extract (args): Result<FlaggedCommandReturn<MainVal, Name, Value>, readonly ParseError[]> {
     const prevResult = main.extract(args)
     if (!prevResult.tag) return prevResult
     const nextResult = extractor.extract(args)
@@ -106,7 +106,7 @@ export const SubCommand = <
   SubCommandReturn<Main, Name, SubVal>,
   ErrList
 > => ({
-  extract (args): ParseResult<SubCommandReturn<Main, Name, SubVal>, ErrList> {
+  extract (args): Result<SubCommandReturn<Main, Name, SubVal>, ErrList> {
     if (args.length === 0) return main.extract(args)
     const [first, ...rest] = args
     if (first.isFlag || first.raw !== name) return main.extract(args)

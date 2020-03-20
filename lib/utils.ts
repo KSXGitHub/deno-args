@@ -1,16 +1,16 @@
 import {
-  ParseSuccess,
-  ParseFailure,
+  Ok,
+  Err,
   ParseError,
   ArgvItem
 } from './types.ts'
 
-export const ok = <Value> (value: Value): ParseSuccess<Value> => ({
+export const ok = <Value> (value: Value): Ok<Value> => ({
   tag: true,
   value
 })
 
-export const err = <Error extends ParseError> (error: Error): ParseFailure<Error> => ({
+export const err = <Error extends ParseError> (error: Error): Err<Error> => ({
   tag: false,
   error
 })
