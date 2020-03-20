@@ -7,6 +7,15 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 ## TODO
 
 * [x] Report multiple errors at the same time
+* [ ] Re-design: Re-implement
+  * [ ] --help
+  * [ ] `Deno.symbols.customInspect`
+  * [x] Remaining Arguments (`_`)
+  * [x] Remaining Flags (unknown flags)
+  * [x] Remaining Values (unprocessed values)
+  * [ ] Fix bugs in `rawRemainingArgs`, `rawRemainingFlags`, and `rawRemainingValues`
+  * [ ] Proper error classes for `command-types.ts`
+  * [x] Simplify `ParseResult`: Flatten to eliminate `.value.value`
 * [ ] Improve help
   * [x] Implement as `EarlyExit`
   * [ ] Support both flag and subcommand (`--help` and `help`)
@@ -17,7 +26,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [ ] Optional flags
 * [ ] TSDoc
 * [ ] Support subcommands
-  * [ ] Known subcommands (subcommands that are known and defined by the programmer)
+  * [x] Known subcommands (subcommands that are known and defined by the programmer)
   * [ ] Unknown subcommands (e.g. `git foo` will find `git-foo` and execute it)
 * [ ] Release for Node.js
   * [ ] Compile TypeScript files to JavaScript
@@ -40,11 +49,11 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 ## Usage Examples
 
 ```typescript
-import build from 'https://deno.land/x/args/build.ts'
-import { HelpFlag, Option } from 'https://deno.land/x/args/argument-extractors.ts'
-import { FiniteNumber, Choice } from 'https://deno.land/x/args/value-extractors.ts'
+import args from 'https://deno.land/x/args/args.ts'
+import { HelpFlag, Option } from 'https://deno.land/x/args/argument-types.ts'
+import { FiniteNumber, Choice } from 'https://deno.land/x/args/value-types.ts'
 
-const parser = build()
+const parser = args
   .with(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {

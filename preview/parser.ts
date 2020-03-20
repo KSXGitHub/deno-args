@@ -1,12 +1,13 @@
-import build from '../lib/build.ts'
-import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/argument-extractors.ts'
-import { FiniteNumber, Integer, Text, Choice } from '../lib/value-extractors.ts'
+import args from '../lib/wrapper.ts'
+import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/flag-types.ts'
+import { FiniteNumber, Integer, Text, Choice } from '../lib/value-types.ts'
 
-const parser = build()
+const parser = args
   .with(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
-      throw parser.help()
+      // throw parser.help()
+      throw new Error('Unimplemented')
     }
   }))
   .with(Flag('foo', {
@@ -40,5 +41,21 @@ const parser = build()
     ),
     describe: 'Choice to make'
   }))
+  .sub('sub0', args)
+  .sub('sub1', args
+    .with(Flag('test', {
+      describe: 'Test flag for sub1'
+    }))
+  )
+  .sub('sub2', args
+    .with(Option('number', {
+      type: FiniteNumber,
+      describe: 'Number option for sub2'
+    }))
+    .with(Option('text', {
+      type: Text,
+      describe: 'Text option for sub2'
+    }))
+  )
 
 export { parser, parser as default }

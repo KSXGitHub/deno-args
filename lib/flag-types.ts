@@ -1,6 +1,6 @@
 import {
-  ArgumentExtractor,
-  ValueExtractor
+  FlagType,
+  ValueType
 } from './types.ts'
 
 import {
@@ -17,12 +17,7 @@ import {
   MissingValue,
   UnexpectedFlag,
   ValueParsingFailure
-} from './argument-errors.ts'
-
-import {
-  ParserBase,
-  TypeOf
-} from './build.ts'
+} from './flag-errors.ts'
 
 const listFlags = <Name extends string> (
   name: Name,
@@ -46,7 +41,7 @@ const fmtTypeHelp = (help?: () => string) => help
 const sharedProps = (
   typeName: string,
   descriptor?: {
-    readonly type: ValueExtractor<any, any>
+    readonly type: ValueType<any, any>
   }
 ) => ({
   [Symbol.toStringTag]: typeName + (
@@ -57,12 +52,12 @@ const sharedProps = (
 export const EarlyExitFlag = <Name extends string> (
   name: Name,
   descriptor: EarlyExitDescriptor
-): ArgumentExtractor<Name, void> => ({
+): FlagType<Name, void> => ({
   name,
   extract (args) {
     const findRes = findFlags(args, listFlags(name, descriptor))
     if (findRes.length) return descriptor.exit()
-    return ok({ value: undefined, remainingArgs: args })
+    return ok({ value: undefined, consumedFlags: new Set() })
   },
   help () {
     const alias = fmtAliasList(descriptor.alias)
@@ -81,13 +76,13 @@ export interface EarlyExitDescriptor {
 export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
-): ArgumentExtractor<Name, boolean> => ({
+): FlagType<Name, boolean> => ({
   name,
   extract (args) {
-    const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
+    const findRes = findFlags(args, listFlags(name, descriptor))
     return ok({
       value: Boolean(findRes.length),
-      remainingArgs
+      consumedFlags: new Set(findRes)
     })
   },
   help () {
@@ -102,14 +97,14 @@ export { BinaryFlag as Flag }
 
 export const CountFlag = <Name extends string> (
   name: Name,
-  descriptor: FlagDescriptor
-): ArgumentExtractor<Name, number> => ({
+  descriptor: FlagDescriptor = {}
+): FlagType<Name, number> => ({
   name,
   extract (args) {
-    const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
+    const findRes = findFlags(args, listFlags(name, descriptor))
     return ok({
       value: findRes.length,
-      remainingArgs
+      consumedFlags: new Set(findRes)
     })
   },
   help () {
@@ -128,7 +123,7 @@ export interface FlagDescriptor {
 export const Option = <Name extends string, Value> (
   name: Name,
   descriptor: OptionDescriptor<Value>
-): ArgumentExtractor<Name, Value> => ({
+): FlagType<Name, Value> => ({
   name,
   extract (args) {
     const flags = listFlags(name, descriptor)
@@ -138,9 +133,9 @@ export const Option = <Name extends string, Value> (
     const [res] = findRes
     const valPos = res.index + 1
     if (args.length <= valPos) return err(new MissingValue(res.name))
-    const { isFlag, raw } = args[valPos]
-    if (isFlag) return err(new UnexpectedFlag(res.name, raw))
-    const parseResult = descriptor.type.extract([raw])
+    const val = args[valPos]
+    if (val.type !== 'value') return err(new UnexpectedFlag(res.name, val.raw))
+    const parseResult = descriptor.type.extract([val.raw])
     if (!parseResult.tag) {
       return err(new ValueParsingFailure(res.name, parseResult.error))
     }
@@ -150,7 +145,7 @@ export const Option = <Name extends string, Value> (
     ]
     return ok({
       value: parseResult.value,
-      remainingArgs
+      consumedFlags: new Set([res, val])
     })
   },
   help () {
@@ -164,47 +159,7 @@ export const Option = <Name extends string, Value> (
 })
 
 export interface OptionDescriptor<Value> {
-  readonly type: ValueExtractor<Value, [string]>
+  readonly type: ValueType<Value, [string]>
   readonly describe?: string
   readonly alias?: readonly string[]
-}
-
-export const Command = <
-  Name extends string,
-  Parser extends ParserBase<any, any, any>
-> (
-  name: Name,
-  descriptor: CommandDescriptor<Parser>
-): ArgumentExtractor<Name, TypeOf<Parser> | null> => ({
-  name,
-  extract (args) {
-    const NIL = ok({ value: null, remainingArgs: args })
-    if (!args.length) return NIL
-    const [maybeCommand, ...rest] = args
-    if (maybeCommand.isFlag) return NIL
-    if (
-      [
-        name,
-        ...descriptor.alias || []
-      ].includes(maybeCommand.raw)
-    ) {
-      const result = descriptor.type.parse(rest.map(x => x.raw))
-      if (!result.tag) return result // TODO: custom error wrapper
-      return ok({
-        value: result.value,
-        remainingArgs: []
-      })
-    }
-    return NIL
-  },
-  help () {
-    return descriptor.type.help() // TODO: improve
-  },
-  [Symbol.toStringTag]: 'Command({ ... })'
-})
-
-export interface CommandDescriptor<Parser extends ParserBase<any, any, any>> {
-  readonly describe?: string
-  readonly alias?: readonly string[]
-  readonly type: Parser
 }

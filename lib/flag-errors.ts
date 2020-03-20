@@ -54,7 +54,7 @@ export class ConflictFlags extends FlagError {
 
 export class MissingValue extends FlagError {
   constructor (
-    public readonly name: string
+    public readonly name: string | readonly string[]
   ) {
     super()
   }
@@ -66,7 +66,7 @@ export class MissingValue extends FlagError {
 
 export class UnexpectedFlag extends FlagError {
   constructor (
-    public readonly name: string,
+    public readonly name: string | readonly string[],
     public readonly unexpectedFlag: string
   ) {
     super()
@@ -79,13 +79,13 @@ export class UnexpectedFlag extends FlagError {
 
 export class ValueParsingFailure extends FlagError {
   constructor (
-    public readonly name: string,
+    public readonly name: string | readonly string[],
     public readonly error: ValueError
   ) {
     super()
   }
 
   public toString () {
-    return `Failed to parse ${this.name}: ${this.error.toString()}`
+    return `Failed to parse ${flag(this.name)}: ${this.error.toString()}`
   }
 }

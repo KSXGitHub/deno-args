@@ -1,33 +1,49 @@
 import {
-  ParseSuccess,
-  ParseFailure,
+  Ok,
+  Err,
   ParseError,
   ArgvItem
 } from './types.ts'
 
-export const ok = <Value> (value: Value): ParseSuccess<Value> => ({
+export const ok = <Value> (value: Value): Ok<Value> => ({
   tag: true,
   value
 })
 
-export const err = <Error extends ParseError> (error: Error): ParseFailure<Error> => ({
+export const err = <Error extends ParseError> (error: Error): Err<Error> => ({
   tag: false,
   error
 })
 
+export const record = <
+  Key extends string | number | symbol,
+  Value
+> (
+  key: Key,
+  value: Value
+) => ({ [key]: value }) as Record<Key, Value>
+
 export const flagPrefix = (name: string): '-' | '--' => name.length === 1 ? '-' : '--'
-export const flag = (name: string) => flagPrefix(name) + name
+
+export function flag (name: string | readonly string[]) {
+  switch (typeof name) {
+    case 'string':
+      return flagPrefix(name)
+    case 'object':
+      return '-' + name.join('')
+  }
+}
 
 export function * iterateArguments (args: readonly string[]) {
   let fn = (raw: string, index: number): ArgvItem[] => {
     if (raw === '--') {
-      fn = (raw, index) => ([{ isFlag: false, index, raw }])
+      fn = (raw, index) => ([{ type: 'value', index, raw }])
       return []
     }
 
     if (raw.startsWith('--')) {
       return [{
-        isFlag: true,
+        type: 'single-flag',
         name: raw.slice('--'.length),
         index,
         raw
@@ -35,16 +51,16 @@ export function * iterateArguments (args: readonly string[]) {
     }
 
     if (raw.startsWith('-') && isNaN(raw as any)) {
-      return [...raw.slice('_'.length)].map(name => ({
-        isFlag: true,
-        name,
+      return [{
+        type: 'multi-flag',
+        name: [...raw.slice('-'.length)],
         index,
         raw
-      }))
+      }]
     }
 
     return [{
-      isFlag: false,
+      type: 'value',
       index,
       raw
     }]
@@ -67,8 +83,18 @@ export function partition<X0, X1 extends X0> (
   return [left, right]
 }
 
-const flagPredicate = (names: readonly string[]) =>
-  (item: ArgvItem): item is ArgvItem.Flag => item.isFlag && names.includes(item.name)
+type ArgvFlag = ArgvItem.SingleFlag | ArgvItem.MultiFlag
+
+const flagPredicate = (names: readonly string[]) => (item: ArgvItem): item is ArgvFlag => {
+  switch (item.type) {
+    case 'single-flag':
+      return names.includes(item.name)
+    case 'multi-flag':
+      return item.name.some(flag => names.includes(flag))
+    case 'value':
+      return false
+  }
+}
 
 export const partitionFlags = (
   args: Iterable<ArgvItem>,

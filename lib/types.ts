@@ -1,32 +1,32 @@
-import { FlagError } from './argument-errors.ts'
+import { FlagError } from './flag-errors.ts'
 import { ValueError } from './value-errors.ts'
 
-export interface ArgumentExtractor<Name extends string, Value> {
+export interface FlagType<Name extends string, Value> {
   readonly name: Name
-  extract (args: ArgvItem[]): ParseResult<{
+  extract (args: readonly ArgvItem[]): Result<{
     value: Value
-    remainingArgs: ArgvItem[]
+    consumedFlags: ReadonlySet<ArgvItem>
   }, FlagError>
   help (): string
   readonly [Symbol.toStringTag]: string
 }
 
-export interface ValueExtractor<Value, Raw extends readonly string[]> {
-  extract (raw: Raw): ParseResult<Value, ValueError>
+export interface ValueType<Value, Raw extends readonly string[]> {
+  extract (raw: Raw): Result<Value, ValueError>
   getTypeName (): string
   help? (): string
   readonly [Symbol.toStringTag]: string
 }
 
-export type ParseResult<Value, Error extends ParseError> = ParseSuccess<Value> | ParseFailure<Error>
+export type Result<Value, Error extends ParseError> = Ok<Value> | Err<Error>
 
-export interface ParseSuccess<Value> {
+export interface Ok<Value> {
   readonly tag: true
   readonly value: Value
   readonly error?: null
 }
 
-export interface ParseFailure<Error extends ParseError> {
+export interface Err<Error extends ParseError> {
   readonly tag: false
   readonly value?: null
   readonly error: Error
@@ -36,23 +36,28 @@ export interface ParseError {
   toString (): string
 }
 
-export type ArgvItem = ArgvItem.Flag | ArgvItem.Value
+export type ArgvItem = ArgvItem.SingleFlag | ArgvItem.MultiFlag | ArgvItem.Value
 
 export namespace ArgvItem {
   interface Base {
     readonly index: number
-    readonly isFlag: boolean
+    readonly type: 'single-flag' | 'multi-flag' | 'value'
     readonly raw: string
-    readonly name?: string | null
+    readonly name?: string | readonly string[] | null
   }
 
-  export interface Flag extends Base {
-    readonly isFlag: true
+  export interface SingleFlag extends Base {
+    readonly type: 'single-flag'
     readonly name: string
   }
 
+  export interface MultiFlag extends Base {
+    readonly type: 'multi-flag'
+    readonly name: readonly string[]
+  }
+
   export interface Value extends Base {
-    readonly isFlag: false
+    readonly type: 'value'
     readonly name?: null
   }
 }

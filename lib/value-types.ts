@@ -1,5 +1,5 @@
 import {
-  ValueExtractor
+  ValueType
 } from './types.ts'
 
 import {
@@ -17,13 +17,13 @@ const sharedProps = (typeName: string) => ({
   [Symbol.toStringTag]: typeName
 })
 
-export const Text: ValueExtractor<string, readonly [string]> = {
+export const Text: ValueType<string, readonly [string]> = {
   extract: ([raw]) => ok(raw),
   getTypeName: () => 'text',
   ...sharedProps('Text')
 }
 
-export const FiniteNumber: ValueExtractor<number, readonly [string]> = {
+export const FiniteNumber: ValueType<number, readonly [string]> = {
   extract ([raw]) {
     const value = Number(raw)
     return isFinite(value)
@@ -34,7 +34,7 @@ export const FiniteNumber: ValueExtractor<number, readonly [string]> = {
   ...sharedProps('FiniteNumber')
 }
 
-export const Integer: ValueExtractor<BigInt, readonly [string]> = {
+export const Integer: ValueType<BigInt, readonly [string]> = {
   extract ([raw]) {
     try {
       return ok(BigInt(raw))
@@ -51,7 +51,7 @@ export function Choice<
 > (...choices: {
   readonly value: Value
   readonly describe?: string
-}[]): ValueExtractor<Value, readonly [string]> {
+}[]): ValueType<Value, readonly [string]> {
   const values = choices.map(x => x.value)
   const valueStrings = values.map(x => String(x))
 
