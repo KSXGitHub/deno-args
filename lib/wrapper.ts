@@ -24,7 +24,11 @@ type ParseResult<
   ErrList extends readonly ParseError[]
 > = Main | ParseFailure<ErrList>
 
-class Wrapper<Main extends CommandReturn<any, any, any>, ErrList extends readonly ParseError[]> {
+class Wrapper<
+  MainVal,
+  Main extends CommandReturn<any, any, any>,
+  ErrList extends readonly ParseError[]
+> {
   constructor (
     private readonly _command: Command<Main, ErrList>
   ) {}
@@ -34,11 +38,15 @@ class Wrapper<Main extends CommandReturn<any, any, any>, ErrList extends readonl
   }
 
   public with<
-    Name extends string,
-    Value
+    NextKey extends string,
+    NextVal
   > (
-    extractor: FlagType<Name, Value>
-  ): Wrapper<FlaggedCommandReturn<Main, Name, Value>, readonly ParseError[]> {
+    extractor: FlagType<NextKey, NextVal>
+  ): Wrapper<
+    MainVal & Record<NextKey, NextVal>,
+    FlaggedCommandReturn<MainVal, NextKey, NextVal>,
+    readonly ParseError[]
+  > {
     return new Wrapper(FlaggedCommand(this._command, extractor))
   }
 
@@ -48,8 +56,9 @@ class Wrapper<Main extends CommandReturn<any, any, any>, ErrList extends readonl
     NextErrList extends readonly ParseError[]
   > (
     name: Name,
-    sub: Wrapper<SubVal, ErrList>
+    sub: Wrapper<MainVal, SubVal, ErrList>
   ): Wrapper<
+    SubVal,
     SubCommandReturn<Main, Name, SubVal>,
     ErrList | NextErrList
   > {
