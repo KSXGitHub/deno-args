@@ -1,6 +1,5 @@
 import {
   ArgvItem,
-  Result,
   ParseError,
   FlagType
 } from './types.ts'
