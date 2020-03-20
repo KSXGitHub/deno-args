@@ -13,7 +13,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
   * [ ] Remaining Arguments (`_`)
   * [ ] Remaining Flags (unknown flags)
   * [ ] Proper error classes for `command-types.ts`
-  * [ ] Simplify `ParseResult`: Flatten to eliminate `.value.value`
+  * [x] Simplify `ParseResult`: Flatten to eliminate `.value.value`
 * [ ] Improve help
   * [x] Implement as `EarlyExit`
   * [ ] Support both flag and subcommand (`--help` and `help`)
