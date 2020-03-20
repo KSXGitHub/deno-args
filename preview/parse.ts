@@ -59,6 +59,7 @@ for (const args of [
 
   []
 ]) {
+  console.log('\n--------\n')
   console.log('args', args)
   console.log()
   const parsingResult = parser.parse(args)
@@ -103,7 +104,6 @@ for (const args of [
       console.log()
       break
   }
-  console.log('\n--------\n')
 }
 
 function nameType (value: unknown) {
