@@ -15,10 +15,10 @@ import {
 } from './symbols.ts'
 
 export type CommandReturn<
-  Main,
+  MainVal,
   Name extends string,
   Sub extends CommandReturn<any, any, any>
-> = CommandReturn.Main<Main> | CommandReturn.Sub<Name, Sub>
+> = CommandReturn.Main<MainVal> | CommandReturn.Sub<Name, Sub>
 
 export type ParseFailure<
   ErrList extends readonly ParseError[]
@@ -84,26 +84,26 @@ export const BLANK: Command<BlankReturn, never> = ({
 })
 
 export type FlaggedCommandReturn<
-  Main,
-  Name extends string,
-  Value
-> = CommandReturn.Main<Main & Record<Name, Value>>
+  MainVal,
+  NextKey extends string,
+  NextVal
+> = CommandReturn.Main<MainVal & Record<NextKey, NextVal>>
 type FlaggedCommandExtract<
-  Main,
-  Name extends string,
-  Value,
+  MainVal,
+  NextKey extends string,
+  NextVal,
   ErrList extends readonly ParseError[]
-> = FlaggedCommandReturn<Main, Name, Value> | ParseFailure<ErrList | readonly [ParseError]>
+> = FlaggedCommandReturn<MainVal, NextKey, NextVal> | ParseFailure<ErrList | readonly [ParseError]>
 export const FlaggedCommand = <
-  Main,
-  Name extends string,
-  Value,
+  MainVal,
+  NextKey extends string,
+  NextVal,
   ErrList extends readonly ParseError[]
 > (
-  main: Command<CommandReturn.Main<Main>, ErrList>,
-  extractor: FlagType<Name, Value>
-): Command<FlaggedCommandReturn<Main, Name, Value>, ErrList | readonly [ParseError]> => ({
-  extract (args): FlaggedCommandExtract<Main, Name, Value, ErrList> {
+  main: Command<CommandReturn.Main<MainVal>, ErrList>,
+  extractor: FlagType<NextKey, NextVal>
+): Command<FlaggedCommandReturn<MainVal, NextKey, NextVal>, ErrList | readonly [ParseError]> => ({
+  extract (args): FlaggedCommandExtract<MainVal, NextKey, NextVal, ErrList> {
     const prevResult = main.extract(args)
     if (prevResult.tag === PARSE_FAILURE) return prevResult
     const nextResult = extractor.extract(args)
