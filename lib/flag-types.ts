@@ -57,7 +57,7 @@ export const EarlyExitFlag = <Name extends string> (
   extract (args) {
     const findRes = findFlags(args, listFlags(name, descriptor))
     if (findRes.length) return descriptor.exit()
-    return ok({ value: undefined, remainingArgs: args })
+    return ok({ value: undefined, consumedFlags: new Set() })
   },
   help () {
     const alias = fmtAliasList(descriptor.alias)
@@ -79,10 +79,10 @@ export const BinaryFlag = <Name extends string> (
 ): FlagType<Name, boolean> => ({
   name,
   extract (args) {
-    const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
+    const findRes = findFlags(args, listFlags(name, descriptor))
     return ok({
       value: Boolean(findRes.length),
-      remainingArgs
+      consumedFlags: new Set(findRes)
     })
   },
   help () {
@@ -101,10 +101,10 @@ export const CountFlag = <Name extends string> (
 ): FlagType<Name, number> => ({
   name,
   extract (args) {
-    const [findRes, remainingArgs] = partitionFlags(args, listFlags(name, descriptor))
+    const findRes = findFlags(args, listFlags(name, descriptor))
     return ok({
       value: findRes.length,
-      remainingArgs
+      consumedFlags: new Set(findRes)
     })
   },
   help () {
@@ -133,9 +133,9 @@ export const Option = <Name extends string, Value> (
     const [res] = findRes
     const valPos = res.index + 1
     if (args.length <= valPos) return err(new MissingValue(res.name))
-    const { type, raw } = args[valPos]
-    if (type !== 'value') return err(new UnexpectedFlag(res.name, raw))
-    const parseResult = descriptor.type.extract([raw])
+    const val = args[valPos]
+    if (val.type !== 'value') return err(new UnexpectedFlag(res.name, val.raw))
+    const parseResult = descriptor.type.extract([val.raw])
     if (!parseResult.tag) {
       return err(new ValueParsingFailure(res.name, parseResult.error))
     }
@@ -145,7 +145,7 @@ export const Option = <Name extends string, Value> (
     ]
     return ok({
       value: parseResult.value,
-      remainingArgs
+      consumedFlags: new Set([res, val])
     })
   },
   help () {

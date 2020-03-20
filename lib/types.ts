@@ -5,7 +5,7 @@ export interface FlagType<Name extends string, Value> {
   readonly name: Name
   extract (args: readonly ArgvItem[]): Result<{
     value: Value
-    remainingArgs: readonly ArgvItem[]
+    consumedFlags: ReadonlySet<ArgvItem>
   }, FlagError>
   help (): string
   readonly [Symbol.toStringTag]: string
