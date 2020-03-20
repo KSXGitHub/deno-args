@@ -155,16 +155,13 @@ export const SubCommand = <
 })
 
 interface ExtraProps {
-  readonly rawRemainingFlags: readonly string[]
-  readonly rawRemainingValues: readonly string[]
-  readonly rawRemainingArgs: readonly string[]
-  readonly _: this['rawRemainingArgs']
+  readonly remaining: {
+    readonly rawFlags: readonly string[]
+    readonly rawValues: readonly string[]
+    readonly rawArgs: readonly string[]
+  }
+  readonly _: this['remaining']['rawArgs']
 }
-
-const getRemainingArgv = (
-  { consumedArgs }: { readonly consumedArgs: ReadonlySet<ArgvItem> },
-  args: readonly ArgvItem[]
-) => args.filter(item => !consumedArgs.has(item))
 
 const addExtraProps = <Main extends {
   readonly consumedArgs: ReadonlySet<ArgvItem>
@@ -172,21 +169,28 @@ const addExtraProps = <Main extends {
   main: Main,
   args: readonly ArgvItem[]
 ): Main & ExtraProps => ({
-  get rawRemainingFlags (): readonly string[] {
-    return getRemainingArgv(this, args)
-      .filter(item => item.type !== 'value')
-      .map(item => item.raw)
+  get remaining () {
+    const { consumedArgs } = this
+    const remainingArgs = args.filter(item => !consumedArgs.has(item))
+    const mapFn = (item: ArgvItem) => item.raw
+    return {
+      get rawArgs () {
+        return remainingArgs.map(mapFn)
+      },
+      get rawFlags () {
+        return remainingArgs
+          .filter(item => item.type !== 'value')
+          .map(mapFn)
+      },
+      get rawValues () {
+        return remainingArgs
+          .filter(item => item.type === 'value')
+          .map(mapFn)
+      }
+    }
   },
-  get rawRemainingValues (): readonly string[] {
-    return getRemainingArgv(this, args)
-      .filter(item => item.type === 'value')
-      .map(item => item.raw)
-  },
-  get rawRemainingArgs (): readonly string[] {
-    return getRemainingArgv(this, args).map(item => item.raw)
-  },
-  get _ (): ExtraProps['rawRemainingArgs'] {
-    return this.rawRemainingArgs
+  get _ (): ExtraProps['remaining']['rawArgs'] {
+    return this.remaining.rawArgs
   },
   ...main
 })
