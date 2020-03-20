@@ -142,7 +142,7 @@ export const SubCommand = <
     if (result.tag === PARSE_FAILURE) return result as ParseFailure<ErrList>
     return {
       tag: name,
-      value: result.value
-    }
+      value: result as Sub
+    } as CommandReturn.Sub<Name, Sub>
   }
 })
