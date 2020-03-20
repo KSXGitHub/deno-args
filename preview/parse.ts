@@ -60,35 +60,42 @@ for (const args of [
   []
 ]) {
   console.log('args', args)
+  console.log()
   const parsingResult = parser.parse(args)
   console.log('parser.parse(args)', parsingResult)
   console.log(`  => tag (${nameType(parsingResult.tag)})`, parsingResult.tag)
+  console.log()
   switch (parsingResult.tag) {
     case PARSE_FAILURE:
       console.log('  => error', parsingResult.error)
+      console.log()
       break
     case MAIN_COMMAND:
       console.log('  => consumedArgs', parsingResult.consumedArgs)
       for (const item of parsingResult.consumedArgs) {
         console.log('    =>', item)
       }
+      console.log()
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
         console.log('    =>', key, `(${nameType(value)})`, value)
       }
+      console.log()
       break
     default:
       console.log('  => consumedArgs', parsingResult.consumedArgs)
       for (const item of parsingResult.consumedArgs) {
         console.log('    =>', item)
       }
+      console.log()
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
         console.log('    =>', key, `(${nameType(value)})`, value)
       }
+      console.log()
       break
   }
-  console.log()
+  console.log('\n--------\n')
 }
 
 function nameType (value: unknown) {
