@@ -1,4 +1,8 @@
 import {
+  once
+} from './deps.ts'
+
+import {
   ArgvItem,
   ParseError,
   FlagType
@@ -166,23 +170,27 @@ interface ExtraProps {
 function addExtraProps<Main extends {
   readonly consumedArgs: ReadonlySet<ArgvItem>
 }> (main: Main, args: readonly ArgvItem[]): Main & ExtraProps {
-  const remaining: ExtraProps['remaining'] = () => {
+  const remaining: ExtraProps['remaining'] = once(() => {
     const { consumedArgs } = object
     const remainingArgs = args.filter(item => !consumedArgs.has(item))
     const mapFn = (item: ArgvItem) => item.raw
-    const rawArgs = () => remainingArgs.map(mapFn)
-    const rawFlags = () => remainingArgs
-      .filter(item => item.type !== 'value')
-      .map(mapFn)
-    const rawValues = () => remainingArgs
-      .filter(item => item.type === 'value')
-      .map(mapFn)
+    const rawArgs = once(() => remainingArgs.map(mapFn))
+    const rawFlags = once(
+      () => remainingArgs
+        .filter(item => item.type !== 'value')
+        .map(mapFn)
+    )
+    const rawValues = once(
+      () => remainingArgs
+        .filter(item => item.type === 'value')
+        .map(mapFn)
+    )
     return {
       rawArgs,
       rawFlags,
       rawValues
     }
-  }
+  })
   const object: Main & ExtraProps = {
     get _ () {
       return this.remaining().rawArgs()
