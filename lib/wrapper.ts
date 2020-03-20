@@ -15,15 +15,21 @@ import {
   SubCommand,
   CommandReturn,
   FlaggedCommandReturn,
-  SubCommandReturn
+  SubCommandReturn,
+  ParseFailure
 } from './command-types.ts'
+
+type ParseResult<
+  Main extends CommandReturn<any, any, any>,
+  ErrList extends readonly ParseError[]
+> = Main | ParseFailure<ErrList>
 
 class Wrapper<Main extends CommandReturn<any, any, any>, ErrList extends readonly ParseError[]> {
   constructor (
     private readonly _command: Command<Main, ErrList>
   ) {}
 
-  public parse (args: readonly string[]): Result<Main, ErrList> {
+  public parse (args: readonly string[]): ParseResult<Main, ErrList> {
     return this._command.extract([...iterateArguments(args)])
   }
 
@@ -33,7 +39,7 @@ class Wrapper<Main extends CommandReturn<any, any, any>, ErrList extends readonl
   > (
     extractor: FlagType<Name, Value>
   ): Wrapper<FlaggedCommandReturn<Main, Name, Value>, readonly ParseError[]> {
-    return new Wrapper(FlaggedCommand<Main, Name, Value>(this._command, extractor))
+    return new Wrapper(FlaggedCommand(this._command, extractor))
   }
 
   public sub<

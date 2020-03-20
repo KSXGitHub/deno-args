@@ -6,13 +6,12 @@ import {
 } from './types.ts'
 
 import {
-  ok,
-  err,
   record
 } from './utils.ts'
 
 import {
-  MAIN_COMMAND
+  MAIN_COMMAND,
+  PARSE_FAILURE
 } from './symbols.ts'
 
 export type CommandReturn<
@@ -21,100 +20,129 @@ export type CommandReturn<
   Sub extends CommandReturn<any, any, any>
 > = CommandReturn.Main<Main> | CommandReturn.Sub<Name, Sub>
 
+export type ParseFailure<
+  ErrList extends readonly ParseError[]
+> = CommandReturn.Failure<ErrList>
+
+export const ParseFailure = <
+  ErrList extends readonly ParseError[]
+> (error: ErrList): ParseFailure<ErrList> => ({
+  tag: PARSE_FAILURE,
+  error
+})
+
 export namespace CommandReturn {
-  interface Base<Value> {
-    readonly tag: string | MAIN_COMMAND
-    readonly value: Value
+  interface Base {
+    readonly tag: string | MAIN_COMMAND | PARSE_FAILURE
+    readonly value?: unknown
+    readonly error?: null | readonly ParseError[]
   }
 
-  export interface Main<Value> extends Base<Value> {
+  interface SuccessBase<Value> extends Base {
+    readonly tag: string | MAIN_COMMAND
+    readonly value: Value
+    readonly error?: null
+  }
+
+  export interface Main<Value> extends SuccessBase<Value> {
     readonly tag: MAIN_COMMAND
-    readonly name?: null
   }
 
   export interface Sub<
     Name extends string,
     Value extends CommandReturn<any, any, any>
-  > extends Base<Value> {
+  > extends SuccessBase<Value> {
     readonly tag: Name
   }
+
+  interface FailureBase<
+    ErrList extends readonly ParseError[]
+  > extends Base {
+    readonly tag: PARSE_FAILURE
+    readonly error: ErrList
+    readonly value?: null
+  }
+
+  export interface Failure<ErrList extends readonly ParseError[]>
+  extends FailureBase<ErrList> {}
 }
 
 export interface Command<
   Return extends CommandReturn<any, any, any>,
   ErrList extends readonly ParseError[]
 > {
-  extract (args: readonly ArgvItem[]): Result<Return, ErrList>
+  extract (args: readonly ArgvItem[]): Return | ParseFailure<ErrList>
 }
 
 type BlankReturn = CommandReturn.Main<{}>
-const BLANK_PARSE_RESULT = ok<BlankReturn>({
+const BLANK_PARSE_RESULT: BlankReturn = {
   tag: MAIN_COMMAND,
   value: {}
-})
-export const BLANK: Command<BlankReturn, []> = ({
+}
+export const BLANK: Command<BlankReturn, never> = ({
   extract: () => BLANK_PARSE_RESULT
 })
 
 export type FlaggedCommandReturn<
-  MainVal,
+  Main,
   Name extends string,
   Value
-> = CommandReturn.Main<MainVal & Record<Name, Value>>
+> = CommandReturn.Main<Main & Record<Name, Value>>
+type FlaggedCommandExtract<
+  Main,
+  Name extends string,
+  Value,
+  ErrList extends readonly ParseError[]
+> = FlaggedCommandReturn<Main, Name, Value> | ParseFailure<ErrList | readonly [ParseError]>
 export const FlaggedCommand = <
-  MainVal,
+  Main,
   Name extends string,
-  Value
+  Value,
+  ErrList extends readonly ParseError[]
 > (
-  main: Command<CommandReturn.Main<MainVal>, readonly ParseError[]>,
+  main: Command<CommandReturn.Main<Main>, ErrList>,
   extractor: FlagType<Name, Value>
-): Command<
-  FlaggedCommandReturn<MainVal, Name, Value>,
-  readonly ParseError[]
-> => ({
-  extract (args): Result<FlaggedCommandReturn<MainVal, Name, Value>, readonly ParseError[]> {
+): Command<FlaggedCommandReturn<Main, Name, Value>, ErrList | readonly [ParseError]> => ({
+  extract (args): FlaggedCommandExtract<Main, Name, Value, ErrList> {
     const prevResult = main.extract(args)
-    if (!prevResult.tag) return prevResult
+    if (prevResult.tag === PARSE_FAILURE) return prevResult
     const nextResult = extractor.extract(args)
-    if (!nextResult.tag) return err([nextResult.error])
+    if (!nextResult.tag) return ParseFailure([nextResult.error])
     const value = {
-      ...prevResult.value.value,
+      ...prevResult.value,
       ...record(extractor.name, nextResult.value.value)
     }
-    return ok<FlaggedCommandReturn<MainVal, Name, Value>>({
+    return {
       tag: MAIN_COMMAND,
       value
-    })
+    }
   }
 })
 
 export type SubCommandReturn<
   Main extends CommandReturn<any, any, any>,
   Name extends string,
-  SubVal extends CommandReturn<any, any, any>
-> = Main | CommandReturn.Sub<Name, SubVal>
+  Sub extends CommandReturn<any, any, any>
+> = Main | CommandReturn.Sub<Name, Sub>
 export const SubCommand = <
   Main extends CommandReturn<any, any, any>,
   Name extends string,
-  SubVal extends CommandReturn<any, any, any>,
+  Sub extends CommandReturn<any, any, any>,
   ErrList extends readonly ParseError[]
 > (
   main: Command<Main, ErrList>,
   name: Name,
-  sub: Command<SubVal, ErrList>
-): Command<
-  SubCommandReturn<Main, Name, SubVal>,
-  ErrList
-> => ({
-  extract (args): Result<SubCommandReturn<Main, Name, SubVal>, ErrList> {
+  sub: Command<Sub, ErrList>
+): Command<SubCommandReturn<Main, Name, Sub>, ErrList> => ({
+  extract (args): SubCommandReturn<Main, Name, Sub> | ParseFailure<ErrList> {
     if (args.length === 0) return main.extract(args)
     const [first, ...rest] = args
     if (first.type !== 'value' || first.raw !== name) return main.extract(args)
     const result = sub.extract(rest.map((item, index) => ({ ...item, index })))
-    if (!result.tag) return result
-    return ok({
+    if (result.tag === PARSE_FAILURE) return result as ParseFailure<ErrList>
+    return {
       tag: name,
       value: result.value
-    })
+    }
   }
 })
