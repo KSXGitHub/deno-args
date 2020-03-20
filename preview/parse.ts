@@ -78,7 +78,7 @@ for (const args of [
       }
       console.log()
       console.log('  => _', parsingResult._)
-      console.log('  => remaining', parsingResult.remaining)
+      console.log('  => remaining()', parsingResult.remaining())
       console.log()
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
@@ -93,7 +93,7 @@ for (const args of [
       }
       console.log()
       console.log('  => _', parsingResult._)
-      console.log('  => remaining', parsingResult.remaining)
+      console.log('  => remaining()', parsingResult.remaining())
       console.log()
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {

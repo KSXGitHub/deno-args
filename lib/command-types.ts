@@ -155,12 +155,12 @@ export const SubCommand = <
 })
 
 interface ExtraProps {
-  readonly remaining: {
-    readonly rawFlags: readonly string[]
-    readonly rawValues: readonly string[]
-    readonly rawArgs: readonly string[]
+  remaining (): {
+    rawFlags (): readonly string[]
+    rawValues (): readonly string[]
+    rawArgs (): readonly string[]
   }
-  readonly _: this['remaining']['rawArgs']
+  readonly _: readonly string[]
 }
 
 const addExtraProps = <Main extends {
@@ -169,28 +169,25 @@ const addExtraProps = <Main extends {
   main: Main,
   args: readonly ArgvItem[]
 ): Main & ExtraProps => ({
-  get remaining () {
+  remaining () {
     const { consumedArgs } = this
     const remainingArgs = args.filter(item => !consumedArgs.has(item))
     const mapFn = (item: ArgvItem) => item.raw
+    const rawArgs = () => remainingArgs.map(mapFn)
+    const rawFlags = () => remainingArgs
+      .filter(item => item.type !== 'value')
+      .map(mapFn)
+    const rawValues = () => remainingArgs
+      .filter(item => item.type === 'value')
+      .map(mapFn)
     return {
-      get rawArgs () {
-        return remainingArgs.map(mapFn)
-      },
-      get rawFlags () {
-        return remainingArgs
-          .filter(item => item.type !== 'value')
-          .map(mapFn)
-      },
-      get rawValues () {
-        return remainingArgs
-          .filter(item => item.type === 'value')
-          .map(mapFn)
-      }
+      rawArgs,
+      rawFlags,
+      rawValues
     }
   },
-  get _ (): ExtraProps['remaining']['rawArgs'] {
-    return this.remaining.rawArgs
+  get _ (): readonly string[] {
+    return this.remaining().rawArgs()
   },
   ...main
 })
