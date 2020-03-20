@@ -1,4 +1,4 @@
-import { MAIN_COMMAND } from '../lib/symbols.ts'
+import { MAIN_COMMAND, PARSE_FAILURE } from '../lib/symbols.ts'
 import parser from './parser.ts'
 
 for (const args of [
@@ -62,16 +62,23 @@ for (const args of [
   console.log('args', args)
   const parsingResult = parser.parse(args)
   console.log('parser.parse(args)', parsingResult)
-  if (parsingResult.tag) {
-    console.log('  => value.tag', parsingResult.value.tag)
-    console.log('  => value.value', parsingResult.value.value)
-    if (parsingResult.value.tag === MAIN_COMMAND) {
-      for (const [key, value] of Object.entries(parsingResult.value.value)) {
+  console.log(`  => tag (${nameType(parsingResult.tag)})`, parsingResult.tag)
+  switch (parsingResult.tag) {
+    case PARSE_FAILURE:
+      console.log('  => error', parsingResult.error)
+      break
+    case MAIN_COMMAND:
+      console.log('  => value', parsingResult.value)
+      for (const [key, value] of Object.entries(parsingResult.value)) {
         console.log('    =>', key, `(${nameType(value)})`, value)
       }
-    }
-  } else {
-    console.log('  => error', parsingResult.error)
+      break
+    default:
+      console.log('  => value', parsingResult.value)
+      for (const [key, value] of Object.entries(parsingResult.value)) {
+        console.log('    =>', key, `(${nameType(value)})`, value)
+      }
+      break
   }
   console.log()
 }
