@@ -155,6 +155,8 @@ export const SubCommand = <
 })
 
 interface ExtraProps {
+  readonly rawRemainingFlags: readonly string[]
+  readonly rawRemainingValues: readonly string[]
   readonly rawRemainingArgs: readonly string[]
   readonly _: this['rawRemainingArgs']
 }
@@ -165,6 +167,18 @@ const addExtraProps = <Main extends {
   main: Main,
   args: readonly ArgvItem[]
 ): Main & ExtraProps => ({
+  get rawRemainingFlags (): readonly string[] {
+    const { consumedArgs } = this
+    return args
+      .filter(item => item.type !== 'value' && !consumedArgs.has(item))
+      .map(item => item.raw)
+  },
+  get rawRemainingValues (): readonly string[] {
+    const { consumedArgs } = this
+    return args
+      .filter(item => item.type === 'value' && !consumedArgs.has(item))
+      .map(item => item.raw)
+  },
   get rawRemainingArgs (): readonly string[] {
     const { consumedArgs } = this
     return args
