@@ -109,7 +109,7 @@ export const SubCommand = <
   extract (args): Result<SubCommandReturn<Main, Name, SubVal>, ErrList> {
     if (args.length === 0) return main.extract(args)
     const [first, ...rest] = args
-    if (first.isFlag || first.raw !== name) return main.extract(args)
+    if (first.type !== 'value' || first.raw !== name) return main.extract(args)
     const result = sub.extract(rest.map((item, index) => ({ ...item, index })))
     if (!result.tag) return result
     return ok({
