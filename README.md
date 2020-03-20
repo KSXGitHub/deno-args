@@ -24,7 +24,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [ ] Optional flags
 * [ ] TSDoc
 * [ ] Support subcommands
-  * [ ] Known subcommands (subcommands that are known and defined by the programmer)
+  * [x] Known subcommands (subcommands that are known and defined by the programmer)
   * [ ] Unknown subcommands (e.g. `git foo` will find `git-foo` and execute it)
 * [ ] Release for Node.js
   * [ ] Compile TypeScript files to JavaScript
