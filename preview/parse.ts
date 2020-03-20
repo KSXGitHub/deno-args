@@ -77,6 +77,8 @@ for (const args of [
       }
       console.log()
       console.log('  => _', parsingResult._)
+      console.log('  => rawRemainingFlags', parsingResult.rawRemainingFlags)
+      console.log('  => rawRemainingValues', parsingResult.rawRemainingValues)
       console.log()
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
@@ -91,6 +93,8 @@ for (const args of [
       }
       console.log()
       console.log('  => _', parsingResult._)
+      console.log('  => rawRemainingFlags', parsingResult.rawRemainingFlags)
+      console.log('  => rawRemainingValues', parsingResult.rawRemainingValues)
       console.log()
       console.log('  => value', parsingResult.value)
       for (const [key, value] of Object.entries(parsingResult.value)) {
