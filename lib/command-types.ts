@@ -163,14 +163,11 @@ interface ExtraProps {
   readonly _: readonly string[]
 }
 
-const addExtraProps = <Main extends {
+function addExtraProps<Main extends {
   readonly consumedArgs: ReadonlySet<ArgvItem>
-}> (
-  main: Main,
-  args: readonly ArgvItem[]
-): Main & ExtraProps => ({
-  remaining () {
-    const { consumedArgs } = this
+}> (main: Main, args: readonly ArgvItem[]): Main & ExtraProps {
+  const remaining: ExtraProps['remaining'] = () => {
+    const { consumedArgs } = object
     const remainingArgs = args.filter(item => !consumedArgs.has(item))
     const mapFn = (item: ArgvItem) => item.raw
     const rawArgs = () => remainingArgs.map(mapFn)
@@ -185,9 +182,13 @@ const addExtraProps = <Main extends {
       rawFlags,
       rawValues
     }
-  },
-  get _ (): readonly string[] {
-    return this.remaining().rawArgs()
-  },
-  ...main
-})
+  }
+  const object: Main & ExtraProps = {
+    get _ () {
+      return this.remaining().rawArgs()
+    },
+    remaining,
+    ...main
+  }
+  return object
+}
