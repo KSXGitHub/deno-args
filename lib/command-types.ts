@@ -42,6 +42,7 @@ export namespace CommandReturn {
     readonly tag: string | MAIN_COMMAND
     readonly value: Value
     readonly error?: null
+    readonly consumedArgs: ReadonlySet<ArgvItem>
   }
 
   export interface Main<Value> extends SuccessBase<Value> {
@@ -75,12 +76,12 @@ export interface Command<
 }
 
 type BlankReturn = CommandReturn.Main<{}>
-const BLANK_PARSE_RESULT: BlankReturn = {
-  tag: MAIN_COMMAND,
-  value: {}
-}
 export const BLANK: Command<BlankReturn, never> = ({
-  extract: () => BLANK_PARSE_RESULT
+  extract: (args) => ({
+    tag: MAIN_COMMAND,
+    value: {},
+    consumedArgs: new Set(args)
+  })
 })
 
 export type FlaggedCommandReturn<
@@ -112,9 +113,14 @@ export const FlaggedCommand = <
       ...prevResult.value,
       ...record(extractor.name, nextResult.value.value)
     }
+    const consumedArgs = new Set([
+      ...prevResult.consumedArgs,
+      ...nextResult.value.consumedFlags
+    ])
     return {
       tag: MAIN_COMMAND,
-      value
+      value,
+      consumedArgs
     }
   }
 })
@@ -140,9 +146,11 @@ export const SubCommand = <
     if (first.type !== 'value' || first.raw !== name) return main.extract(args)
     const result = sub.extract(rest.map((item, index) => ({ ...item, index })))
     if (result.tag === PARSE_FAILURE) return result as ParseFailure<ErrList>
+    const value = result as Sub
     return {
       tag: name,
-      value: result as Sub
+      consumedArgs: value.consumedArgs,
+      value
     } as CommandReturn.Sub<Name, Sub>
   }
 })
