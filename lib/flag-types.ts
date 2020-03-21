@@ -7,7 +7,6 @@ import {
   ok,
   err,
   flag,
-  partitionFlags,
   findFlags
 } from './utils.ts'
 
