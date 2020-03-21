@@ -150,9 +150,10 @@ export const SubCommand = <
     const result = sub.extract(rest.map((item, index) => ({ ...item, index })))
     if (result.tag === PARSE_FAILURE) return result as ParseFailure<ErrList>
     const value = result as Sub
+    const consumedArgs = new Set([first, ...value.consumedArgs])
     return addExtraProps({
       tag: name,
-      consumedArgs: value.consumedArgs,
+      consumedArgs,
       value
     } as const, args) as CommandReturn.Sub<Name, Sub>
   }
