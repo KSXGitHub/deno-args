@@ -8,7 +8,7 @@ import {
 
 export class CommandError<
   ErrList extends readonly FlagError[]
-> implements ParseError {
+> implements ParseError, Iterable<FlagError> {
   constructor (
     public readonly errors: ErrList
   ) {}
@@ -16,4 +16,8 @@ export class CommandError<
   public readonly toString = () => this.errors
     .map(error => error.toString())
     .join('\n')
+
+  public * [Symbol.iterator] () {
+    yield * this.errors
+  }
 }
