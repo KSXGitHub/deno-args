@@ -83,7 +83,7 @@ export const BLANK: Command<BlankReturn, never> = ({
   extract: (args) => addExtraProps({
     tag: MAIN_COMMAND,
     value: {},
-    consumedArgs: new Set(args)
+    consumedArgs: new Set<never>()
   } as const, args)
 })
 
