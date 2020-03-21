@@ -94,7 +94,8 @@ export const BLANK: Command<BlankReturn, never> = ({
     tag: MAIN_COMMAND,
     value: {},
     consumedArgs: new Set<never>()
-  } as const, args)
+  } as const, args),
+  help: () => []
 })
 
 export type FlaggedCommandReturn<
