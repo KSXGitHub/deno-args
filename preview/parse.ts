@@ -69,6 +69,9 @@ for (const args of [
   switch (parsingResult.tag) {
     case PARSE_FAILURE:
       console.log('  => error', parsingResult.error)
+      for (const item of parsingResult.error) {
+        console.log('    =>', item)
+      }
       console.log()
       break
     case MAIN_COMMAND:
