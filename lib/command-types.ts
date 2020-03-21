@@ -85,7 +85,8 @@ export interface Command<
 
 export interface CommandHelp {
   readonly category: string
-  readonly message: string
+  readonly title: string
+  readonly description: string
 }
 
 type BlankReturn = CommandReturn.Main<{}>
