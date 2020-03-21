@@ -17,6 +17,10 @@ import {
   PARSE_FAILURE
 } from './symbols.ts'
 
+import {
+  CommandError
+} from './command-errors.ts'
+
 export type CommandReturn<
   MainVal,
   Name extends string,
@@ -31,14 +35,14 @@ export const ParseFailure = <
   ErrList extends readonly ParseError[]
 > (error: ErrList): ParseFailure<ErrList> => ({
   tag: PARSE_FAILURE,
-  error
+  error: new CommandError(error)
 })
 
 export namespace CommandReturn {
   interface Base {
     readonly tag: string | MAIN_COMMAND | PARSE_FAILURE
     readonly value?: unknown
-    readonly error?: null | readonly ParseError[]
+    readonly error?: null | CommandError<any>
   }
 
   interface SuccessBase<Value> extends Base, ExtraProps {
@@ -63,7 +67,7 @@ export namespace CommandReturn {
     ErrList extends readonly ParseError[]
   > extends Base {
     readonly tag: PARSE_FAILURE
-    readonly error: ErrList
+    readonly error: CommandError<ErrList>
     readonly value?: null
   }
 
