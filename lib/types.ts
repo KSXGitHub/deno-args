@@ -7,8 +7,13 @@ export interface FlagType<Name extends string, Value> {
     value: Value
     consumedFlags: ReadonlySet<ArgvItem>
   }, FlagError>
-  help (): string
+  help (): FlagHelp
   readonly [Symbol.toStringTag]: string
+}
+
+export interface FlagHelp {
+  readonly title: string
+  readonly description: string
 }
 
 export interface ValueType<Value, Raw extends readonly string[]> {

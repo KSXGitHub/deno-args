@@ -80,6 +80,12 @@ export interface Command<
   ErrList extends readonly ParseError[]
 > {
   extract (args: readonly ArgvItem[]): Return | ParseFailure<ErrList>
+  help (): Iterable<CommandHelp>
+}
+
+export interface CommandHelp {
+  readonly category: string
+  readonly message: string
 }
 
 type BlankReturn = CommandReturn.Main<{}>
