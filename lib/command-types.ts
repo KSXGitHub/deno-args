@@ -175,6 +175,14 @@ export const SubCommand = <
       consumedArgs,
       value
     } as const, args) as CommandReturn.Sub<Name, Sub>
+  },
+  * help (): Iterable<CommandHelp> {
+    yield * main.help()
+    yield {
+      category: 'SUBCOMMANDS',
+      title: name,
+      description: undefined! // TODO: implement
+    }
   }
 })
 
