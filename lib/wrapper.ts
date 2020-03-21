@@ -1,6 +1,5 @@
 import {
   ParseError,
-  Result,
   FlagType
 } from './types.ts'
 
