@@ -137,6 +137,13 @@ export const FlaggedCommand = <
       value,
       consumedArgs
     } as const, args)
+  },
+  * help (): Iterable<CommandHelp> {
+    yield * main.help()
+    yield {
+      category: 'OPTIONS',
+      ...extractor.help()
+    }
   }
 })
 
