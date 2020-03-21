@@ -138,10 +138,6 @@ export const Option = <Name extends string, Value> (
     if (!parseResult.tag) {
       return err(new ValueParsingFailure(res.name, parseResult.error))
     }
-    const remainingArgs = [
-      ...args.slice(0, res.index),
-      ...args.slice(valPos + 1)
-    ]
     return ok({
       value: parseResult.value,
       consumedFlags: new Set([res, val])
