@@ -185,7 +185,7 @@ export const SubCommand = <
     yield {
       category: 'SUBCOMMANDS',
       title: name,
-      description: undefined! // TODO: implement
+      description: [...sub.describe()].join('\n')
     }
   }
 })
