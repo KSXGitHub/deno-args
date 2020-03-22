@@ -80,6 +80,7 @@ export interface Command<
   ErrList extends readonly ParseError[]
 > {
   extract (args: readonly ArgvItem[]): Return | ParseFailure<ErrList>
+  describe (): Iterable<string>
   help (): Iterable<CommandHelp>
 }
 
@@ -96,6 +97,7 @@ export const BLANK: Command<BlankReturn, never> = ({
     value: {},
     consumedArgs: new Set<never>()
   } as const, args),
+  describe: () => [],
   help: () => []
 })
 
@@ -138,6 +140,7 @@ export const FlaggedCommand = <
       consumedArgs
     } as const, args)
   },
+  describe: () => main.describe(),
   * help (): Iterable<CommandHelp> {
     yield * main.help()
     yield {
@@ -176,6 +179,7 @@ export const SubCommand = <
       value
     } as const, args) as CommandReturn.Sub<Name, Sub>
   },
+  describe: () => main.describe(),
   * help (): Iterable<CommandHelp> {
     yield * main.help()
     yield {
