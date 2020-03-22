@@ -6,7 +6,7 @@ import {
 import {
   ok,
   err,
-  flag,
+  flagPrefix,
   findFlags
 } from './utils.ts'
 
@@ -25,13 +25,11 @@ const listFlags = <Name extends string> (
   }
 ): [Name, ...string[]] => [name, ...descriptor.alias || []]
 
-const fmtAliasList = (alias?: readonly string[]) => alias?.length
-  ? ` (alias ${alias.map(flag).join(' ')})`
-  : ''
-
-const fmtDescSuffix = (describe?: string) => describe
-  ? `:\t${describe}`
-  : ''
+const fmtTitle = (name: string, descriptor: {
+  readonly alias?: Iterable<string>
+}): string => listFlags(name, descriptor)
+  .map(flagPrefix)
+  .join(', ')
 
 const fmtTypeHelp = (help?: () => string) => help
   ? '\n' + help()
@@ -58,11 +56,10 @@ export const EarlyExitFlag = <Name extends string> (
     if (findRes.length) return descriptor.exit()
     return ok({ value: undefined, consumedFlags: new Set() })
   },
-  help () {
-    const alias = fmtAliasList(descriptor.alias)
-    const suffix = fmtDescSuffix(descriptor.describe)
-    return `${flag(name)}${alias}${suffix}`
-  },
+  help: () => ({
+    title: fmtTitle(name, descriptor),
+    description: descriptor.describe
+  }),
   ...sharedProps('EarlyExitFlag')
 })
 
@@ -84,11 +81,10 @@ export const BinaryFlag = <Name extends string> (
       consumedFlags: new Set(findRes)
     })
   },
-  help () {
-    const alias = fmtAliasList(descriptor.alias)
-    const suffix = fmtDescSuffix(descriptor.describe)
-    return `${flag(name)}${alias}${suffix}`
-  },
+  help: () => ({
+    title: fmtTitle(name, descriptor),
+    description: descriptor.describe
+  }),
   ...sharedProps('BinaryFlag')
 })
 
@@ -106,11 +102,10 @@ export const CountFlag = <Name extends string> (
       consumedFlags: new Set(findRes)
     })
   },
-  help () {
-    const alias = fmtAliasList(descriptor.alias)
-    const suffix = fmtDescSuffix(descriptor.describe)
-    return `${flag(name)}... ${alias}${suffix}`
-  },
+  help: () => ({
+    title: fmtTitle(name, descriptor),
+    description: descriptor.describe
+  }),
   ...sharedProps('CountFlag')
 })
 
@@ -143,13 +138,10 @@ export const Option = <Name extends string, Value> (
       consumedFlags: new Set([res, val])
     })
   },
-  help () {
-    const typeName = descriptor.type.getTypeName()
-    const alias = fmtAliasList(descriptor.alias)
-    const suffix = fmtDescSuffix(descriptor.describe)
-    const typeHelp = fmtTypeHelp(descriptor.type.help)
-    return `${flag(name)} <${typeName}>${alias}${suffix}${typeHelp}`
-  },
+  help: () => ({
+    title: `${fmtTitle(name, descriptor)} <${descriptor.type.getTypeName()}>`,
+    description: (descriptor.describe || '') + fmtTypeHelp(descriptor.type.help)
+  }),
   ...sharedProps('Option', descriptor)
 })
 

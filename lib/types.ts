@@ -13,7 +13,7 @@ export interface FlagType<Name extends string, Value> {
 
 export interface FlagHelp {
   readonly title: string
-  readonly description: string
+  readonly description?: string
 }
 
 export interface ValueType<Value, Raw extends readonly string[]> {
