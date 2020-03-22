@@ -1,4 +1,8 @@
 import {
+  once
+} from './deps.ts'
+
+import {
   FlagType,
   ValueType
 } from './types.ts'
@@ -42,10 +46,10 @@ const FlagHelpFunc = (
     readonly alias?: readonly string[]
     readonly describe?: string
   }
-): FlagHelpFunc => () => ({
+): FlagHelpFunc => once(() => ({
   title: fmtTitle(name, descriptor),
   description: descriptor.describe
-})
+}))
 
 const sharedProps = (
   typeName: string,
@@ -141,10 +145,10 @@ export const Option = <Name extends string, Value> (
       consumedFlags: new Set([res, val])
     })
   },
-  help: () => ({
+  help: once(() => ({
     title: `${fmtTitle(name, descriptor)} <${descriptor.type.getTypeName()}>`,
     description: (descriptor.describe || '') + fmtTypeHelp(descriptor.type.help)
-  }),
+  })),
   ...sharedProps('Option', descriptor)
 })
 
