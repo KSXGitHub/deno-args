@@ -32,7 +32,7 @@ const listFlags = <Name extends string> (
 const fmtTitle = (name: string, descriptor: {
   readonly alias?: Iterable<string>
 }): string => listFlags(name, descriptor)
-  .map(flagPrefix)
+  .map(flag => flagPrefix(flag) + flag)
   .join(', ')
 
 const fmtTypeHelp = (help?: () => string) => help
