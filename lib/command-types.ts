@@ -193,7 +193,7 @@ export const SubCommand = <
     yield {
       category: 'SUBCOMMANDS',
       title: name,
-      description: [...sub.describe()].join('\n')
+      description: [...sub.describe()].join('')
     }
   }
 })
