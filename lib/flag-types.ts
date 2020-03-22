@@ -35,6 +35,18 @@ const fmtTypeHelp = (help?: () => string) => help
   ? '\n' + help()
   : ''
 
+type FlagHelpFunc = FlagType<any, any>['help']
+const FlagHelpFunc = (
+  name: string,
+  descriptor: {
+    readonly alias?: readonly string[]
+    readonly describe?: string
+  }
+): FlagHelpFunc => () => ({
+  title: fmtTitle(name, descriptor),
+  description: descriptor.describe
+})
+
 const sharedProps = (
   typeName: string,
   descriptor?: {
@@ -56,10 +68,7 @@ export const EarlyExitFlag = <Name extends string> (
     if (findRes.length) return descriptor.exit()
     return ok({ value: undefined, consumedFlags: new Set() })
   },
-  help: () => ({
-    title: fmtTitle(name, descriptor),
-    description: descriptor.describe
-  }),
+  help: FlagHelpFunc(name, descriptor),
   ...sharedProps('EarlyExitFlag')
 })
 
@@ -81,10 +90,7 @@ export const BinaryFlag = <Name extends string> (
       consumedFlags: new Set(findRes)
     })
   },
-  help: () => ({
-    title: fmtTitle(name, descriptor),
-    description: descriptor.describe
-  }),
+  help: FlagHelpFunc(name, descriptor),
   ...sharedProps('BinaryFlag')
 })
 
@@ -102,10 +108,7 @@ export const CountFlag = <Name extends string> (
       consumedFlags: new Set(findRes)
     })
   },
-  help: () => ({
-    title: fmtTitle(name, descriptor),
-    description: descriptor.describe
-  }),
+  help: FlagHelpFunc(name, descriptor),
   ...sharedProps('CountFlag')
 })
 
