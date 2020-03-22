@@ -105,3 +105,28 @@ export const findFlags = (
   args: readonly ArgvItem[],
   names: readonly string[]
 ) => args.filter(flagPredicate(names))
+
+export function * lines (text: string) {
+  for (const line of text.split('\n')) {
+    yield line
+  }
+}
+
+export function * makeIndent (text: string, indent: string) {
+  for (const line of lines(text)) {
+    yield indent + line
+  }
+}
+
+export const makeIndentN = (text: string, size: number) => makeIndent(text, ' '.repeat(size))
+
+export abstract class InitMap<Key, Value> extends Map<Key, Value> {
+  protected abstract init (key: Key): Value
+
+  public get (key: Key): Value {
+    if (super.has(key)) return super.get(key)!
+    const value = this.init(key)
+    super.set(key, value)
+    return value
+  }
+}
