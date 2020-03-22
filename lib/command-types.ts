@@ -101,6 +101,14 @@ export const BLANK: Command<BlankReturn, never> = ({
   help: () => []
 })
 
+export const Describe = <Target extends Command<any, any>> (
+  target: Target,
+  description: string
+): Target => ({
+  ...target,
+  describe: () => description
+})
+
 export type FlaggedCommandReturn<
   MainVal,
   NextKey extends string,
