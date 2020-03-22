@@ -6,8 +6,8 @@ const parser = args
   .with(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
-      // throw parser.help()
-      throw new Error('Unimplemented')
+      console.log(parser.help())
+      return Deno.exit(0)
     }
   }))
   .with(Flag('foo', {
