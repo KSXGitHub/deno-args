@@ -3,6 +3,7 @@ import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/flag-types.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../lib/value-types.ts'
 
 const parser = args
+  .describe('Top level command')
   .with(EarlyExitFlag('help', {
     describe: 'Show help',
     exit () {
@@ -41,13 +42,17 @@ const parser = args
     ),
     describe: 'Choice to make'
   }))
-  .sub('sub0', args)
+  .sub('sub0', args
+    .describe('Sub command without flags')
+  )
   .sub('sub1', args
+    .describe('Sub command with one flag')
     .with(Flag('test', {
       describe: 'Test flag for sub1'
     }))
   )
   .sub('sub2', args
+    .describe('Sub command with two flags')
     .with(Option('number', {
       type: FiniteNumber,
       describe: 'Number option for sub2'
