@@ -76,7 +76,7 @@ export function Choice<
     help () {
       let text = ''
       for (const { value, describe } of choices) {
-        if (describe) text += `${value}: ${describe}\n`
+        if (describe) text += `‣ ${value}: ${describe}\n`
       }
       return text
     },
