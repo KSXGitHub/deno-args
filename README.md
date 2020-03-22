@@ -8,7 +8,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 * [x] Report multiple errors at the same time
 * [ ] Re-design: Re-implement
-  * [ ] --help
+  * [x] --help
   * [ ] `Deno.symbols.customInspect`
   * [x] Remaining Arguments (`_`)
   * [x] Remaining Flags (unknown flags)
