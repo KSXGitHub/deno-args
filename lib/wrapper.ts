@@ -18,6 +18,8 @@ import {
   ParseFailure
 } from './command-types.ts'
 
+import help from './help.ts'
+
 type ParseResult<
   Main extends CommandReturn<any, any, any>,
   ErrList extends readonly ParseError[]
@@ -62,6 +64,10 @@ class Wrapper<
     ErrList | NextErrList
   > {
     return new Wrapper(SubCommand(this._command, name, sub._command))
+  }
+
+  public help (): string {
+    return help(this._command)
   }
 }
 
