@@ -197,12 +197,10 @@ export const SubCommand = <
   describe: () => main.describe(),
   * help (): Iterable<CommandHelp> {
     yield * main.help()
-    for (const line of sub.describe()) {
-      yield {
-        category: 'SUBCOMMANDS',
-        title: name,
-        description: line
-      }
+    yield {
+      category: 'SUBCOMMANDS',
+      title: name,
+      description: [...sub.describe()].join('\n')
     }
   }
 })
