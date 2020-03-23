@@ -98,7 +98,12 @@ export const BLANK: Command<BlankReturn, never> = ({
     consumedArgs: new Set<never>()
   } as const, args),
   describe: () => [],
-  help: () => []
+  help (): Iterable<CommandHelp> {
+    return [{
+      category: 'DESCRIPTION',
+      title: [...this.describe()].join('')
+    }]
+  }
 })
 
 export const Describe = <Target extends Command<any, any>> (
