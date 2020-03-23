@@ -9,7 +9,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [x] Report multiple errors at the same time
 * [ ] Re-design: Re-implement
   * [x] --help
-  * [ ] Subcommands' description (for --help)
+  * [x] Subcommands' description (for --help)
   * [ ] `Deno.symbols.customInspect`
   * [x] Remaining Arguments (`_`)
   * [x] Remaining Flags (unknown flags)
@@ -20,12 +20,12 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
   * [x] Implement as `EarlyExit`
   * [ ] Support both flag and subcommand (`--help` and `help`)
   * [ ] Help for subcommand: (`prog cmd --help` and `prog help cmd`)
-  * [ ] Proper indentation
-  * [ ] Categories
+  * [x] Proper indentation
+  * [x] Categories
   * Reference [clap](https://clap.rs/)'s
 * [x] Negative numbers
 * [ ] Optional flags
-* [ ]`index.ts`
+* [ ] `index.ts`
 * [ ] TSDoc
 * [ ] Support subcommands
   * [x] Known subcommands (subcommands that are known and defined by the programmer)

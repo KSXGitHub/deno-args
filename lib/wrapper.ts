@@ -10,6 +10,7 @@ import {
 import {
   BLANK,
   Command,
+  Describe,
   FlaggedCommand,
   SubCommand,
   CommandReturn,
@@ -36,6 +37,10 @@ class Wrapper<
 
   public parse (args: readonly string[]): ParseResult<Main, ErrList> {
     return this._command.extract([...iterateArguments(args)])
+  }
+
+  public describe (description: string): Wrapper<MainVal, Main, ErrList> {
+    return new Wrapper(Describe(this._command, description))
   }
 
   public with<

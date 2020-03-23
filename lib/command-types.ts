@@ -80,6 +80,7 @@ export interface Command<
   ErrList extends readonly ParseError[]
 > {
   extract (args: readonly ArgvItem[]): Return | ParseFailure<ErrList>
+  describe (): Iterable<string>
   help (): Iterable<CommandHelp>
 }
 
@@ -96,7 +97,23 @@ export const BLANK: Command<BlankReturn, never> = ({
     value: {},
     consumedArgs: new Set<never>()
   } as const, args),
-  help: () => []
+  describe: () => [],
+  * help (): Iterable<CommandHelp> {
+    for (const line of this.describe()) {
+      yield {
+        category: 'DESCRIPTION',
+        title: line
+      }
+    }
+  }
+})
+
+export const Describe = <Target extends Command<any, any>> (
+  target: Target,
+  description: string
+): Target => ({
+  ...target,
+  describe: () => [description]
 })
 
 export type FlaggedCommandReturn<
@@ -138,6 +155,7 @@ export const FlaggedCommand = <
       consumedArgs
     } as const, args)
   },
+  describe: () => main.describe(),
   * help (): Iterable<CommandHelp> {
     yield * main.help()
     yield {
@@ -176,12 +194,13 @@ export const SubCommand = <
       value
     } as const, args) as CommandReturn.Sub<Name, Sub>
   },
+  describe: () => main.describe(),
   * help (): Iterable<CommandHelp> {
     yield * main.help()
     yield {
       category: 'SUBCOMMANDS',
       title: name,
-      description: undefined! // TODO: implement
+      description: [...sub.describe()].join('\n')
     }
   }
 })
