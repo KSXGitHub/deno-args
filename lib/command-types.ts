@@ -98,11 +98,13 @@ export const BLANK: Command<BlankReturn, never> = ({
     consumedArgs: new Set<never>()
   } as const, args),
   describe: () => [],
-  help (): Iterable<CommandHelp> {
-    return [{
-      category: 'DESCRIPTION',
-      title: [...this.describe()].join('')
-    }]
+  * help (): Iterable<CommandHelp> {
+    for (const line of this.describe()) {
+      yield {
+        category: 'DESCRIPTION',
+        title: line
+      }
+    }
   }
 })
 
@@ -111,7 +113,7 @@ export const Describe = <Target extends Command<any, any>> (
   description: string
 ): Target => ({
   ...target,
-  describe: () => description
+  describe: () => [description]
 })
 
 export type FlaggedCommandReturn<
@@ -195,10 +197,12 @@ export const SubCommand = <
   describe: () => main.describe(),
   * help (): Iterable<CommandHelp> {
     yield * main.help()
-    yield {
-      category: 'SUBCOMMANDS',
-      title: name,
-      description: [...sub.describe()].join('')
+    for (const line of sub.describe()) {
+      yield {
+        category: 'SUBCOMMANDS',
+        title: name,
+        description: line
+      }
     }
   }
 })
