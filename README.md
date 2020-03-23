@@ -10,7 +10,6 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [ ] Re-design: Re-implement
   * [x] --help
   * [x] Subcommands' description (for --help)
-  * [ ] `Deno.symbols.customInspect`
   * [x] Remaining Arguments (`_`)
   * [x] Remaining Flags (unknown flags)
   * [x] Remaining Values (unprocessed values)
