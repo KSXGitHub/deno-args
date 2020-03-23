@@ -72,11 +72,12 @@ export function Choice<
       }
       return err(new InvalidChoice(raw, values))
     },
-    getTypeName: () => valueStrings.map(x => JSON.stringify(x)).join('|'),
+    getTypeName: () => 'choice',
     help () {
       let text = ''
       for (const { value, describe } of choices) {
-        if (describe) text += `‣ ${value}: ${describe}\n`
+        const suffix = describe ? `${value}: ${describe}` : String(value)
+        text += '‣ ' + suffix + '\n'
       }
       return text
     },
