@@ -21,7 +21,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
   * [ ] Support both flag and subcommand (`--help` and `help`)
   * [ ] Help for subcommand: (`prog cmd --help` and `prog help cmd`)
   * [x] Proper indentation
-  * [ ] Categories
+  * [x] Categories
   * Reference [clap](https://clap.rs/)'s
 * [x] Negative numbers
 * [ ] Optional flags
