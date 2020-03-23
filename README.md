@@ -7,7 +7,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 ## TODO
 
 * [x] Report multiple errors at the same time
-* [ ] Re-design: Re-implement
+* [x] Re-design: Re-implement
   * [x] --help
   * [x] Subcommands' description (for --help)
   * [x] Remaining Arguments (`_`)
