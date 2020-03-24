@@ -184,3 +184,17 @@ export const Partial = <Name extends string, Value, Default> (
   }),
   ...sharedProps(`Partial(${x[Symbol.toStringTag]})`)
 })
+
+export const PartialOption = <Name extends string, Value, Default> (
+  name: Name,
+  descriptor: PartialOptionDescriptor<Value, Default>
+): FlagType<Name, Value | Default> => Partial(
+  Option(name, descriptor),
+  descriptor.default,
+  descriptor.describeDefault
+)
+
+export interface PartialOptionDescriptor<Value, Default> extends OptionDescriptor<Value> {
+  readonly default: Default
+  readonly describeDefault?: string
+}
