@@ -157,3 +157,30 @@ export interface OptionDescriptor<Value> {
   readonly describe?: string
   readonly alias?: readonly string[]
 }
+
+export const Partial = <Name extends string, Value, Default> (
+  x: FlagType<Name, Value>,
+  def: Default,
+  descDef: string = String(def)
+): FlagType<Name, Value | Default> => ({
+  name: x.name,
+  extract (args) {
+    const result = x.extract(args)
+    if (result.tag) return result
+    if (result.error instanceof MissingFlag) {
+      return ok({
+        value: def,
+        consumedFlags: new Set()
+      })
+    }
+    return result
+  },
+  help: once(() => {
+    const { title, description } = x.help()
+    return {
+      title: `${title} [default: ${descDef}]`,
+      description
+    }
+  }),
+  ...sharedProps(`Partial(${x[Symbol.toStringTag]})`)
+})
