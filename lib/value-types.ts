@@ -34,7 +34,7 @@ export const FiniteNumber: ValueType<number, readonly [string]> = {
   ...sharedProps('FiniteNumber')
 }
 
-export const Integer: ValueType<BigInt, readonly [string]> = {
+export const Integer: ValueType<bigint, readonly [string]> = {
   extract ([raw]) {
     try {
       return ok(BigInt(raw))
