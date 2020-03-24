@@ -39,6 +39,16 @@ for (const args of [
   ],
 
   [
+    'aliases',
+    '-fccc',
+    '-N', '1e-23',
+    '--integer', '321',
+    '--text', 'hello there',
+    '--choice', '789',
+    '--partial-integer', '9876543210'
+  ],
+
+  [
     'sub0'
   ],
 

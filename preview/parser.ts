@@ -1,5 +1,5 @@
 import args from '../lib/wrapper.ts'
-import { Flag, CountFlag, Option, EarlyExitFlag } from '../lib/flag-types.ts'
+import { Flag, CountFlag, Option, EarlyExitFlag, PartialOption } from '../lib/flag-types.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../lib/value-types.ts'
 
 const parser = args
@@ -31,6 +31,11 @@ const parser = args
   }))
   .with(Option('text', {
     type: Text
+  }))
+  .with(PartialOption('partial-integer', {
+    type: Integer,
+    describe: 'An optional integer',
+    default: BigInt('123')
   }))
   .with(Option('choice', {
     type: Choice<123 | 'foo' | 456 | 'bar' | '789'>(
