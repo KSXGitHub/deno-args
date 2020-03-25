@@ -36,7 +36,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 * [ ] Type test
   * [ ] Make sure TypeScript infer the right type
 * [ ] Re-structure
-  * [ ] Create sub-directories for `{argument,value}-{errors,extractors}` and `utils`
+  * [ ] Create sub-directories for `{command,flag,value}-{errors,types}` and `utils`
   * [ ] Convert import URLs to point to original files when sub-directories are created
 * [ ] When all is done, remove warning
 
