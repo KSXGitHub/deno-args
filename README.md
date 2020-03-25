@@ -39,7 +39,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 ## Usage Examples
 
 ```typescript
-import args from 'https://deno.land/x/args/args.ts'
+import args from 'https://deno.land/x/args/wrapper.ts'
 import { HelpFlag, Option } from 'https://deno.land/x/args/argument-types.ts'
 import { FiniteNumber, Choice } from 'https://deno.land/x/args/value-types.ts'
 
