@@ -106,9 +106,18 @@ export const CountFlag = <Name extends string> (
 ): FlagType<Name, number> => ({
   name,
   extract (args) {
-    const findRes = findFlags(args, listFlags(name, descriptor))
+    const allNames = listFlags(name, descriptor)
+    const findRes = findFlags(args, allNames)
+    const value = findRes
+      .map(flag => flag.type === 'single-flag'
+        ? 1
+        : flag.name
+          .filter(name => allNames.includes(name))
+          .length
+      )
+      .reduce((acc, cur) => acc + cur, 0)
     return ok({
-      value: findRes.length,
+      value,
       consumedFlags: new Set(findRes)
     })
   },
