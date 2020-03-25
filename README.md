@@ -7,7 +7,6 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 ## TODO
 
 * [x] Report multiple errors at the same time
-* [x] Fix `CountFlag` for repeating shorthand: `-ccc` should return `3`, not `1`
 * [ ] Improve help
   * [x] Implement as `EarlyExit`
   * [ ] Support both flag and subcommand (`--help` and `help`)
