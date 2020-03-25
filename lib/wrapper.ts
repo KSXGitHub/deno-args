@@ -47,13 +47,13 @@ class Wrapper<
     NextKey extends string,
     NextVal
   > (
-    extractor: FlagType<NextKey, NextVal>
+    flag: FlagType<NextKey, NextVal>
   ): Wrapper<
     MainVal & Record<NextKey, NextVal>,
     FlaggedCommandReturn<MainVal, NextKey, NextVal>,
     readonly ParseError[]
   > {
-    return new Wrapper(FlaggedCommand(this._command, extractor))
+    return new Wrapper(FlaggedCommand(this._command, flag))
   }
 
   public sub<

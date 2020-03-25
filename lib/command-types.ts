@@ -134,16 +134,16 @@ export const FlaggedCommand = <
   ErrList extends readonly ParseError[]
 > (
   main: Command<CommandReturn.Main<MainVal>, ErrList>,
-  extractor: FlagType<NextKey, NextVal>
+  flag: FlagType<NextKey, NextVal>
 ): Command<FlaggedCommandReturn<MainVal, NextKey, NextVal>, ErrList | readonly [ParseError]> => ({
   extract (args): FlaggedCommandExtract<MainVal, NextKey, NextVal, ErrList> {
     const prevResult = main.extract(args)
     if (prevResult.tag === PARSE_FAILURE) return prevResult
-    const nextResult = extractor.extract(args)
+    const nextResult = flag.extract(args)
     if (!nextResult.tag) return ParseFailure([nextResult.error])
     const value = {
       ...prevResult.value,
-      ...record(extractor.name, nextResult.value.value)
+      ...record(flag.name, nextResult.value.value)
     }
     const consumedArgs = new Set([
       ...prevResult.consumedArgs,
@@ -160,7 +160,7 @@ export const FlaggedCommand = <
     yield * main.help()
     yield {
       category: 'OPTIONS',
-      ...extractor.help()
+      ...flag.help()
     }
   }
 })
