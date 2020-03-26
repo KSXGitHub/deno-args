@@ -60,4 +60,17 @@ switch (result.tag) {
     assert<boolean>(result.value.value.test)
 
     break
+
+  case 'sub2':
+    assert<ReadonlySet<ArgvItem>>(result.consumedArgs)
+    assert<null | undefined>(result.error)
+    assert<readonly string[]>(result.remaining().rawArgs())
+    assert<readonly string[]>(result.remaining().rawFlags())
+    assert<readonly string[]>(result.remaining().rawValues())
+
+    // flag values
+    assert<MAIN_COMMAND>(result.value.tag)
+    assert<null | undefined>(result.value.error)
+    assert<number>(result.value.value.number)
+    assert<string>(result.value.value.text)
 }
