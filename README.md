@@ -4,40 +4,6 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 **⚠ Warning:** This project is in an early stage of development. Things may break without notice. Be sure to specify exact version when use.
 
-## TODO
-
-* [x] Report multiple errors at the same time
-* [ ] Improve help
-  * [x] Implement as `EarlyExit`
-  * [ ] Support both flag and subcommand (`--help` and `help`)
-  * [ ] Help for subcommand: (`prog cmd --help` and `prog help cmd`)
-  * [x] Proper indentation
-  * [x] Categories
-  * Reference [clap](https://clap.rs/)'s
-* [x] Negative numbers
-* [x] Optional flags
-* [ ] Sharing flags
-* [x] `index.ts`
-* [ ] TSDoc
-* [ ] Support subcommands
-  * [x] Known subcommands (subcommands that are known and defined by the programmer)
-  * [ ] Unknown subcommands (e.g. `git foo` will find `git-foo` and execute it)
-* [ ] Release for Node.js
-  * [ ] Compile TypeScript files to JavaScript
-  * [ ] Create both CommonJS and ESM modules
-  * [ ] May use `parcel`
-* [ ] Add CI
-  * [ ] GitHub actions
-  * [ ] Travis CI
-  * [ ] Deploy on Netlify, now.sh, surge.sh
-* [ ] Test
-  * [ ] Use `jest` (Deno test ecosystem is yet matured)
-* [ ] Use `prettier` to format
-* [ ] Type test
-  * [x] Make sure TypeScript infer the right type
-  * [ ] Add more tests
-* [ ] When all is done, remove warning
-
 ## Usage Examples
 
 ```typescript
@@ -98,6 +64,40 @@ if (res.error) {
 ### More Examples
 
 Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/preview) for more examples.
+
+## TODO
+
+* [x] Report multiple errors at the same time
+* [ ] Improve help
+  * [x] Implement as `EarlyExit`
+  * [ ] Support both flag and subcommand (`--help` and `help`)
+  * [ ] Help for subcommand: (`prog cmd --help` and `prog help cmd`)
+  * [x] Proper indentation
+  * [x] Categories
+  * Reference [clap](https://clap.rs/)'s
+* [x] Negative numbers
+* [x] Optional flags
+* [ ] Sharing flags
+* [x] `index.ts`
+* [ ] TSDoc
+* [ ] Support subcommands
+  * [x] Known subcommands (subcommands that are known and defined by the programmer)
+  * [ ] Unknown subcommands (e.g. `git foo` will find `git-foo` and execute it)
+* [ ] Release for Node.js
+  * [ ] Compile TypeScript files to JavaScript
+  * [ ] Create both CommonJS and ESM modules
+  * [ ] May use `parcel`
+* [ ] Add CI
+  * [ ] GitHub actions
+  * [ ] Travis CI
+  * [ ] Deploy on Netlify, now.sh, surge.sh
+* [ ] Test
+  * [ ] Use `jest` (Deno test ecosystem is yet matured)
+* [ ] Use `prettier` to format
+* [ ] Type test
+  * [x] Make sure TypeScript infer the right type
+  * [ ] Add more tests
+* [ ] When all is done, remove warning
 
 ## License
 
