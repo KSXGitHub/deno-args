@@ -77,7 +77,7 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
   * Reference [clap](https://clap.rs/)'s
 * [x] Negative numbers
 * [x] Optional flags
-* [ ] Sharing flags
+* [ ] Sharing flags between subcommands
 * [x] `index.ts`
 * [ ] TSDoc
 * [ ] Support subcommands
