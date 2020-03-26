@@ -34,7 +34,8 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
   * [ ] Use `jest` (Deno test ecosystem is yet matured)
 * [ ] Use `prettier` to format
 * [ ] Type test
-  * [ ] Make sure TypeScript infer the right type
+  * [x] Make sure TypeScript infer the right type
+  * [ ] Add more tests
 * [ ] When all is done, remove warning
 
 ## Usage Examples
