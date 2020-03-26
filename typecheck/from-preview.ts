@@ -31,4 +31,18 @@ switch (result.tag) {
     assert<string>(result.value.text)
 
     break
+
+  case 'sub0':
+    assert<ReadonlySet<ArgvItem>>(result.consumedArgs)
+    assert<null | undefined>(result.error)
+    assert<readonly string[]>(result.remaining().rawArgs())
+    assert<readonly string[]>(result.remaining().rawFlags())
+    assert<readonly string[]>(result.remaining().rawValues())
+
+    // flag values
+    assert<MAIN_COMMAND>(result.value.tag)
+    assert<{}>(result.value.value)
+    assert<typeof result['value']['value']>({})
+
+    break
 }
