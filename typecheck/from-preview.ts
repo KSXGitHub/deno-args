@@ -29,4 +29,6 @@ switch (result.tag) {
     assert<number>(result.value.number)
     assert<bigint>(result.value["partial-integer"])
     assert<string>(result.value.text)
+
+    break
 }
