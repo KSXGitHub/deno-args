@@ -16,6 +16,7 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
   * Reference [clap](https://clap.rs/)'s
 * [x] Negative numbers
 * [x] Optional flags
+* [ ] Sharing flags
 * [x] `index.ts`
 * [ ] TSDoc
 * [ ] Support subcommands
