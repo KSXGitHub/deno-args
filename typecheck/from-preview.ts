@@ -41,6 +41,7 @@ switch (result.tag) {
 
     // flag values
     assert<MAIN_COMMAND>(result.value.tag)
+    assert<null | undefined>(result.value.error)
     assert<{}>(result.value.value)
     assert<typeof result['value']['value']>({})
 
