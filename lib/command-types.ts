@@ -80,6 +80,11 @@ export namespace CommandReturn {
     readonly tag: MAIN_COMMAND
   }
 
+  /**
+   * Interface of a sub command variant
+   * @template Name Type of subcommand name
+   * @template Value Type of wrapped main command
+   */
   export interface Sub<
     Name extends string,
     Value extends CommandReturn<any, any, any>
