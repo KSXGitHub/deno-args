@@ -20,9 +20,6 @@ export class CommandError<
     public readonly errors: ErrList
   ) {}
 
-  /**
-   * Get readable error message
-   */
   public readonly toString = () => this.errors
     .map(error => error.toString())
     .join('\n')
