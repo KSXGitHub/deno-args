@@ -21,6 +21,13 @@ import {
   CommandError
 } from './command-errors.ts'
 
+
+/**
+ * Type of result of `Command::extract`
+ * @template MainVal Type of main dictionary
+ * @template Name Command name
+ * @template Sub Type of subcommand dictionary
+ */
 export type CommandReturn<
   MainVal,
   Name extends string,
