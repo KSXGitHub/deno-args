@@ -106,26 +106,42 @@ export interface ParseError {
   toString (): string
 }
 
+/**
+ * Type of a classified argument
+ */
 export type ArgvItem = ArgvItem.SingleFlag | ArgvItem.MultiFlag | ArgvItem.Value
 
 export namespace ArgvItem {
   interface Base {
+    /** Position of the item in the arguments array */
     readonly index: number
+    /** Discriminant and type of argument */
     readonly type: 'single-flag' | 'multi-flag' | 'value'
+    /** Raw argument from which it was parsed */
     readonly raw: string
+    /** Flag name if the argument is a flag */
     readonly name?: string | readonly string[] | null
   }
 
+  /**
+   * Single flag variant of {@link ArgvItem}
+   */
   export interface SingleFlag extends Base {
     readonly type: 'single-flag'
     readonly name: string
   }
 
+  /**
+   * Multiple flag variant of {@link ArgvItem}
+   */
   export interface MultiFlag extends Base {
     readonly type: 'multi-flag'
     readonly name: readonly string[]
   }
 
+  /**
+   * Value variant of {@link ArgvItem}
+   */
   export interface Value extends Base {
     readonly type: 'value'
     readonly name?: null
