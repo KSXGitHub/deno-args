@@ -24,9 +24,6 @@ export class CommandError<
     .map(error => error.toString())
     .join('\n')
 
-  /**
-   * Iterate through `this.errors`
-   */
   public * [Symbol.iterator] () {
     yield * this.errors
   }
