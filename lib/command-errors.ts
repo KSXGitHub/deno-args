@@ -13,10 +13,8 @@ import {
 export class CommandError<
   ErrList extends readonly FlagError[]
 > implements ParseError, Iterable<FlagError> {
-  /**
-   * @param errors Array of {@link FlagError}
-   */
   constructor (
+    /** Array of {@link FlagError} */
     public readonly errors: ErrList
   ) {}
 
