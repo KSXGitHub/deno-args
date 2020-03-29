@@ -36,7 +36,7 @@ export type CommandReturn<
 
 /**
  * Failure variant of `Command::extract`
- * @template ErrList List of errors
+ * @template ErrList Type of list of errors
  */
 export type ParseFailure<
   ErrList extends readonly ParseError[]
