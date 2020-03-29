@@ -99,6 +99,9 @@ export interface Err<Error extends ParseError> {
   readonly error: Error
 }
 
+/**
+ * Basic interface of an error
+ */
 export interface ParseError {
   toString (): string
 }
