@@ -137,9 +137,15 @@ export interface Command<
   help (): Iterable<CommandHelp>
 }
 
+/**
+ * Interface of component of help message of command parser
+ */
 export interface CommandHelp {
+  /** Which section should this component be display under? */
   readonly category: string
+  /** Title of the component */
   readonly title: string
+  /** Content of the component */
   readonly description?: string
 }
 
