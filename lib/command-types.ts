@@ -108,12 +108,32 @@ export namespace CommandReturn {
   extends FailureBase<ErrList> {}
 }
 
+/**
+ * Interface of a command parser
+ * @template Return Type of parsing result
+ * @template ErrList Possible types of list of errors
+ */
 export interface Command<
   Return extends CommandReturn<any, any, any>,
   ErrList extends readonly ParseError[]
 > {
+  /**
+   * Convert a list of classified arguments to parsing result
+   * @param args List of classified arguments
+   * @returns Parsing result
+   */
   extract (args: readonly ArgvItem[]): Return | ParseFailure<ErrList>
+
+  /**
+   * Describe the command in `--help`
+   * @returns An iterable of lines of help messages
+   */
   describe (): Iterable<string>
+
+  /**
+   * All components to construct help message so far
+   * @returns An iterable of components
+   */
   help (): Iterable<CommandHelp>
 }
 
