@@ -169,6 +169,12 @@ export const BLANK: Command<BlankReturn, never> = ({
   }
 })
 
+/**
+ * Assign description to a command parser during construction chain
+ * @param target Target of description assignment
+ * @param description Description to assign
+ * @returns A transitive "command parser" that does everything `target` does
+ */
 export const Describe = <Target extends Command<any, any>> (
   target: Target,
   description: string
