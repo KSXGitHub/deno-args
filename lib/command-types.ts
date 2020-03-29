@@ -42,6 +42,12 @@ export type ParseFailure<
   ErrList extends readonly ParseError[]
 > = CommandReturn.Failure<ErrList>
 
+/**
+ * Create a failure for `Command::extract`
+ * @template ErrList Type of list of errors
+ * @param error List of errors
+ * @returns A wrapper of `error`
+ */
 export const ParseFailure = <
   ErrList extends readonly ParseError[]
 > (error: ErrList): ParseFailure<ErrList> => ({
