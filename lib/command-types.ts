@@ -100,6 +100,10 @@ export namespace CommandReturn {
     readonly value?: null
   }
 
+  /**
+   * Interface of parsing failure
+   * @template ErrList Type of list of errors
+   */
   export interface Failure<ErrList extends readonly ParseError[]>
   extends FailureBase<ErrList> {}
 }
