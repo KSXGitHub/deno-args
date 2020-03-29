@@ -25,8 +25,11 @@ export interface FlagType<Name extends string, Value> {
   readonly [Symbol.toStringTag]: string
 }
 
+/** Interface of a help item */
 export interface FlagHelp {
+  /** Item title */
   readonly title: string
+  /** Item description */
   readonly description?: string
 }
 
