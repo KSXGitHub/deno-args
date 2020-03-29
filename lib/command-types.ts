@@ -57,8 +57,11 @@ export const ParseFailure = <
 
 export namespace CommandReturn {
   interface Base {
+    /** Discriminant. Determine whether parsing result is from main command, sub command or failure */
     readonly tag: string | MAIN_COMMAND | PARSE_FAILURE
+    /** Parsing result */
     readonly value?: unknown
+    /** Parsing error */
     readonly error?: null | CommandError<any>
   }
 
