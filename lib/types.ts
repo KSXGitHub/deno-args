@@ -33,10 +33,26 @@ export interface FlagHelp {
   readonly description?: string
 }
 
+/** Interface of a value type */
 export interface ValueType<Value, Raw extends readonly string[]> {
+  /**
+   * Convert an array of raw arguments to value of the type
+   * @param raw Raw arguments to parse
+   * @returns `Ok(result)` if succeed, `Err(error)` otherwise
+   */
   extract (raw: Raw): Result<Value, ValueError>
+
+  /**
+   * Type name to display in `console.log`
+   */
   getTypeName (): string
+
+  /**
+   * Extra help messages
+   */
   help? (): string
+
+  /** Class name */
   readonly [Symbol.toStringTag]: string
 }
 
