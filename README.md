@@ -79,6 +79,7 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
 * [x] Optional flags
 * [ ] Sharing flags between subcommands
 * [x] `index.ts`
+* [ ] `manual.md`
 * [ ] TSDoc
 * [ ] Support subcommands
   * [x] Known subcommands (subcommands that are known and defined by the programmer)
