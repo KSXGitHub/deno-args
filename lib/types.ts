@@ -106,6 +106,10 @@ export interface Err<Error extends ParseError> {
  * Basic interface of an error
  */
 export interface ParseError {
+  /**
+   * Get readable error message
+   * @returns Error message
+   */
   toString (): string
 }
 
