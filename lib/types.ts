@@ -1,7 +1,11 @@
 import { FlagError } from './flag-errors.ts'
 import { ValueError } from './value-errors.ts'
 
-/** Interface of a flag type */
+/**
+ * Interface of a flag type
+ * @template Name Type of flag's name, preferably literal
+ * @template Value Type of flag's value
+ */
 export interface FlagType<Name extends string, Value> {
   /** Flag name */
   readonly name: Name
@@ -25,7 +29,9 @@ export interface FlagType<Name extends string, Value> {
   readonly [Symbol.toStringTag]: string
 }
 
-/** Interface of a help item */
+/**
+ * Interface of a help item
+ */
 export interface FlagHelp {
   /** Item title */
   readonly title: string
@@ -33,7 +39,11 @@ export interface FlagHelp {
   readonly description?: string
 }
 
-/** Interface of a value type */
+/**
+ * Interface of a value type
+ * @template Value Type of value (output)
+ * @template Raw Type of argument tuple (input)
+ */
 export interface ValueType<Value, Raw extends readonly string[]> {
   /**
    * Convert an array of raw arguments to value of the type
