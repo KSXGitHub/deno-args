@@ -34,6 +34,10 @@ export type CommandReturn<
   Sub extends CommandReturn<any, any, any>
 > = CommandReturn.Main<MainVal> | CommandReturn.Sub<Name, Sub>
 
+/**
+ * Failure variant of `Command::extract`
+ * @template ErrList List of errors
+ */
 export type ParseFailure<
   ErrList extends readonly ParseError[]
 > = CommandReturn.Failure<ErrList>
