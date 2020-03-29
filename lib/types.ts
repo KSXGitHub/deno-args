@@ -22,6 +22,7 @@ export interface FlagType<Name extends string, Value> {
 
   /**
    * Create a `FlagHelp` to display in `help::help()` or `wrapper::help()`
+   * @returns Instance of `FlagHelp`
    */
   help (): FlagHelp
 
@@ -54,11 +55,13 @@ export interface ValueType<Value, Raw extends readonly string[]> {
 
   /**
    * Type name to display in `console.log`
+   * @returns Type name
    */
   getTypeName (): string
 
   /**
    * Extra help messages
+   * @returns Help messages
    */
   help? (): string
 
