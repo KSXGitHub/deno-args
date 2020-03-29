@@ -1,13 +1,27 @@
 import { FlagError } from './flag-errors.ts'
 import { ValueError } from './value-errors.ts'
 
+/** Interface of a flag type */
 export interface FlagType<Name extends string, Value> {
+  /** Flag name */
   readonly name: Name
+
+  /**
+   * Extract value from a list of arguments
+   * @param args List of arguments
+   * @returns `Ok(result)` if succeed, `Err(error)` otherwise
+   */
   extract (args: readonly ArgvItem[]): Result<{
     value: Value
     consumedFlags: ReadonlySet<ArgvItem>
   }, FlagError>
+
+  /**
+   * Create a `FlagHelp` to display in `help::help()` or `wrapper::help()`
+   */
   help (): FlagHelp
+
+  /** Class name */
   readonly [Symbol.toStringTag]: string
 }
 
