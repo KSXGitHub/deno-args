@@ -72,6 +72,10 @@ export namespace CommandReturn {
     readonly consumedArgs: ReadonlySet<ArgvItem>
   }
 
+  /**
+   * Interface of a main command variant
+   * @template Value Type of parsing result
+   */
   export interface Main<Value> extends SuccessBase<Value> {
     readonly tag: MAIN_COMMAND
   }
