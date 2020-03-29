@@ -66,17 +66,36 @@ export interface ValueType<Value, Raw extends readonly string[]> {
   readonly [Symbol.toStringTag]: string
 }
 
+/**
+ * Type of result of a function that may fail
+ * @template Value Type of value when the function succeeds
+ * @template Error Type of error when the function fails
+ */
 export type Result<Value, Error extends ParseError> = Ok<Value> | Err<Error>
 
+/**
+ * Success variant of {@link Result}
+ * @template Value Type of value
+ */
 export interface Ok<Value> {
+  /** Discriminant */
   readonly tag: true
+  /** Value */
   readonly value: Value
+  /** Error */
   readonly error?: null
 }
 
+/**
+ * Failure variant of {@link Result}
+ * @template Error Type of error
+ */
 export interface Err<Error extends ParseError> {
+  /** Discriminant */
   readonly tag: false
+  /** Value */
   readonly value?: null
+  /** Error */
   readonly error: Error
 }
 
