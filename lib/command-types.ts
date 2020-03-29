@@ -23,7 +23,7 @@ import {
 
 
 /**
- * Type of result of `Command::extract`
+ * Success variant of `Command::extract`
  * @template MainVal Type of main dictionary
  * @template Name Command name
  * @template Sub Type of subcommand dictionary
