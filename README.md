@@ -81,7 +81,7 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
 * [x] `index.ts`
 * [ ] `manual.md`
 * [ ] TSDoc
-  * [ ] Describe all public APIs
+  * [x] Describe all public APIs
   * [ ] Add examples to `flag-types.ts`
   * [ ] Add examples to `wrapper.ts`
 * [ ] Support subcommands
