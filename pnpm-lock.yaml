@@ -1,6 +1,7 @@
 devDependencies:
   cross-env: 7.0.0
   parcel: 1.12.4
+  typescript: 3.8.3
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.8.3:
@@ -5086,6 +5087,13 @@ packages:
     dev: true
     resolution:
       integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+  /typescript/3.8.3:
+    dev: true
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
   /uncss/0.17.3:
     dependencies:
       commander: 2.20.3
@@ -5393,3 +5401,4 @@ packages:
 specifiers:
   cross-env: ^7.0.0
   parcel: ^1.12.4
+  typescript: ^3.8.3
