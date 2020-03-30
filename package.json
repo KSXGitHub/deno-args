@@ -24,11 +24,5 @@
   "bugs": {
     "url": "https://github.com/KSXGitHub/deno-args/issues"
   },
-  "homepage": "https://github.com/KSXGitHub/deno-args#readme",
-  "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "cross-env": "^7.0.0",
-    "typescript": "^3.8.3"
-  }
+  "homepage": "https://github.com/KSXGitHub/deno-args#readme"
 }
