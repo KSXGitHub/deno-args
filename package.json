@@ -27,7 +27,6 @@
   "homepage": "https://github.com/KSXGitHub/deno-args#readme",
   "devDependencies": {
     "cross-env": "^7.0.0",
-    "parcel": "^1.12.4",
     "typescript": "^3.8.3"
   }
 }
