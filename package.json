@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/KSXGitHub/deno-args/issues"
   },
-  "homepage": "https://github.com/KSXGitHub/deno-args#readme"
+  "homepage": "https://github.com/KSXGitHub/deno-args#readme",
+  "devDependencies": {
+    "parcel": "^1.12.4"
+  }
 }
