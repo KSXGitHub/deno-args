@@ -21,6 +21,48 @@ import {
   CommandError
 } from './command-errors.ts'
 
+interface ExtraProps {
+  remaining (): {
+    rawFlags (): readonly string[]
+    rawValues (): readonly string[]
+    rawArgs (): readonly string[]
+  }
+  readonly _: readonly string[]
+}
+
+function addExtraProps<Main extends {
+  readonly consumedArgs: ReadonlySet<ArgvItem>
+}> (main: Main, args: readonly ArgvItem[]): Main & ExtraProps {
+  const remaining: ExtraProps['remaining'] = once(() => {
+    const { consumedArgs } = object
+    const remainingArgs = args.filter(item => !consumedArgs.has(item))
+    const mapFn = (item: ArgvItem) => item.raw
+    const rawArgs = once(() => remainingArgs.map(mapFn))
+    const rawFlags = once(
+      () => remainingArgs
+        .filter(item => item.type !== 'value')
+        .map(mapFn)
+    )
+    const rawValues = once(
+      () => remainingArgs
+        .filter(item => item.type === 'value')
+        .map(mapFn)
+    )
+    return {
+      rawArgs,
+      rawFlags,
+      rawValues
+    }
+  })
+  const object: Main & ExtraProps = {
+    get _ () {
+      return this.remaining().rawArgs()
+    },
+    remaining,
+    ...main
+  }
+  return object
+}
 
 /**
  * Success variant of `Command::extract`
@@ -309,46 +351,3 @@ export const SubCommand = <
     }
   }
 })
-
-interface ExtraProps {
-  remaining (): {
-    rawFlags (): readonly string[]
-    rawValues (): readonly string[]
-    rawArgs (): readonly string[]
-  }
-  readonly _: readonly string[]
-}
-
-function addExtraProps<Main extends {
-  readonly consumedArgs: ReadonlySet<ArgvItem>
-}> (main: Main, args: readonly ArgvItem[]): Main & ExtraProps {
-  const remaining: ExtraProps['remaining'] = once(() => {
-    const { consumedArgs } = object
-    const remainingArgs = args.filter(item => !consumedArgs.has(item))
-    const mapFn = (item: ArgvItem) => item.raw
-    const rawArgs = once(() => remainingArgs.map(mapFn))
-    const rawFlags = once(
-      () => remainingArgs
-        .filter(item => item.type !== 'value')
-        .map(mapFn)
-    )
-    const rawValues = once(
-      () => remainingArgs
-        .filter(item => item.type === 'value')
-        .map(mapFn)
-    )
-    return {
-      rawArgs,
-      rawFlags,
-      rawValues
-    }
-  })
-  const object: Main & ExtraProps = {
-    get _ () {
-      return this.remaining().rawArgs()
-    },
-    remaining,
-    ...main
-  }
-  return object
-}
