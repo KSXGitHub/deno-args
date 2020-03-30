@@ -267,6 +267,10 @@ export type SubCommandReturn<
 > = Main | CommandReturn.Sub<Name, Sub>
 /**
  * Declare add subcommand to existing command parser
+ * @template Main Type of main wrapper
+ * @template Name Type of subcommand name
+ * @template Sub Subcommand parser
+ * @template ErrList Possible type of list of errors
  * @param main Main command parser
  * @param name Subcommand name
  * @param sub Subcommand parser
