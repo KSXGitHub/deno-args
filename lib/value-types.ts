@@ -17,12 +17,14 @@ const sharedProps = (typeName: string) => ({
   [Symbol.toStringTag]: typeName
 })
 
+/** Type and parser of text (string) value */
 export const Text: ValueType<string, readonly [string]> = {
   extract: ([raw]) => ok(raw),
   getTypeName: () => 'text',
   ...sharedProps('Text')
 }
 
+/** Type and parser of all number values except NaN and Infinity */
 export const FiniteNumber: ValueType<number, readonly [string]> = {
   extract ([raw]) {
     const value = Number(raw)
@@ -34,6 +36,7 @@ export const FiniteNumber: ValueType<number, readonly [string]> = {
   ...sharedProps('FiniteNumber')
 }
 
+/** Type and parser of all BigInt values */
 export const Integer: ValueType<bigint, readonly [string]> = {
   extract ([raw]) {
     try {
@@ -46,6 +49,12 @@ export const Integer: ValueType<bigint, readonly [string]> = {
   ...sharedProps('Integer')
 }
 
+/**
+ * Create type and parser of choice (union)
+ * @template Value Union type of choices to make
+ * @param choices Choices to make
+ * @returns Type and parser of choices
+ */
 export function Choice<
   Value extends number | string
 > (...choices: {

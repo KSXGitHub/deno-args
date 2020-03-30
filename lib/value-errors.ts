@@ -2,13 +2,21 @@ import {
   ParseError
 } from './types.ts'
 
+/**
+ * Base class of all `ValueError`
+ */
 export abstract class ValueError implements ParseError {
+  /** Raw input */
   public abstract readonly raw: string
   public abstract toString (): string
 }
 
+/**
+ * `ValueError` class for when non-number raw input being place in where a number is expected
+ */
 export class NotANumber extends ValueError {
   constructor (
+    /** Raw input */
     public readonly raw: string
   ) {
     super()
@@ -19,9 +27,14 @@ export class NotANumber extends ValueError {
   }
 }
 
+/**
+ * `ValueError` class for when non-integer raw input being place in where an integer is expected
+ */
 export class NotAnInteger extends ValueError {
   constructor (
+    /** Raw input */
     public readonly raw: string,
+    /** BigInt parsing error */
     public readonly error: SyntaxError
   ) {
     super()
@@ -32,9 +45,15 @@ export class NotAnInteger extends ValueError {
   }
 }
 
+/**
+ * `ValueError` class for when raw input not matching any expected choice
+ * @template ValidChoice Union type of valid choices
+ */
 export class InvalidChoice<ValidChoice extends string | number> extends ValueError {
   constructor (
+    /** Raw input */
     public readonly raw: string,
+    /** List of valid choices */
     public readonly choices: readonly ValidChoice[]
   ) {
     super()

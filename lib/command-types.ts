@@ -21,190 +21,6 @@ import {
   CommandError
 } from './command-errors.ts'
 
-export type CommandReturn<
-  MainVal,
-  Name extends string,
-  Sub extends CommandReturn<any, any, any>
-> = CommandReturn.Main<MainVal> | CommandReturn.Sub<Name, Sub>
-
-export type ParseFailure<
-  ErrList extends readonly ParseError[]
-> = CommandReturn.Failure<ErrList>
-
-export const ParseFailure = <
-  ErrList extends readonly ParseError[]
-> (error: ErrList): ParseFailure<ErrList> => ({
-  tag: PARSE_FAILURE,
-  error: new CommandError(error)
-})
-
-export namespace CommandReturn {
-  interface Base {
-    readonly tag: string | MAIN_COMMAND | PARSE_FAILURE
-    readonly value?: unknown
-    readonly error?: null | CommandError<any>
-  }
-
-  interface SuccessBase<Value> extends Base, ExtraProps {
-    readonly tag: string | MAIN_COMMAND
-    readonly value: Value
-    readonly error?: null
-    readonly consumedArgs: ReadonlySet<ArgvItem>
-  }
-
-  export interface Main<Value> extends SuccessBase<Value> {
-    readonly tag: MAIN_COMMAND
-  }
-
-  export interface Sub<
-    Name extends string,
-    Value extends CommandReturn<any, any, any>
-  > extends SuccessBase<Value> {
-    readonly tag: Name
-  }
-
-  interface FailureBase<
-    ErrList extends readonly ParseError[]
-  > extends Base {
-    readonly tag: PARSE_FAILURE
-    readonly error: CommandError<ErrList>
-    readonly value?: null
-  }
-
-  export interface Failure<ErrList extends readonly ParseError[]>
-  extends FailureBase<ErrList> {}
-}
-
-export interface Command<
-  Return extends CommandReturn<any, any, any>,
-  ErrList extends readonly ParseError[]
-> {
-  extract (args: readonly ArgvItem[]): Return | ParseFailure<ErrList>
-  describe (): Iterable<string>
-  help (): Iterable<CommandHelp>
-}
-
-export interface CommandHelp {
-  readonly category: string
-  readonly title: string
-  readonly description?: string
-}
-
-type BlankReturn = CommandReturn.Main<{}>
-export const BLANK: Command<BlankReturn, never> = ({
-  extract: (args) => addExtraProps({
-    tag: MAIN_COMMAND,
-    value: {},
-    consumedArgs: new Set<never>()
-  } as const, args),
-  describe: () => [],
-  * help (): Iterable<CommandHelp> {
-    for (const line of this.describe()) {
-      yield {
-        category: 'DESCRIPTION',
-        title: line
-      }
-    }
-  }
-})
-
-export const Describe = <Target extends Command<any, any>> (
-  target: Target,
-  description: string
-): Target => ({
-  ...target,
-  describe: () => [description]
-})
-
-export type FlaggedCommandReturn<
-  MainVal,
-  NextKey extends string,
-  NextVal
-> = CommandReturn.Main<MainVal & Record<NextKey, NextVal>>
-type FlaggedCommandExtract<
-  MainVal,
-  NextKey extends string,
-  NextVal,
-  ErrList extends readonly ParseError[]
-> = FlaggedCommandReturn<MainVal, NextKey, NextVal> | ParseFailure<ErrList | readonly [ParseError]>
-export const FlaggedCommand = <
-  MainVal,
-  NextKey extends string,
-  NextVal,
-  ErrList extends readonly ParseError[]
-> (
-  main: Command<CommandReturn.Main<MainVal>, ErrList>,
-  flag: FlagType<NextKey, NextVal>
-): Command<FlaggedCommandReturn<MainVal, NextKey, NextVal>, ErrList | readonly [ParseError]> => ({
-  extract (args): FlaggedCommandExtract<MainVal, NextKey, NextVal, ErrList> {
-    const prevResult = main.extract(args)
-    if (prevResult.tag === PARSE_FAILURE) return prevResult
-    const nextResult = flag.extract(args)
-    if (!nextResult.tag) return ParseFailure([nextResult.error])
-    const value = {
-      ...prevResult.value,
-      ...record(flag.name, nextResult.value.value)
-    }
-    const consumedArgs = new Set([
-      ...prevResult.consumedArgs,
-      ...nextResult.value.consumedFlags
-    ])
-    return addExtraProps({
-      tag: MAIN_COMMAND,
-      value,
-      consumedArgs
-    } as const, args)
-  },
-  describe: () => main.describe(),
-  * help (): Iterable<CommandHelp> {
-    yield * main.help()
-    yield {
-      category: 'OPTIONS',
-      ...flag.help()
-    }
-  }
-})
-
-export type SubCommandReturn<
-  Main extends CommandReturn<any, any, any>,
-  Name extends string,
-  Sub extends CommandReturn<any, any, any>
-> = Main | CommandReturn.Sub<Name, Sub>
-export const SubCommand = <
-  Main extends CommandReturn<any, any, any>,
-  Name extends string,
-  Sub extends CommandReturn<any, any, any>,
-  ErrList extends readonly ParseError[]
-> (
-  main: Command<Main, ErrList>,
-  name: Name,
-  sub: Command<Sub, ErrList>
-): Command<SubCommandReturn<Main, Name, Sub>, ErrList> => ({
-  extract (args): SubCommandReturn<Main, Name, Sub> | ParseFailure<ErrList> {
-    if (args.length === 0) return main.extract(args)
-    const [first, ...rest] = args
-    if (first.type !== 'value' || first.raw !== name) return main.extract(args)
-    const result = sub.extract(rest.map((item, index) => ({ ...item, index })))
-    if (result.tag === PARSE_FAILURE) return result as ParseFailure<ErrList>
-    const value = result as Sub
-    const consumedArgs = new Set([first, ...value.consumedArgs])
-    return addExtraProps({
-      tag: name,
-      consumedArgs,
-      value
-    } as const, args) as CommandReturn.Sub<Name, Sub>
-  },
-  describe: () => main.describe(),
-  * help (): Iterable<CommandHelp> {
-    yield * main.help()
-    yield {
-      category: 'SUBCOMMANDS',
-      title: name,
-      description: [...sub.describe()].join('\n')
-    }
-  }
-})
-
 interface ExtraProps {
   remaining (): {
     rawFlags (): readonly string[]
@@ -247,3 +63,291 @@ function addExtraProps<Main extends {
   }
   return object
 }
+
+/**
+ * Success variant of `Command::extract`
+ * @template MainVal Type of main dictionary
+ * @template Name Command name
+ * @template Sub Type of subcommand dictionary
+ */
+export type CommandReturn<
+  MainVal,
+  Name extends string,
+  Sub extends CommandReturn<any, any, any>
+> = CommandReturn.Main<MainVal> | CommandReturn.Sub<Name, Sub>
+
+/**
+ * Failure variant of `Command::extract`
+ * @template ErrList Type of list of errors
+ */
+export type ParseFailure<
+  ErrList extends readonly ParseError[]
+> = CommandReturn.Failure<ErrList>
+
+/**
+ * Create a failure for `Command::extract`
+ * @template ErrList Type of list of errors
+ * @param error List of errors
+ * @returns A wrapper of `error`
+ */
+export const ParseFailure = <
+  ErrList extends readonly ParseError[]
+> (error: ErrList): ParseFailure<ErrList> => ({
+  tag: PARSE_FAILURE,
+  error: new CommandError(error)
+})
+
+export namespace CommandReturn {
+  interface Base {
+    /** Discriminant. Determine whether parsing result is from main command, sub command or failure */
+    readonly tag: string | MAIN_COMMAND | PARSE_FAILURE
+    /** Parsing result */
+    readonly value?: unknown
+    /** Parsing error */
+    readonly error?: null | CommandError<any>
+  }
+
+  interface SuccessBase<Value> extends Base, ExtraProps {
+    readonly tag: string | MAIN_COMMAND
+    readonly value: Value
+    readonly error?: null
+    readonly consumedArgs: ReadonlySet<ArgvItem>
+  }
+
+  /**
+   * Interface of a main command variant
+   * @template Value Type of parsing result
+   */
+  export interface Main<Value> extends SuccessBase<Value> {
+    readonly tag: MAIN_COMMAND
+  }
+
+  /**
+   * Interface of a sub command variant
+   * @template Name Type of subcommand name
+   * @template Value Type of wrapped main command
+   */
+  export interface Sub<
+    Name extends string,
+    Value extends CommandReturn<any, any, any>
+  > extends SuccessBase<Value> {
+    readonly tag: Name
+  }
+
+  interface FailureBase<
+    ErrList extends readonly ParseError[]
+  > extends Base {
+    readonly tag: PARSE_FAILURE
+    readonly error: CommandError<ErrList>
+    readonly value?: null
+  }
+
+  /**
+   * Interface of parsing failure
+   * @template ErrList Type of list of errors
+   */
+  export interface Failure<ErrList extends readonly ParseError[]>
+  extends FailureBase<ErrList> {}
+}
+
+/**
+ * Interface of a command parser
+ * @template Return Type of parsing result
+ * @template ErrList Possible types of list of errors
+ */
+export interface Command<
+  Return extends CommandReturn<any, any, any>,
+  ErrList extends readonly ParseError[]
+> {
+  /**
+   * Convert a list of classified arguments to parsing result
+   * @param args List of classified arguments
+   * @returns Parsing result
+   */
+  extract (args: readonly ArgvItem[]): Return | ParseFailure<ErrList>
+
+  /**
+   * Describe the command in `--help`
+   * @returns An iterable of lines of help messages
+   */
+  describe (): Iterable<string>
+
+  /**
+   * All components to construct help message so far
+   * @returns An iterable of components
+   */
+  help (): Iterable<CommandHelp>
+}
+
+/**
+ * Interface of component of help message of command parser
+ */
+export interface CommandHelp {
+  /** Which section should this component be display under? */
+  readonly category: string
+  /** Title of the component */
+  readonly title: string
+  /** Content of the component */
+  readonly description?: string
+}
+
+/** Type of value of {@link BLANK} */
+type BlankReturn = CommandReturn.Main<{}>
+/** Starting point of a command parser construction chain */
+export const BLANK: Command<BlankReturn, never> = ({
+  extract: (args) => addExtraProps({
+    tag: MAIN_COMMAND,
+    value: {},
+    consumedArgs: new Set<never>()
+  } as const, args),
+  describe: () => [],
+  * help (): Iterable<CommandHelp> {
+    for (const line of this.describe()) {
+      yield {
+        category: 'DESCRIPTION',
+        title: line
+      }
+    }
+  }
+})
+
+/**
+ * Assign description to a command parser during construction chain
+ * @param target Target of description assignment
+ * @param description Description to assign
+ * @returns A transitive "command parser" that does everything `target` does
+ */
+export const Describe = <Target extends Command<any, any>> (
+  target: Target,
+  description: string
+): Target => ({
+  ...target,
+  describe: () => [description]
+})
+
+/**
+ * Type of value of {@link FlaggedCommand}
+ * @template MainVal Type of main dictionary
+ * @template NextKey Type of flag name
+ * @template NextVal Type of flag value
+ */
+export type FlaggedCommandReturn<
+  MainVal,
+  NextKey extends string,
+  NextVal
+> = CommandReturn.Main<MainVal & Record<NextKey, NextVal>>
+/**
+ * Return type of `FlaggedCommand::extract`
+ * @template MainVal Type of main dictionary
+ * @template NextKey Type of flag name
+ * @template NextVal Type of flag value
+ */
+type FlaggedCommandExtract<
+  MainVal,
+  NextKey extends string,
+  NextVal,
+  ErrList extends readonly ParseError[]
+> = FlaggedCommandReturn<MainVal, NextKey, NextVal> | ParseFailure<ErrList | readonly [ParseError]>
+/**
+ * Add a flag parser on top of existing command parser
+ * @template MainVal Type of main dictionary
+ * @template NextKey Type of flag name
+ * @template NextVal Type of flag value
+ * @template ErrList Possible type of list of errors
+ * @param main Targeted command parser
+ * @param flag Flag type to add
+ * @returns A command parser that does what `main` and `flag` do
+ */
+export const FlaggedCommand = <
+  MainVal,
+  NextKey extends string,
+  NextVal,
+  ErrList extends readonly ParseError[]
+> (
+  main: Command<CommandReturn.Main<MainVal>, ErrList>,
+  flag: FlagType<NextKey, NextVal>
+): Command<FlaggedCommandReturn<MainVal, NextKey, NextVal>, ErrList | readonly [ParseError]> => ({
+  extract (args): FlaggedCommandExtract<MainVal, NextKey, NextVal, ErrList> {
+    const prevResult = main.extract(args)
+    if (prevResult.tag === PARSE_FAILURE) return prevResult
+    const nextResult = flag.extract(args)
+    if (!nextResult.tag) return ParseFailure([nextResult.error])
+    const value = {
+      ...prevResult.value,
+      ...record(flag.name, nextResult.value.value)
+    }
+    const consumedArgs = new Set([
+      ...prevResult.consumedArgs,
+      ...nextResult.value.consumedFlags
+    ])
+    return addExtraProps({
+      tag: MAIN_COMMAND,
+      value,
+      consumedArgs
+    } as const, args)
+  },
+  describe: () => main.describe(),
+  * help (): Iterable<CommandHelp> {
+    yield * main.help()
+    yield {
+      category: 'OPTIONS',
+      ...flag.help()
+    }
+  }
+})
+
+/**
+ * Type of value of {@link SubCommand}
+ * @template Main Type of main wrapper
+ * @template Name Type of subcommand name
+ * @template Sub Subcommand parser
+ */
+export type SubCommandReturn<
+  Main extends CommandReturn<any, any, any>,
+  Name extends string,
+  Sub extends CommandReturn<any, any, any>
+> = Main | CommandReturn.Sub<Name, Sub>
+/**
+ * Declare add subcommand to existing command parser
+ * @template Main Type of main wrapper
+ * @template Name Type of subcommand name
+ * @template Sub Subcommand parser
+ * @template ErrList Possible type of list of errors
+ * @param main Main command parser
+ * @param name Subcommand name
+ * @param sub Subcommand parser
+ */
+export const SubCommand = <
+  Main extends CommandReturn<any, any, any>,
+  Name extends string,
+  Sub extends CommandReturn<any, any, any>,
+  ErrList extends readonly ParseError[]
+> (
+  main: Command<Main, ErrList>,
+  name: Name,
+  sub: Command<Sub, ErrList>
+): Command<SubCommandReturn<Main, Name, Sub>, ErrList> => ({
+  extract (args): SubCommandReturn<Main, Name, Sub> | ParseFailure<ErrList> {
+    if (args.length === 0) return main.extract(args)
+    const [first, ...rest] = args
+    if (first.type !== 'value' || first.raw !== name) return main.extract(args)
+    const result = sub.extract(rest.map((item, index) => ({ ...item, index })))
+    if (result.tag === PARSE_FAILURE) return result as ParseFailure<ErrList>
+    const value = result as Sub
+    const consumedArgs = new Set([first, ...value.consumedArgs])
+    return addExtraProps({
+      tag: name,
+      consumedArgs,
+      value
+    } as const, args) as CommandReturn.Sub<Name, Sub>
+  },
+  describe: () => main.describe(),
+  * help (): Iterable<CommandHelp> {
+    yield * main.help()
+    yield {
+      category: 'SUBCOMMANDS',
+      title: name,
+      description: [...sub.describe()].join('\n')
+    }
+  }
+})

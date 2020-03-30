@@ -62,6 +62,16 @@ const sharedProps = (
   )
 })
 
+interface FlagDescriptorSharedProps {
+  /** Flag aliases */
+  readonly alias?: readonly string[]
+  /** Flag description */
+  readonly describe?: string
+}
+
+/**
+ * Declare a flag that terminates the program
+ */
 export const EarlyExitFlag = <Name extends string> (
   name: Name,
   descriptor: EarlyExitDescriptor
@@ -76,12 +86,21 @@ export const EarlyExitFlag = <Name extends string> (
   ...sharedProps('EarlyExitFlag')
 })
 
-export interface EarlyExitDescriptor {
-  readonly describe?: string
-  readonly alias?: readonly string[]
+/**
+ * Interface of descriptor of {@link EarlyExitFlag}
+ */
+export interface EarlyExitDescriptor extends FlagDescriptorSharedProps {
+  /**
+   * Exit function to call
+   */
   readonly exit: () => never
 }
 
+/**
+ * Declare a binary flag:
+ * * value is `true` if the flag is found in argument list once or multiple times
+ * * value is `false` if the flag isn't found in argument list
+ */
 export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
@@ -100,6 +119,9 @@ export const BinaryFlag = <Name extends string> (
 
 export { BinaryFlag as Flag }
 
+/**
+ * Declare a count flag: Value is number of occurrences
+ */
 export const CountFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
@@ -125,11 +147,16 @@ export const CountFlag = <Name extends string> (
   ...sharedProps('CountFlag')
 })
 
-export interface FlagDescriptor {
-  readonly describe?: string
-  readonly alias?: readonly string[]
-}
+/**
+ * Interface of descriptor of {@link BinaryFlag} and {@link CountFlag}
+ */
+export interface FlagDescriptor extends FlagDescriptorSharedProps {}
 
+/**
+ * Declare an option, including:
+ * * A flag
+ * * A value right after the flag
+ */
 export const Option = <Name extends string, Value> (
   name: Name,
   descriptor: OptionDescriptor<Value>
@@ -161,12 +188,20 @@ export const Option = <Name extends string, Value> (
   ...sharedProps('Option', descriptor)
 })
 
-export interface OptionDescriptor<Value> {
+/**
+ * Interface of descriptor of {@link Option}
+ * @template Value Type of value
+ */
+export interface OptionDescriptor<Value> extends FlagDescriptorSharedProps {
+  /** Value parser and type */
   readonly type: ValueType<Value, [string]>
-  readonly describe?: string
-  readonly alias?: readonly string[]
 }
 
+/**
+ * Turn an option partial:
+ * * If the option does not have a value, return default value
+ * * If the option has a value, return that value
+ */
 export const Partial = <Name extends string, Value, Default> (
   x: FlagType<Name, Value>,
   def: Default,
@@ -194,6 +229,11 @@ export const Partial = <Name extends string, Value, Default> (
   ...sharedProps(`Partial(${x[Symbol.toStringTag]})`)
 })
 
+/**
+ * Declare a partial option:
+ * * If a value is found, return that value
+ * * If not, return default value
+ */
 export const PartialOption = <Name extends string, Value, Default> (
   name: Name,
   descriptor: PartialOptionDescriptor<Value, Default>
@@ -203,7 +243,14 @@ export const PartialOption = <Name extends string, Value, Default> (
   descriptor.describeDefault
 )
 
+/**
+ * Interface of descriptor of {@link PartialOption}
+ * @template Value Type of value
+ * @template Default Type of default value
+ */
 export interface PartialOptionDescriptor<Value, Default> extends OptionDescriptor<Value> {
+  /** Default value */
   readonly default: Default
+  /** Default value description */
   readonly describeDefault?: string
 }
