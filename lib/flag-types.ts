@@ -243,7 +243,14 @@ export const PartialOption = <Name extends string, Value, Default> (
   descriptor.describeDefault
 )
 
+/**
+ * Interface of descriptor of {@link PartialOption}
+ * @template Value Type of value
+ * @template Default Type of default value
+ */
 export interface PartialOptionDescriptor<Value, Default> extends OptionDescriptor<Value> {
+  /** Default value */
   readonly default: Default
+  /** Default value description */
   readonly describeDefault?: string
 }
