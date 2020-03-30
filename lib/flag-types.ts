@@ -197,6 +197,11 @@ export interface OptionDescriptor<Value> extends FlagDescriptorSharedProps {
   readonly type: ValueType<Value, [string]>
 }
 
+/**
+ * Turn an option partial:
+ * * If the option does not have a value, return default value
+ * * If the option has a value, return that value
+ */
 export const Partial = <Name extends string, Value, Default> (
   x: FlagType<Name, Value>,
   def: Default,
