@@ -86,7 +86,9 @@ export const EarlyExitFlag = <Name extends string> (
   ...sharedProps('EarlyExitFlag')
 })
 
-/** Interface of descriptor of {@link EarlyExitFlag} */
+/**
+ * Interface of descriptor of {@link EarlyExitFlag}
+ */
 export interface EarlyExitDescriptor extends FlagDescriptorSharedProps {
   /**
    * Exit function to call
