@@ -149,7 +149,7 @@ export interface CommandHelp {
   readonly description?: string
 }
 
-/** Type of {@link BLANK} */
+/** Type of value of {@link BLANK} */
 type BlankReturn = CommandReturn.Main<{}>
 /** Starting point of a command parser construction chain */
 export const BLANK: Command<BlankReturn, never> = ({
