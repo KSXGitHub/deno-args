@@ -26,6 +26,11 @@ type ParseResult<
   ErrList extends readonly ParseError[]
 > = Main | ParseFailure<ErrList>
 
+/**
+ * @template MainVal Type of value of current pipeline
+ * @template Main Type of command parser of current pipeline
+ * @template ErrList Possible type of list of errors of current pipeline
+ */
 class Wrapper<
   MainVal,
   Main extends CommandReturn<any, any, any>,
@@ -35,14 +40,31 @@ class Wrapper<
     private readonly _command: Command<Main, ErrList>
   ) {}
 
+  /**
+   * Parse a list of raw arguments
+   * @param args List of raw arguments
+   * @returns Parsing result
+   */
   public parse (args: readonly string[]): ParseResult<Main, ErrList> {
     return this._command.extract([...iterateArguments(args)])
   }
 
+  /**
+   * Set description to command parser of current pipeline
+   * @param description Command's description
+   * @returns A wrapper with a new description
+   */
   public describe (description: string): Wrapper<MainVal, Main, ErrList> {
     return new Wrapper(Describe(this._command, description))
   }
 
+  /**
+   * Add a flag/option parser to command of current pipeline
+   * @template NextKey Type of flag name
+   * @template NextVal Type of flag value
+   * @param flag Parser and type of flag to be added
+   * @returns A wrapper with added flag
+   */
   public with<
     NextKey extends string,
     NextVal
@@ -56,6 +78,15 @@ class Wrapper<
     return new Wrapper(FlaggedCommand(this._command, flag))
   }
 
+  /**
+   * Add a subcommand parser alternate to (main) command of current pipeline
+   * @template Name Type of subcommand name
+   * @template SubVal Value of subcommand parser
+   * @template NextErrList Possible type of list of errors of subcommand parser
+   * @param name Subcommand name
+   * @param sub Subcommand wrapper
+   * @returns A wrapper with added subcommand
+   */
   public sub<
     Name extends string,
     SubVal extends CommandReturn<any, any, any>,
@@ -71,6 +102,10 @@ class Wrapper<
     return new Wrapper(SubCommand(this._command, name, sub._command))
   }
 
+  /**
+   * Get help message
+   * @returns Help message
+   */
   public help (): string {
     return help(this._command)
   }
