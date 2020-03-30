@@ -119,6 +119,9 @@ export const BinaryFlag = <Name extends string> (
 
 export { BinaryFlag as Flag }
 
+/**
+ * Declare a count flag: Value is number of occurrences
+ */
 export const CountFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
