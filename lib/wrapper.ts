@@ -111,5 +111,6 @@ class Wrapper<
   }
 }
 
+/** Starting point of parser construction pipeline */
 export const args = new Wrapper(BLANK)
 export default args
