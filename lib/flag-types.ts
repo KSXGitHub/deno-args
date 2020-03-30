@@ -62,6 +62,13 @@ const sharedProps = (
   )
 })
 
+interface FlagDescriptorSharedProps {
+  /** Flag aliases */
+  readonly alias?: readonly string[]
+  /** Flag description */
+  readonly describe?: string
+}
+
 /**
  * Declare a flag that terminates the program
  */
@@ -79,10 +86,7 @@ export const EarlyExitFlag = <Name extends string> (
   ...sharedProps('EarlyExitFlag')
 })
 
-export interface EarlyExitDescriptor {
-  readonly describe?: string
-  readonly alias?: readonly string[]
-
+export interface EarlyExitDescriptor extends FlagDescriptorSharedProps {
   /**
    * Exit function to call
    */
@@ -132,10 +136,7 @@ export const CountFlag = <Name extends string> (
   ...sharedProps('CountFlag')
 })
 
-export interface FlagDescriptor {
-  readonly describe?: string
-  readonly alias?: readonly string[]
-}
+export interface FlagDescriptor extends FlagDescriptorSharedProps {}
 
 export const Option = <Name extends string, Value> (
   name: Name,
@@ -168,10 +169,8 @@ export const Option = <Name extends string, Value> (
   ...sharedProps('Option', descriptor)
 })
 
-export interface OptionDescriptor<Value> {
+export interface OptionDescriptor<Value> extends FlagDescriptorSharedProps {
   readonly type: ValueType<Value, [string]>
-  readonly describe?: string
-  readonly alias?: readonly string[]
 }
 
 export const Partial = <Name extends string, Value, Default> (
