@@ -208,6 +208,10 @@ type FlaggedCommandExtract<
 > = FlaggedCommandReturn<MainVal, NextKey, NextVal> | ParseFailure<ErrList | readonly [ParseError]>
 /**
  * Add a flag parser on top of existing command parser
+ * @template MainVal Type of main dictionary
+ * @template NextKey Type of flag name
+ * @template NextVal Type of flag value
+ * @template ErrList Possible type of list of errors
  * @param main Targeted command parser
  * @param flag Flag type to add
  * @returns A command parser that does what `main` and `flag` do
