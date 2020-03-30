@@ -183,17 +183,35 @@ export const Describe = <Target extends Command<any, any>> (
   describe: () => [description]
 })
 
+/**
+ * Type of value of {@link FlaggedCommand}
+ * @template MainVal Type of main dictionary
+ * @template NextKey Type of flag name
+ * @template NextVal Type of flag value
+ */
 export type FlaggedCommandReturn<
   MainVal,
   NextKey extends string,
   NextVal
 > = CommandReturn.Main<MainVal & Record<NextKey, NextVal>>
+/**
+ * Return type of `FlaggedCommand::extract`
+ * @template MainVal Type of main dictionary
+ * @template NextKey Type of flag name
+ * @template NextVal Type of flag value
+ */
 type FlaggedCommandExtract<
   MainVal,
   NextKey extends string,
   NextVal,
   ErrList extends readonly ParseError[]
 > = FlaggedCommandReturn<MainVal, NextKey, NextVal> | ParseFailure<ErrList | readonly [ParseError]>
+/**
+ * Add a flag parser on top of existing command parser
+ * @param main Targeted command parser
+ * @param flag Flag type to add
+ * @returns A command parser that does what `main` and `flag` do
+ */
 export const FlaggedCommand = <
   MainVal,
   NextKey extends string,
