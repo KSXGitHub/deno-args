@@ -147,6 +147,9 @@ export const CountFlag = <Name extends string> (
   ...sharedProps('CountFlag')
 })
 
+/**
+ * Interface of descriptor of {@link BinaryFlag} and {@link CountFlag}
+ */
 export interface FlagDescriptor extends FlagDescriptorSharedProps {}
 
 export const Option = <Name extends string, Value> (
