@@ -188,7 +188,12 @@ export const Option = <Name extends string, Value> (
   ...sharedProps('Option', descriptor)
 })
 
+/**
+ * Interface of descriptor of {@link Option}
+ * @template Value Type of value
+ */
 export interface OptionDescriptor<Value> extends FlagDescriptorSharedProps {
+  /** Value parser and type */
   readonly type: ValueType<Value, [string]>
 }
 
