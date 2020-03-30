@@ -229,6 +229,11 @@ export const Partial = <Name extends string, Value, Default> (
   ...sharedProps(`Partial(${x[Symbol.toStringTag]})`)
 })
 
+/**
+ * Declare a partial option:
+ * * If a value is found, return that value
+ * * If not, return default value
+ */
 export const PartialOption = <Name extends string, Value, Default> (
   name: Name,
   descriptor: PartialOptionDescriptor<Value, Default>
