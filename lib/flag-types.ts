@@ -152,6 +152,11 @@ export const CountFlag = <Name extends string> (
  */
 export interface FlagDescriptor extends FlagDescriptorSharedProps {}
 
+/**
+ * Declare an option, including:
+ * * A flag
+ * * A value right after the flag
+ */
 export const Option = <Name extends string, Value> (
   name: Name,
   descriptor: OptionDescriptor<Value>
