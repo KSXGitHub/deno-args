@@ -62,6 +62,9 @@ const sharedProps = (
   )
 })
 
+/**
+ * Declare a flag that terminates the program
+ */
 export const EarlyExitFlag = <Name extends string> (
   name: Name,
   descriptor: EarlyExitDescriptor
@@ -79,6 +82,10 @@ export const EarlyExitFlag = <Name extends string> (
 export interface EarlyExitDescriptor {
   readonly describe?: string
   readonly alias?: readonly string[]
+
+  /**
+   * Exit function to call
+   */
   readonly exit: () => never
 }
 
