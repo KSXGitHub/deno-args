@@ -96,6 +96,11 @@ export interface EarlyExitDescriptor extends FlagDescriptorSharedProps {
   readonly exit: () => never
 }
 
+/**
+ * Declare a binary flag:
+ * * value is `true` if the flag is found in argument list once or multiple times
+ * * value is `false` if the flag isn't found in argument list
+ */
 export const BinaryFlag = <Name extends string> (
   name: Name,
   descriptor: FlagDescriptor = {}
