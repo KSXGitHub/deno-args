@@ -250,11 +250,23 @@ export const FlaggedCommand = <
   }
 })
 
+/**
+ * Type of value of {@link SubCommand}
+ * @template Main Type of main wrapper
+ * @template Name Type of subcommand name
+ * @template Sub Subcommand parser
+ */
 export type SubCommandReturn<
   Main extends CommandReturn<any, any, any>,
   Name extends string,
   Sub extends CommandReturn<any, any, any>
 > = Main | CommandReturn.Sub<Name, Sub>
+/**
+ * Declare add subcommand to existing command parser
+ * @param main Main command parser
+ * @param name Subcommand name
+ * @param sub Subcommand parser
+ */
 export const SubCommand = <
   Main extends CommandReturn<any, any, any>,
   Name extends string,
