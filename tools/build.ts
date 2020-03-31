@@ -6,59 +6,70 @@ import {
 } from './deps.ts'
 
 const __dirname = dirname(import.meta)
-const libPath = path.join(__dirname, '../lib')
-const distESM = path.join(__dirname, '../nodejs/esm')
-const distCJS = path.join(__dirname, '../nodejs/cjs')
+const root = path.dirname(__dirname)
+const distESM = 'nodejs/esm'
+const distCJS = 'nodejs/cjs'
+Deno.chdir(root)
 await fs.emptyDir(distESM)
 await fs.emptyDir(distCJS)
-Deno.chdir(libPath)
 
-const options: Deno.CompilerOptions = {
-  target: 'es2018',
-  module: 'es2015',
-  lib: ['es2020'],
-  declaration: true,
-  sourceMap: false,
-  preserveConstEnums: true,
-  strict: true,
-  noUnusedLocals: false,
-  noUnusedParameters: false,
-  noImplicitReturns: false,
-  noFallthroughCasesInSwitch: true,
-  experimentalDecorators: true,
-  emitDecoratorMetadata: true
-}
+console.info('=> CommonJS')
+await build('commonjs', distCJS)
 
-const sourceDict: {
-  [_: string]: string
-} = {}
+console.info('=> ES Module')
+await build('es2015', distESM)
 
-for await (const item of traverseFileSystem('.', () => true)) {
-  if (item.isDirectory) continue
-
-  const basename = item.info.name!
-  const filename = path.join(item.container, basename)
-
-  if (basename === 'deps.ts') {
-    console.info(':: bundle', filename)
-    const [diagnostic, output] = await Deno.bundle(filename)
-    if (diagnostic) printDiagnostic(diagnostic)
-    sourceDict[path.join('/', filename)] = output
-  } else {
-    console.info(':: copy', filename)
-    sourceDict[path.join('/', filename)] = await fs.readFileStr(filename)
+async function build (
+  module: 'es2015' | 'commonjs',
+  outDir: string
+) {
+  const options: Deno.CompilerOptions = {
+    module,
+    outDir,
+    target: 'es2018',
+    lib: ['es2020'],
+    declaration: true,
+    sourceMap: false,
+    preserveConstEnums: true,
+    strict: true,
+    noUnusedLocals: false,
+    noUnusedParameters: false,
+    noImplicitReturns: false,
+    noFallthroughCasesInSwitch: true,
+    experimentalDecorators: true,
+    emitDecoratorMetadata: true
   }
-}
 
-console.info(':: compile')
-const [diagnostic, output] = await Deno.compile('/index.ts', sourceDict, options)
-if (diagnostic) printDiagnostic(diagnostic)
+  const sourceDict: {
+    [_: string]: string
+  } = {}
 
-for (const [key, value] of Object.entries({ ...sourceDict, ...output })) {
-  const filename = path.join(distESM, key)
-  console.log(':: write', filename)
-  await fs.ensureFile(filename)
-  await fs.writeFileStr(filename, value)
+  for await (const item of traverseFileSystem('lib', () => true)) {
+    if (item.isDirectory) continue
+
+    const basename = item.info.name!
+    const filename = path.join(item.container, basename)
+
+    if (basename === 'deps.ts') {
+      console.info('  -> bundle', filename)
+      const [diagnostic, output] = await Deno.bundle(filename)
+      if (diagnostic) printDiagnostic(diagnostic)
+      sourceDict[path.join('/', filename)] = output
+    } else {
+      console.info('  -> copy', filename)
+      sourceDict[path.join('/', filename)] = await fs.readFileStr(filename)
+    }
+  }
+
+  console.info('  -> compile')
+  const [diagnostic, output] = await Deno.compile('/lib/index.ts', sourceDict, options)
+  if (diagnostic) printDiagnostic(diagnostic)
+
+  for (const [filename, content] of Object.entries(output)) {
+    console.log('  -> write', filename)
+    await fs.ensureFile(filename)
+    await fs.writeFileStr(filename, content)
+  }
 }
 
 function printDiagnostic (diagnostic: Iterable<Deno.DiagnosticItem>) {
