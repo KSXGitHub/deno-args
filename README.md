@@ -87,16 +87,15 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
 * [ ] Support subcommands
   * [x] Known subcommands (subcommands that are known and defined by the programmer)
   * [ ] Unknown subcommands (e.g. `git foo` will find `git-foo` and execute it)
-* [ ] Release for Node.js
-  * [ ] Compile TypeScript files to JavaScript
-  * [ ] Create both CommonJS and ESM modules
-  * [ ] May use `parcel`
+* [ ] ~~Release for Node.js~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539)_
 * [ ] Add CI
   * [ ] GitHub actions
   * [ ] Travis CI
   * [ ] Deploy on Netlify, now.sh, surge.sh
 * [ ] Test
-  * [ ] Use `jest` (Deno test ecosystem is yet matured)
+  * [ ] ~~Use `jest` (Deno test ecosystem is yet matured)~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539)_
+  * [ ] Use `jest` to snapshot `preview`
+  * [ ] Use `deno test` to make some assertions
 * [ ] Use `prettier` to format
 * [ ] Type test
   * [x] Make sure TypeScript infer the right type

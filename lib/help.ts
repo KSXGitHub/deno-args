@@ -9,7 +9,7 @@ import {
 } from './command-types.ts'
 
 class HelpCategories extends InitMap<string, CommandHelp[]> {
-  protected init (category: string): CommandHelp[] {
+  protected init (): CommandHelp[] {
     return []
   }
 }
