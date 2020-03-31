@@ -9,6 +9,7 @@
   "scripts": {
     "build:nodejs:esm": "deno run --allow-read=lib,nodejs --allow-write=nodejs tools/build-esm.ts",
     "build:nodejs:cjs": "babel -o nodejs/index.cjs nodejs/index.mjs",
+    "build:nodejs": "pnpm run build:nodejs:esm && pnpm run build:nodejs:cjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
