@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build:nodejs:esm": "deno run --allow-read=lib,nodejs --allow-write=nodejs tools/build-esm.ts",
+    "build:nodejs:cjs": "babel -o nodejs/index.cjs nodejs/index.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,5 +26,10 @@
   "bugs": {
     "url": "https://github.com/KSXGitHub/deno-args/issues"
   },
-  "homepage": "https://github.com/KSXGitHub/deno-args#readme"
+  "homepage": "https://github.com/KSXGitHub/deno-args#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0"
+  }
 }
