@@ -2,7 +2,9 @@
   "name": "deno-args",
   "version": "0.0.0",
   "description": "Extensible CLI arguments parser for Deno and Node.js with intelligent TypeScript inference",
-  "main": "nodejs/index.js",
+  "main": "nodejs/index.cjs",
+  "module": "nodejs/index.mjs",
+  "browser": "nodejs/index.mjs",
   "directories": {
     "lib": "lib"
   },
