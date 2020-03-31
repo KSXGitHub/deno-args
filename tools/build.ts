@@ -18,7 +18,7 @@ const options: Deno.CompilerOptions = {
   module: 'es2015',
   lib: ['es2020'],
   declaration: true,
-  sourceMap: true,
+  sourceMap: false,
   preserveConstEnums: true,
   strict: true,
   noUnusedLocals: false,
