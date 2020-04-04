@@ -12,7 +12,7 @@ const __dirname = dirname(import.meta)
 function fmtStr (text: string): string {
   const middle = text
     .split('\n')
-    .map(line => line.trim() ? line : '')
+    .map(line => line.trimEnd())
     .join('\n')
     .trim()
   return '\n' + middle + '\n'
