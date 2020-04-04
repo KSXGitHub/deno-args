@@ -1,17 +1,8 @@
-import {
-  assertEquals,
-  path,
-  fs,
-  dirname
-} from '../deps.ts'
+import args from '../../../lib/wrapper.ts'
+import { Flag, CountFlag, Option, PartialOption } from '../../../lib/flag-types.ts'
+import { FiniteNumber, Integer, Text, Choice } from '../../../lib/value-types.ts'
 
-import args from '../../lib/wrapper.ts'
-import { Flag, CountFlag, Option, PartialOption } from '../../lib/flag-types.ts'
-import { FiniteNumber, Integer, Text, Choice } from '../../lib/value-types.ts'
-
-const __dirname = dirname(import.meta)
-
-const setup = () => args
+export const setup = () => args
   .describe('Top level command')
   .with(Flag('foo', {
     alias: ['f'],
@@ -70,17 +61,4 @@ const setup = () => args
     }))
   )
 
-function fmtStr (text: string): string {
-  const middle = text
-    .split('\n')
-    .map(line => line.trim() ? line : '')
-    .join('\n')
-    .trim()
-  return '\n' + middle + '\n'
-}
-
-Deno.test('help', async () => {
-  const expected = await fs.readFileStr(path.join(__dirname, './mixed-help.txt'))
-  const received = setup().help()
-  assertEquals(fmtStr(received), fmtStr(expected))
-})
+export default setup
