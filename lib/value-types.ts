@@ -88,7 +88,7 @@ export function Choice<
         const suffix = describe ? `${value}: ${describe}` : String(value)
         text += '‣ ' + suffix + '\n'
       }
-      return text
+      return text.trim()
     },
     ...sharedProps(`Choice(${values.join(',')})`)
   }
