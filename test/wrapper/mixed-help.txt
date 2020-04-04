@@ -1,0 +1,30 @@
+DESCRIPTION:
+  Top level command
+OPTIONS:
+  --foo, -f
+    Boolean flag of foo
+  --bar
+  --count, -c
+    Counting
+  --number, -N <number>
+    An integer or a floating-point number
+  --integer <integer>
+    An arbitrary large integer
+  --text <text>
+  --partial-integer <integer> [default: 123]
+    An optional integer
+  --choice <choice>
+    Choice to make
+    ‣ 123
+    ‣ foo
+    ‣ 456: Not 123
+    ‣ bar: Not Foo
+    ‣ 789: Not a number
+
+SUBCOMMANDS:
+  sub0
+    Sub command without flags
+  sub1
+    Sub command with one flag
+  sub2
+    Sub command with two flags

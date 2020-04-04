@@ -1,2 +1,5 @@
 #! /bin/zsh
-exec deno test -A test/**/*.test.ts
+permissions=(
+  --allow-read='./test/**/*'
+)
+exec deno test $permissions test/**/*.test.ts
