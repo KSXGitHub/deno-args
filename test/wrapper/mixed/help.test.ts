@@ -19,7 +19,7 @@ function fmtStr (text: string): string {
 }
 
 Deno.test('main command', async () => {
-  const expected = await fs.readFileStr(path.join(__dirname, './expected-output.txt'))
+  const expected = await fs.readFileStr(path.join(__dirname, './help.output.txt'))
   const received = setup().help()
   assertEquals(fmtStr(received), fmtStr(expected))
 })
