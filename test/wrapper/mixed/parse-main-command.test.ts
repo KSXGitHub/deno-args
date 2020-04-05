@@ -152,6 +152,36 @@ const okCases: OkCase[] = [
       },
       remainingRawArgs: []
     }
+  },
+
+  {
+    title: 'remaining arguments',
+    input: [
+      'abc', 'def',
+      '-N', '0',
+      '--integer', '0',
+      '--text', '',
+      'ghi',
+      '--choice', '123',
+      'jkl', 'mno', 'pqrs'
+    ],
+    output: {
+      value: {
+        foo: false,
+        bar: false,
+        count: 0,
+        integer: 0n,
+        'partial-integer': 123n,
+        choice: 123,
+        number: 0,
+        text: ''
+      },
+      remainingRawArgs: [
+        'abc', 'def',
+        'ghi',
+        'jkl', 'mno', 'pqrs'
+      ]
+    }
   }
 ]
 
