@@ -55,6 +55,29 @@ const okCases: OkCase[] = [
       },
       remainingRawArgs: []
     }
+  },
+
+  {
+    title: 'minimal alias',
+    input: [
+      '-N', '-987.654',
+      '--integer', '-321',
+      '--text', 'world',
+      '--choice', 'bar'
+    ],
+    output: {
+      value: {
+        foo: false,
+        bar: false,
+        count: 0,
+        number: -987.654,
+        integer: -321n,
+        text: 'world',
+        'partial-integer': 123n,
+        choice: 'bar'
+      },
+      remainingRawArgs: []
+    }
   }
 ]
 
