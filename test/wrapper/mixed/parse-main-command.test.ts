@@ -58,7 +58,7 @@ const okCases: OkCase[] = [
   },
 
   {
-    title: 'minimal alias',
+    title: 'minimal short name',
     input: [
       '-N', '-987.654',
       '--integer', '-321',
@@ -107,7 +107,7 @@ const okCases: OkCase[] = [
   },
 
   {
-    title: 'some flags with alias',
+    title: 'some flags with short name',
     input: [
       '-fccccc',
       '--number', '0',
