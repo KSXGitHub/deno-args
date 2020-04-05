@@ -58,7 +58,7 @@ export const flagPrefix = (name: string): '-' | '--' => name.length === 1 ? '-' 
 export function flag (name: string | readonly string[]) {
   switch (typeof name) {
     case 'string':
-      return flagPrefix(name)
+      return flagPrefix(name) + name
     case 'object':
       return '-' + name.join('')
   }

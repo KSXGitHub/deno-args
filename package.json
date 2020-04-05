@@ -1,0 +1,32 @@
+{
+  "name": "deno-args",
+  "version": "0.0.0",
+  "description": "Extensible CLI arguments parser for Deno and Node.js with intelligent TypeScript inference",
+  "main": "nodejs/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KSXGitHub/deno-args.git"
+  },
+  "keywords": [
+    "cli",
+    "args",
+    "typescript",
+    "inference"
+  ],
+  "author": "Hoàng Văn Khải <hvksmr1996@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KSXGitHub/deno-args/issues"
+  },
+  "homepage": "https://github.com/KSXGitHub/deno-args#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.0",
+    "typescript": "^3.8.3"
+  }
+}
