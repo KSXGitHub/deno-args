@@ -228,7 +228,10 @@ okCases.forEach(param => test(param, () => {
   assertEquals({ value, remainingRawArgs }, output)
 }))
 
-type ErrCase = Case<string>
+type ErrCase = Case<{
+  readonly types: readonly string[]
+  readonly messages: string
+}>
 
 const errCases: ErrCase[] = [
   {
@@ -238,7 +241,10 @@ const errCases: ErrCase[] = [
       '--text', '',
       '--choice', '123'
     ],
-    output: 'Flag --number is required but missing'
+    output: {
+      types: ['MissingFlag'],
+      messages: 'Flag --number is required but missing'
+    }
   },
 
   {
@@ -250,7 +256,10 @@ const errCases: ErrCase[] = [
       '--number', '123',
       '-N', '321'
     ],
-    output: 'Conflicting options: --number -N'
+    output: {
+      types: ['ConflictFlags'],
+      messages: 'Conflicting options: --number -N'
+    }
   },
 
   {
@@ -261,7 +270,10 @@ const errCases: ErrCase[] = [
       '--choice', 'foo',
       '--number', '123'
     ],
-    output: 'Option --integer requires a value but received flag --text instead'
+    output: {
+      types: ['UnexpectedFlag'],
+      messages: 'Option --integer requires a value but received flag --text instead'
+    }
   },
 
   {
@@ -272,7 +284,10 @@ const errCases: ErrCase[] = [
       '--choice', 'foo',
       '--number'
     ],
-    output: 'Option --number requires a value but none was found'
+    output: {
+      types: ['MissingValue'],
+      messages: 'Option --number requires a value but none was found'
+    }
   }
 ]
 
@@ -282,6 +297,7 @@ errCases.forEach(param => test(param, () => {
   if (result.tag !== PARSE_FAILURE) {
     throw dbg`UnexpectedTag\nResult: ${result}`
   }
-  const actual = result.error.toString()
-  assertEquals(actual, output)
+  const types = result.error.errors.map(x => x.constructor.name)
+  const messages = result.error.toString()
+  assertEquals({ types, messages }, output)
 }))
