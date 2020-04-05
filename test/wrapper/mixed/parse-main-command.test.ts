@@ -78,6 +78,32 @@ const okCases: OkCase[] = [
       },
       remainingRawArgs: []
     }
+  },
+
+  {
+    title: 'some flags with full name',
+    input: [
+      '--foo',
+      '--bar',
+      '--count', '--count', '--count',
+      '--number', '0',
+      '--integer', '0',
+      '--text', '',
+      '--choice', '123'
+    ],
+    output: {
+      value: {
+        foo: true,
+        bar: true,
+        count: 3,
+        number: 0,
+        integer: 0n,
+        'partial-integer': 123n,
+        text: '',
+        choice: 123
+      },
+      remainingRawArgs: []
+    }
   }
 ]
 
