@@ -1,35 +1,26 @@
 import {
-  assertEquals,
-  shEsc
+  MAIN_COMMAND,
+  PARSE_FAILURE
+} from '../../../lib/symbols.ts'
+
+import {
+  assertEquals
 } from '../../deps.ts'
 
 import {
   dbg
 } from '../../utils.ts'
 
-import { MAIN_COMMAND, PARSE_FAILURE } from '../../../lib/symbols.ts'
-
-import setup from './setup.ts'
-
-interface Case<Output> {
-  readonly title: string
-  readonly input: readonly string[]
-  readonly output: Output
-}
+import {
+  Case,
+  setup,
+  test
+} from './setup.ts'
 
 type OkCase = Case<{
   readonly value: Value
   readonly remainingRawArgs: readonly string[]
 }>
-
-const escape = (argv: readonly string[]) => argv
-  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
-  .join(' ')
-
-const test = (
-  param: Case<unknown>,
-  fn: () => void | Promise<void>
-) => Deno.test(`${param.title} (${escape(param.input)})`, fn)
 
 interface Value {
   readonly foo: boolean
