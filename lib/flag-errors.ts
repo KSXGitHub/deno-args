@@ -90,14 +90,14 @@ export class UnexpectedFlag extends FlagError {
   constructor (
     /** Option name */
     public readonly name: string | readonly string[],
-    /** Offender flag */
+    /** Offender flag (raw form) */
     public readonly unexpectedFlag: string
   ) {
     super()
   }
 
   public toString () {
-    return `Option ${flag(this.name)} requires a value but received flag ${flag(this.unexpectedFlag)} instead`
+    return `Option ${flag(this.name)} requires a value but received flag ${this.unexpectedFlag} instead`
   }
 }
 

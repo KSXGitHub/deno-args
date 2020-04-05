@@ -1,35 +1,26 @@
 import {
-  assertEquals,
-  shEsc
+  MAIN_COMMAND,
+  PARSE_FAILURE
+} from '../../../lib/symbols.ts'
+
+import {
+  assertEquals
 } from '../../deps.ts'
 
 import {
   dbg
 } from '../../utils.ts'
 
-import { MAIN_COMMAND, PARSE_FAILURE } from '../../../lib/symbols.ts'
-
-import setup from './setup.ts'
-
-interface Case<Output> {
-  readonly title: string
-  readonly input: readonly string[]
-  readonly output: Output
-}
+import {
+  Case,
+  setup,
+  test
+} from './setup.ts'
 
 type OkCase = Case<{
   readonly value: Value
   readonly remainingRawArgs: readonly string[]
 }>
-
-const escape = (argv: readonly string[]) => argv
-  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
-  .join(' ')
-
-const test = (
-  param: Case<unknown>,
-  fn: () => void | Promise<void>
-) => Deno.test(`${param.title} (${escape(param.input)})`, fn)
 
 interface Value {
   readonly foo: boolean
@@ -237,7 +228,10 @@ okCases.forEach(param => test(param, () => {
   assertEquals({ value, remainingRawArgs }, output)
 }))
 
-type ErrCase = Case<string>
+type ErrCase = Case<{
+  readonly types: readonly string[]
+  readonly messages: string
+}>
 
 const errCases: ErrCase[] = [
   {
@@ -247,7 +241,10 @@ const errCases: ErrCase[] = [
       '--text', '',
       '--choice', '123'
     ],
-    output: 'Flag --number is required but missing'
+    output: {
+      types: ['MissingFlag'],
+      messages: 'Flag --number is required but missing'
+    }
   },
 
   {
@@ -259,7 +256,38 @@ const errCases: ErrCase[] = [
       '--number', '123',
       '-N', '321'
     ],
-    output: 'Conflicting options: --number -N'
+    output: {
+      types: ['ConflictFlags'],
+      messages: 'Conflicting options: --number -N'
+    }
+  },
+
+  {
+    title: 'unexpected flag',
+    input: [
+      '--integer',
+      '--text', 'hello',
+      '--choice', 'foo',
+      '--number', '123'
+    ],
+    output: {
+      types: ['UnexpectedFlag'],
+      messages: 'Option --integer requires a value but received flag --text instead'
+    }
+  },
+
+  {
+    title: 'missing value',
+    input: [
+      '--integer', '321',
+      '--text', 'hello',
+      '--choice', 'foo',
+      '--number'
+    ],
+    output: {
+      types: ['MissingValue'],
+      messages: 'Option --number requires a value but none was found'
+    }
   }
 ]
 
@@ -269,6 +297,7 @@ errCases.forEach(param => test(param, () => {
   if (result.tag !== PARSE_FAILURE) {
     throw dbg`UnexpectedTag\nResult: ${result}`
   }
-  const actual = result.error.toString()
-  assertEquals(actual, output)
+  const types = result.error.errors.map(x => x.constructor.name)
+  const messages = result.error.toString()
+  assertEquals({ types, messages }, output)
 }))
