@@ -7,7 +7,7 @@ import {
   dbg
 } from '../../utils.ts'
 
-import { MAIN_COMMAND } from '../../../lib/symbols.ts'
+import { MAIN_COMMAND, PARSE_FAILURE } from '../../../lib/symbols.ts'
 
 import setup from './setup.ts'
 
@@ -235,4 +235,40 @@ okCases.forEach(param => test(param, () => {
   const { value } = result
   const remainingRawArgs = result.remaining().rawArgs()
   assertEquals({ value, remainingRawArgs }, output)
+}))
+
+type ErrCase = Case<string>
+
+const errCases: ErrCase[] = [
+  {
+    title: 'missing flags',
+    input: [
+      '--integer', '0',
+      '--text', '',
+      '--choice', '123'
+    ],
+    output: 'Flag --number is required but missing'
+  },
+
+  {
+    title: 'conflict flags',
+    input: [
+      '--integer', '2',
+      '--text', 'hello',
+      '--choice', 'foo',
+      '--number', '123',
+      '-N', '321'
+    ],
+    output: 'Conflicting options: --number -N'
+  }
+]
+
+errCases.forEach(param => test(param, () => {
+  const { input, output } = param
+  const result = setup().parse(input)
+  if (result.tag !== PARSE_FAILURE) {
+    throw dbg`UnexpectedTag\nResult: ${result}`
+  }
+  const actual = result.error.toString()
+  assertEquals(actual, output)
 }))
