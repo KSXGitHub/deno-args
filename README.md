@@ -98,7 +98,7 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
   * [ ] Deploy on Netlify, now.sh, surge.sh
 * [ ] Test
   * [ ] ~~Use `jest` (Deno test ecosystem is yet matured)~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
-  * [ ] Use `jest` to snapshot `preview`
+  * [ ] ~~Use `jest` to snapshot `preview`~~ _(No needs)_
   * [ ] Use `deno test` to make some assertions
 * [ ] Use `prettier` to format
 * [ ] Type test
