@@ -12,6 +12,7 @@ import { MAIN_COMMAND } from '../../../lib/symbols.ts'
 import setup from './setup.ts'
 
 interface Case<Output> {
+  readonly title: string
   readonly input: readonly string[]
   readonly output: Output
 }
@@ -34,6 +35,7 @@ interface Value {
 
 const okCases: OkCase[] = [
   {
+    title: 'minimal full name',
     input: [
       '--number', '123.456',
       '--integer', '789',
@@ -57,11 +59,12 @@ const okCases: OkCase[] = [
 ]
 
 const test = (
-  args: readonly string[],
+  param: Case<unknown>,
   fn: () => void | Promise<void>
-) => Deno.test(args.join(' '), fn)
+) => Deno.test(`${param.title} (${param.input.join(' ')})`, fn)
 
-okCases.forEach(({ input, output }) => test(input, () => {
+okCases.forEach(param => test(param, () => {
+  const { input, output } = param
   const result = setup().parse(input)
   if (result.tag !== MAIN_COMMAND) {
     throw dbg`UnexpectedTag\nResult: ${result}`
