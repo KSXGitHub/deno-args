@@ -182,6 +182,38 @@ const okCases: OkCase[] = [
         'jkl', 'mno', 'pqrs'
       ]
     }
+  },
+
+  {
+    title: 'after double dash',
+    input: [
+      '--count',
+      '-N', '0',
+      '--integer', '0',
+      '--text', '',
+      '--choice', '123',
+      '--',
+      '--not-a-flag',
+      '-abcdef',
+      '--count'
+    ],
+    output: {
+      value: {
+        foo: false,
+        bar: false,
+        count: 1,
+        integer: 0n,
+        'partial-integer': 123n,
+        choice: 123,
+        number: 0,
+        text: ''
+      },
+      remainingRawArgs: [
+        '--not-a-flag',
+        '-abcdef',
+        '--count'
+      ]
+    }
   }
 ]
 
