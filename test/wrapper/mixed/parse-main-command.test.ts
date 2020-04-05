@@ -22,6 +22,15 @@ type OkCase = Case<{
   readonly remainingRawArgs: readonly string[]
 }>
 
+const escape = (argv: readonly string[]) => argv
+  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
+  .join(' ')
+
+const test = (
+  param: Case<unknown>,
+  fn: () => void | Promise<void>
+) => Deno.test(`${param.title} (${escape(param.input)})`, fn)
+
 interface Value {
   readonly foo: boolean
   readonly bar: boolean
@@ -32,15 +41,6 @@ interface Value {
   readonly 'partial-integer': bigint
   readonly choice: 123 | 'foo' | 456 | 'bar' | '789'
 }
-
-const escape = (argv: readonly string[]) => argv
-  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
-  .join(' ')
-
-const test = (
-  param: Case<unknown>,
-  fn: () => void | Promise<void>
-) => Deno.test(`${param.title} (${escape(param.input)})`, fn)
 
 const okCases: OkCase[] = [
   {
