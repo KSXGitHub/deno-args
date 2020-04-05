@@ -251,6 +251,17 @@ const errCases: ErrCase[] = [
       '-N', '321'
     ],
     output: 'Conflicting options: --number -N'
+  },
+
+  {
+    title: 'unexpected flag',
+    input: [
+      '--integer',
+      '--text', 'hello',
+      '--choice', 'foo',
+      '--number', '123'
+    ],
+    output: 'Option --integer requires a value but received flag --text instead'
   }
 ]
 
