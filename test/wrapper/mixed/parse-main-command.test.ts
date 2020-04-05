@@ -128,6 +128,30 @@ const okCases: OkCase[] = [
       },
       remainingRawArgs: []
     }
+  },
+
+  {
+    title: 'partial option',
+    input: [
+      '-N', '0',
+      '--integer', '0',
+      '--text', '',
+      '--partial-integer', '42',
+      '--choice', '456'
+    ],
+    output: {
+      value: {
+        foo: false,
+        bar: false,
+        count: 0,
+        integer: 0n,
+        'partial-integer': 42n,
+        choice: 456,
+        number: 0,
+        text: ''
+      },
+      remainingRawArgs: []
+    }
   }
 ]
 
