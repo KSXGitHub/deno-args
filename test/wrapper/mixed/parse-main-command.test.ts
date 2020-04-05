@@ -262,6 +262,17 @@ const errCases: ErrCase[] = [
       '--number', '123'
     ],
     output: 'Option --integer requires a value but received flag --text instead'
+  },
+
+  {
+    title: 'missing value',
+    input: [
+      '--integer', '321',
+      '--text', 'hello',
+      '--choice', 'foo',
+      '--number'
+    ],
+    output: 'Option --number requires a value but none was found'
   }
 ]
 
