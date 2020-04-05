@@ -1,4 +1,8 @@
 import {
+  PARSE_FAILURE
+} from '../../../lib/symbols.ts'
+
+import {
   assertEquals
 } from '../../deps.ts'
 
@@ -81,10 +85,63 @@ okCases.forEach(param => test(param, () => {
   const { input, output } = param
   const result = setup().parse(input)
   if (result.tag !== 'sub0' && result.tag !== 'sub1' && result.tag !== 'sub2') {
-    throw dbg`UnexpectedTag\nResult:${result}`
+    throw dbg`UnexpectedTag\nResult: ${result}`
   }
   assertEquals({
     tag: result.tag,
     value: result.value.value
   }, output)
+}))
+
+type ErrCase = Case<{
+  readonly types: readonly string[]
+  readonly messages: string
+}>
+
+const errCases: ErrCase[] = [
+  {
+    title: 'sub2 missing flag',
+    input: ['sub2'],
+    output: {
+      types: ['MissingFlag'],
+      messages: 'Flag --number is required but missing'
+    }
+  },
+
+  {
+    title: 'sub2 unexpected flag',
+    input: [
+      'sub2',
+      '--number',
+      '--text', 'foo'
+    ],
+    output: {
+      types: ['UnexpectedFlag'],
+      messages: 'Option --number requires a value but received flag --text instead'
+    }
+  },
+
+  {
+    title: 'sub2 missing flag',
+    input: [
+      'sub2',
+      '--number', '123',
+      '--text'
+    ],
+    output: {
+      types: ['MissingValue'],
+      messages: 'Option --text requires a value but none was found'
+    }
+  }
+]
+
+errCases.forEach(param => test(param, () => {
+  const { input, output } = param
+  const result = setup().parse(input)
+  if (result.tag !== PARSE_FAILURE) {
+    throw dbg`UnexpectedFlag\nResult: ${result}`
+  }
+  const types = result.error.errors.map(x => x.constructor.name)
+  const messages = result.error.toString()
+  assertEquals({ types, messages }, output)
 }))
