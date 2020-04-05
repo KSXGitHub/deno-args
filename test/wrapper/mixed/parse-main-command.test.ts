@@ -22,6 +22,15 @@ type OkCase = Case<{
   readonly remainingRawArgs: readonly string[]
 }>
 
+const escape = (argv: readonly string[]) => argv
+  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
+  .join(' ')
+
+const test = (
+  param: Case<unknown>,
+  fn: () => void | Promise<void>
+) => Deno.test(`${param.title} (${escape(param.input)})`, fn)
+
 interface Value {
   readonly foo: boolean
   readonly bar: boolean
@@ -216,15 +225,6 @@ const okCases: OkCase[] = [
     }
   }
 ]
-
-const escape = (argv: readonly string[]) => argv
-  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
-  .join(' ')
-
-const test = (
-  param: Case<unknown>,
-  fn: () => void | Promise<void>
-) => Deno.test(`${param.title} (${escape(param.input)})`, fn)
 
 okCases.forEach(param => test(param, () => {
   const { input, output } = param
