@@ -1,6 +1,6 @@
 import {
   assertEquals,
-  TemplateTag
+  shEsc
 } from '../../deps.ts'
 
 import {
@@ -131,10 +131,14 @@ const okCases: OkCase[] = [
   }
 ]
 
+const escape = (argv: readonly string[]) => argv
+  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
+  .join(' ')
+
 const test = (
   param: Case<unknown>,
   fn: () => void | Promise<void>
-) => Deno.test(`${param.title} (${param.input.join(' ')})`, fn)
+) => Deno.test(`${param.title} (${escape(param.input)})`, fn)
 
 okCases.forEach(param => test(param, () => {
   const { input, output } = param
