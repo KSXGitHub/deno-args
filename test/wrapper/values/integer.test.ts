@@ -1,13 +1,12 @@
 import { Option } from '../../../lib/flag-types.ts'
-import { Text } from '../../../lib/value-types.ts'
+import { Integer } from '../../../lib/value-types.ts'
 import { MAIN_COMMAND, PARSE_FAILURE } from '../../../lib/symbols.ts'
 import args from '../../../lib/wrapper.ts'
 import { assertEquals } from '../../deps.ts'
 import { dbg, fmtTestName } from '../../utils.ts'
 
 const setup = () => args.with(Option('flag', {
-  alias: ['a', 'b', 'c'],
-  type: Text
+  type: Integer
 }))
 
 const testOk = (
@@ -22,10 +21,15 @@ const testOk = (
   assertEquals(result.value, expectedValue)
 })
 
-testOk('full name', ['--flag', 'hello'], { flag: 'hello' })
-testOk('alias', ['-a', 'hello'], { flag: 'hello' })
-testOk('alias', ['-b', 'hello'], { flag: 'hello' })
-testOk('alias', ['-c', 'hello'], { flag: 'hello' })
+testOk('zero', ['--flag', '0'], { flag: 0n })
+testOk('negative zero', ['--flag', '-0'], { flag: 0n })
+testOk('positive integer', ['--flag', '123'], { flag: 123n })
+testOk('negative integer', ['--flag', '-321'], { flag: -321n })
+testOk(
+  'very big integer',
+  ['--flag', '81129638414606663681390495662081'],
+  { flag: 81129638414606663681390495662081n }
+)
 
 const testErr = (
   name: string,
@@ -47,18 +51,12 @@ const testErr = (
 })
 
 testErr(
-  'missing flag', [],
-  ['MissingFlag'], 'Flag --flag is required but missing'
+  'not a valid number', ['--flag', 'blah'],
+  ['ValueParsingFailure'],
+  'Failed to parse --flag: Not an integer: blah (SyntaxError: Cannot convert blah to a BigInt)'
 )
 testErr(
-  'missing value', ['--flag'],
-  ['MissingValue'], 'Option --flag requires a value but none was found'
-)
-testErr(
-  'unexpected flag', ['--flag', '-X'],
-  ['UnexpectedFlag'], 'Option --flag requires a value but received flag -X instead'
-)
-testErr(
-  'conflict', ['--flag', '123', '-abc', '456'],
-  ['ConflictFlags'], 'Conflicting options: --flag -a -b -c'
+  'floating point', ['--flag', '123.456'],
+  ['ValueParsingFailure'],
+  'Failed to parse --flag: Not an integer: 123.456 (SyntaxError: Cannot convert 123.456 to a BigInt)'
 )

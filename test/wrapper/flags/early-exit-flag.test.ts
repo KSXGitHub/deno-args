@@ -2,13 +2,13 @@ import { EarlyExitFlag } from '../../../lib/flag-types.ts'
 import { MAIN_COMMAND } from '../../../lib/symbols.ts'
 import args from '../../../lib/wrapper.ts'
 import { assertEquals } from '../../deps.ts'
-import { dbg, tryExec } from '../../utils.ts'
+import { dbg, tryExec, fmtTestName } from '../../utils.ts'
 
 const testOk = (
-  name: string,
+  title: string,
   argv: readonly string[],
   expected: boolean
-) => Deno.test(name, () => {
+) => Deno.test(fmtTestName(title, argv), () => {
   const signal = Symbol('signal')
   const parser = args.with(EarlyExitFlag('flag', {
     alias: ['a', 'b', 'c'],
@@ -33,5 +33,5 @@ const testOk = (
 testOk('no flags', [], false)
 testOk('full name', ['--flag'], true)
 testOk('alias', ['-a'], true)
-testOk('no conflict (grouped)', ['-abc', '--flag'], true)
-testOk('no conflict (separated)', ['-a', '-b', '-c', '--flag'], true)
+testOk('no conflict', ['-abc', '--flag'], true)
+testOk('no conflict', ['-a', '-b', '-c', '--flag'], true)
