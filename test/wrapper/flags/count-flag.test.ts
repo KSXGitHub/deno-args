@@ -15,7 +15,7 @@ const testOk = (
 ) => Deno.test(name, () => {
   const result = setup().parse(argv)
   if (result.tag !== MAIN_COMMAND) {
-    throw dbg`UnexpectedTag\nresult: ${result}`
+    throw dbg`unexpected tag\nresult: ${result}`
   }
   assertEquals(result.value, expectedValue)
 })

@@ -221,7 +221,7 @@ okCases.forEach(param => test(param, () => {
   const { input, output } = param
   const result = setup().parse(input)
   if (result.tag !== MAIN_COMMAND) {
-    throw dbg`UnexpectedTag\nResult: ${result}`
+    throw dbg`unexpected tag\nResult: ${result}`
   }
   const { value } = result
   const remainingRawArgs = result.remaining().rawArgs()
@@ -295,7 +295,7 @@ errCases.forEach(param => test(param, () => {
   const { input, output } = param
   const result = setup().parse(input)
   if (result.tag !== PARSE_FAILURE) {
-    throw dbg`UnexpectedTag\nResult: ${result}`
+    throw dbg`unexpected tag\nResult: ${result}`
   }
   const types = result.error.errors.map(x => x.constructor.name)
   const messages = result.error.toString()

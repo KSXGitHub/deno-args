@@ -85,7 +85,7 @@ okCases.forEach(param => test(param, () => {
   const { input, output } = param
   const result = setup().parse(input)
   if (result.tag !== 'sub0' && result.tag !== 'sub1' && result.tag !== 'sub2') {
-    throw dbg`UnexpectedTag\nResult: ${result}`
+    throw dbg`unexpected tag\nResult: ${result}`
   }
   assertEquals({
     tag: result.tag,

@@ -22,7 +22,7 @@ const testOk = (
   )
   if (result.tag) {
     if (result.value.tag !== MAIN_COMMAND) {
-      throw dbg`UnexpectedTag\nresult: ${result.value}`
+      throw dbg`unexpected tag\nresult: ${result.value}`
     }
     assertEquals(expected, false)
   } else {

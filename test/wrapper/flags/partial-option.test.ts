@@ -18,7 +18,7 @@ const testOk = (
 ) => Deno.test(name, () => {
   const result = setup().parse(argv)
   if (result.tag !== MAIN_COMMAND) {
-    throw dbg`UnexpectedTag\nresult: ${result}`
+    throw dbg`unexpected tag\nresult: ${result}`
   }
   assertEquals(result.value, expectedValue)
 })
@@ -37,7 +37,7 @@ const testErr = (
 ) => Deno.test(name, () => {
   const result = setup().parse(argv)
   if (result.tag !== PARSE_FAILURE) {
-    throw dbg`UnexpectedTag\nresult: ${result}`
+    throw dbg`unexpected tag\nresult: ${result}`
   }
   assertEquals({
     types: result.error.errors.map(x => x.constructor.name),
