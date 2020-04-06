@@ -95,7 +95,6 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
 * [ ] Add CI
   * [ ] GitHub actions
   * [ ] Travis CI
-  * [ ] Deploy on Netlify, now.sh, surge.sh
 * [x] Test
   * [ ] ~~Use `jest` (Deno test ecosystem is yet matured)~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
   * [ ] ~~Use `jest` to snapshot `preview`~~ _(No needs)_
@@ -103,7 +102,6 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
 * [ ] Use `prettier` to format
 * [ ] Type test
   * [x] Make sure TypeScript infer the right type
-  * [ ] Add more tests
 * [ ] When all is done, remove warning
 
 ## License
