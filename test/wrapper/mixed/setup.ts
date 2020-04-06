@@ -1,7 +1,7 @@
 import args from '../../../lib/wrapper.ts'
 import { Flag, CountFlag, Option, PartialOption } from '../../../lib/flag-types.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../../../lib/value-types.ts'
-import { shEsc } from '../../deps.ts'
+import { fmtTestName } from '../../utils.ts'
 
 export const setup = () => args
   .describe('Top level command')
@@ -68,11 +68,7 @@ export interface Case<Output> {
   readonly output: Output
 }
 
-const escape = (argv: readonly string[]) => argv
-  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
-  .join(' ')
-
 export const test = (
   param: Case<unknown>,
   fn: () => void | Promise<void>
-) => Deno.test(`${param.title} (${escape(param.input)})`, fn)
+) => Deno.test(fmtTestName(param.title, param.input), fn)

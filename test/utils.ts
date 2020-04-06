@@ -1,4 +1,4 @@
-import { TemplateTag } from './deps.ts'
+import { TemplateTag, shEsc } from './deps.ts'
 
 export const dbg = TemplateTag(Deno.inspect)
 
@@ -31,3 +31,9 @@ export namespace tryExec {
     readonly value?: null
   }
 }
+
+export const fmtArgv = (argv: readonly string[]) => argv
+  .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
+  .join(' ')
+
+export const fmtTestName = (title: string, argv: readonly string[]) => title + ' ' + fmtArgv(argv)
