@@ -50,7 +50,6 @@ const testErr = (
   })
 })
 
-
 testErr(
   'not a valid number', ['--flag', 'blah'],
   ['ValueParsingFailure'],
