@@ -100,8 +100,7 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
   * [ ] ~~Use `jest` to snapshot `preview`~~ _(No needs)_
   * [x] Use `deno test` to make some assertions
 * [ ] Use `prettier` to format
-* [ ] Type test
-  * [x] Make sure TypeScript infer the right type
+* [x] Type test
 * [ ] When all is done, remove warning
 
 ## License
