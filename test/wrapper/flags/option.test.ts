@@ -3,7 +3,7 @@ import { Text } from '../../../lib/value-types.ts'
 import { MAIN_COMMAND, PARSE_FAILURE } from '../../../lib/symbols.ts'
 import args from '../../../lib/wrapper.ts'
 import { assertEquals } from '../../deps.ts'
-import { dbg } from '../../utils.ts'
+import { dbg, fmtTestName } from '../../utils.ts'
 
 const setup = () => args.with(Option('flag', {
   alias: ['a', 'b', 'c'],
@@ -11,10 +11,10 @@ const setup = () => args.with(Option('flag', {
 }))
 
 const testOk = (
-  name: string,
+  title: string,
   argv: readonly string[],
   expectedValue: unknown
-) => Deno.test(name, () => {
+) => Deno.test(fmtTestName(title, argv), () => {
   const result = setup().parse(argv)
   if (result.tag !== MAIN_COMMAND) {
     throw dbg`unexpected tag\nresult: ${result}`
