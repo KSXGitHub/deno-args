@@ -75,6 +75,7 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
   * [x] Proper indentation
   * [x] Categories
   * Reference [clap](https://clap.rs/)'s
+* [ ] Use a task runner
 * [x] Negative numbers
 * [x] Optional flags
 * [ ] Sharing flags between subcommands
