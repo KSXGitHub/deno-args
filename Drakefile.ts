@@ -5,6 +5,13 @@ import {
   run,
 } from "https://deno.land/x/drake@v0.16.0/mod.ts";
 
+const {
+  UPDATE = "false",
+} = Deno.env();
+
+const shouldUpdate = UPDATE.toLowerCase() === "true";
+console.log({ shouldUpdate });
+
 desc("Copy markdown files");
 task("copy-markdown", [], async () => {
   await sh("cp *.md lib/");
@@ -23,14 +30,9 @@ task("test", ["cache"], async () => {
   await sh(`deno test ${permissions.join(" ")} test/**/*.test.ts`);
 });
 
-desc("Check formatting");
-task("fmt-check", [], async () => {
-  await sh("deno fmt --check");
-});
-
-desc("Use deno fmt to format all codes");
+desc("Run deno fmt");
 task("fmt", [], async () => {
-  await sh("deno fmt");
+  await sh(shouldUpdate ? "deno fmt" : "deno fmt --check");
 });
 
 desc("Run all tasks");
@@ -38,7 +40,7 @@ task("all", [
   "copy-markdown",
   "cache",
   "test",
-  "fmt-check",
+  "fmt",
 ]);
 
 run();
