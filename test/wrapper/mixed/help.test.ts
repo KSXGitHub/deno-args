@@ -23,3 +23,14 @@ Deno.test('main command', async () => {
   const received = setup().help()
   assertEquals(fmtStr(received), fmtStr(expected))
 })
+
+const fmtName = (cmdPath: readonly string[]) => ['help', ...cmdPath].join(' ')
+
+const test = (cmdPath: readonly string[]) => Deno.test(fmtName(cmdPath), async () => {
+  const fileBaseName = ['help', ...cmdPath].join('-')
+  const expected = await fs.readFileStr(path.join(__dirname, `./${fileBaseName}.output.txt`))
+  const received = setup().help(...cmdPath)
+  assertEquals(fmtStr(received), fmtStr(expected))
+})
+
+test([])
