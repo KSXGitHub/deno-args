@@ -80,7 +80,7 @@ if (res.error) {
   * [x] Wait for [task runner](#task-runner)
 * [ ] Integration with `@tsfun/pipe`
   * Use [Pika CDN](https://cdn.pika.dev), [JSPM](https://jspm.io) does not support TypeScript header.
-  * [ ] Update `preview/parser.ts`
+  * [ ] ~~Update `preview/parser.ts`~~
   * [ ] Update example in `README.md`
 * [ ] TSDoc
   * [x] Describe all public APIs
