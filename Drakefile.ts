@@ -23,4 +23,11 @@ task('test', ['cache'], async () => {
   await sh(`deno test ${permissions.join(' ')} test/**/*.test.ts`)
 })
 
+desc('Run all tasks')
+task('all', [
+  'copy-markdown',
+  'cache',
+  'test'
+])
+
 run()
