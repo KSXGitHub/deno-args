@@ -23,11 +23,17 @@ task('test', ['cache'], async () => {
   await sh(`deno test ${permissions.join(' ')} test/**/*.test.ts`)
 })
 
+desc('Check formatting')
+task('fmt-check', [], async () => {
+  await sh('deno fmt --check')
+})
+
 desc('Run all tasks')
 task('all', [
   'copy-markdown',
   'cache',
-  'test'
+  'test',
+  'fmt-check'
 ])
 
 run()
