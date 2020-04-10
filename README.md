@@ -80,7 +80,7 @@ Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/previe
 * [x] Optional flags
 * [ ] Sharing flags between subcommands
 * [x] `index.ts`
-* [ ] `manual.md`
+* [ ] Copy `README.md` to `lib`
 * [ ] Integration with `@tsfun/pipe`
   * Use [Pika CDN](https://cdn.pika.dev), [JSPM](https://jspm.io) does not support TypeScript header.
   * [ ] Update `preview/parser.ts`
