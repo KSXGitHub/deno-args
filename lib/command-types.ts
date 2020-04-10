@@ -361,3 +361,47 @@ export const SubCommand = <
     }
   }
 })
+
+/**
+ * Declare a subcommand that terminates the program
+ * @template Main Type of main wrapper
+ * @template Name Type of subcommand name
+ * @template ErrList Possible type of list of errors
+ * @param main Main command parser
+ * @param name Subcommand name
+ * @param exit Exit function to call
+ * @param description Description of the subcommand
+ */
+export const EarlyExitCommand = <
+  Main extends CommandReturn<any, any, any>,
+  Name extends string,
+  ErrList extends readonly ParseError[]
+> (
+  main: Command<Main, ErrList>,
+  name: Name,
+  exit: (args: readonly ArgvItem[]) => never,
+  description?: string
+): Command<Main, ErrList> => ({
+  extract (args): Main | ParseFailure<ErrList> {
+    if (args.length === 0) return main.extract(args)
+    const [first] = args
+    return first.type === 'value' && first.raw === name
+      ? exit(args)
+      : main.extract(args)
+  },
+  describe: () => main.describe(),
+  * help (cmdPath) {
+    if (cmdPath.length) {
+      const [first] = cmdPath
+      if (first !== name) yield * main.help(cmdPath)
+      return
+    }
+
+    yield * main.help(cmdPath)
+    yield {
+      category: 'SUBCOMMANDS',
+      title: name,
+      description
+    }
+  }
+})
