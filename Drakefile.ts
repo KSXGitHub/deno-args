@@ -28,6 +28,11 @@ task('fmt-check', [], async () => {
   await sh('deno fmt --check')
 })
 
+desc('Use deno fmt to format all codes')
+task('fmt', [], async () => {
+  await sh('deno fmt')
+})
+
 desc('Run all tasks')
 task('all', [
   'copy-markdown',

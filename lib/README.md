@@ -71,16 +71,16 @@ if (res.error) {
   * [x] Proper indentation
   * [x] Categories
   * Reference [clap](https://clap.rs/)'s
-* [ ] <a id="task-runner">Use a task runner</a>
+* [x] <a id="task-runner">Use a task runner</a>
 * [x] Negative numbers
 * [x] Optional flags
 * [ ] Sharing flags between subcommands
 * [x] `index.ts`
-* [ ] Copy `README.md` to `lib`
-  * [ ] Wait for [task runner](#task-runner)
+* [x] Copy `README.md` to `lib`
+  * [x] Wait for [task runner](#task-runner)
 * [ ] Integration with `@tsfun/pipe`
   * Use [Pika CDN](https://cdn.pika.dev), [JSPM](https://jspm.io) does not support TypeScript header.
-  * [ ] Update `preview/parser.ts`
+  * [ ] ~~Update `preview/parser.ts`~~
   * [ ] Update example in `README.md`
 * [ ] TSDoc
   * [x] Describe all public APIs
