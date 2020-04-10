@@ -97,7 +97,7 @@ if (res.error) {
   * [ ] ~~Use `jest` (Deno test ecosystem is yet matured)~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
   * [ ] ~~Use `jest` to snapshot `preview`~~ _(No needs)_
   * [x] Use `deno test` to make some assertions
-* [ ] Use `prettier` to format
+* [x] Use ~~`prettier`~~ `deno fmt` to format
 * [x] Type test
 * [ ] When all is done, remove warning
 
