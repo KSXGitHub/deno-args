@@ -34,3 +34,4 @@ const test = (cmdPath: readonly string[]) => Deno.test(fmtName(cmdPath), async (
 })
 
 test([])
+test(['sub0'])
