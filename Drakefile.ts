@@ -5,7 +5,7 @@ import {
   task,
   sh,
   run,
-  outOfDate
+  outOfDate,
 } from "https://deno.land/x/drake@v0.16.0/mod.ts";
 
 import { dirname } from "https://deno.land/x/dirname/mod.ts";
@@ -20,19 +20,19 @@ const shouldUpdate = UPDATE.toLowerCase() === "true";
 
 desc("Sync markdown files");
 task("markdown", [], async () => {
-  let outdated: string[] = []
-  type UpdateFunc = (name: string, src: string, dst: string) => void
+  let outdated: string[] = [];
+  type UpdateFunc = (name: string, src: string, dst: string) => void;
   const update: UpdateFunc = shouldUpdate
     ? (name, src, dst) => {
       console.log(`File ${name} is out-of-date. Syncing.`);
-      Deno.copyFileSync(src, dst)
+      Deno.copyFileSync(src, dst);
     }
-    : name => outdated.push(name);
+    : (name) => outdated.push(name);
   for (const info of Deno.readdirSync(__dirname)) {
-    if (!info.name?.endsWith('.md')) continue
-    const name = info.name!
-    const src = path.join(__dirname, name)
-    const dst = path.join(__dirname, "lib", name)
+    if (!info.name?.endsWith(".md")) continue;
+    const name = info.name!;
+    const src = path.join(__dirname, name);
+    const dst = path.join(__dirname, "lib", name);
     if (outOfDate(dst, [src])) {
       update(name, src, dst);
     } else {
