@@ -17,7 +17,6 @@ const {
 const __dirname = dirname(import.meta);
 
 const shouldUpdate = UPDATE.toLowerCase() === "true";
-console.log({ shouldUpdate });
 
 desc("Sync markdown files");
 task("markdown", [], async () => {
