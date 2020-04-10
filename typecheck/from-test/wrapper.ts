@@ -1,10 +1,10 @@
-import { MAIN_COMMAND, PARSE_FAILURE } from '../lib/symbols.ts'
-import { CommandError } from '../lib/command-errors.ts'
-import { ParseError, ArgvItem } from '../lib/types.ts'
-import parser from '../preview/parser.ts'
-import { assert } from './deps.ts'
+import { MAIN_COMMAND, PARSE_FAILURE } from '../../lib/symbols.ts'
+import { CommandError } from '../../lib/command-errors.ts'
+import { ParseError, ArgvItem } from '../../lib/types.ts'
+import { setup } from '../../test/wrapper/mixed/setup.ts'
+import { assert } from '../deps.ts'
 
-const result = parser.parse([])
+const result = setup().parse([])
 
 switch (result.tag) {
   case PARSE_FAILURE:
@@ -20,7 +20,7 @@ switch (result.tag) {
     assert<readonly string[]>(result.remaining().rawValues())
 
     // flag values
-    assert<void>(result.value.help)
+    assert<void>(result.value['early-exit'])
     assert<boolean>(result.value.foo)
     assert<boolean>(result.value.bar)
     assert<'foo' | 'bar' | 123 | 456 | '789'>(result.value.choice)
