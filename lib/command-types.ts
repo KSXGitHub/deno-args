@@ -347,11 +347,9 @@ export const SubCommand = <
   * help (cmdPath): Iterable<CommandHelp> {
     if (cmdPath.length) {
       const [first, ...rest] = cmdPath
-      if (first === name) {
-        yield * sub.help(rest)
-      } else {
-        yield * main.help(cmdPath)
-      }
+      yield * first === name
+        ? sub.help(rest)
+        : main.help(cmdPath)
       return
     }
 
