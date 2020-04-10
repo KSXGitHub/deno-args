@@ -61,10 +61,6 @@ if (res.error) {
 }
 ```
 
-### More Examples
-
-Go to [preview folder](https://github.com/KSXGitHub/deno-args/tree/master/preview) for more examples.
-
 ## TODO
 
 * [x] Report multiple errors at the same time
