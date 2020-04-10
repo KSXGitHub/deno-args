@@ -7,7 +7,7 @@ import {
 
 desc('Copy markdown files')
 task('copy-markdown', [], async () => {
-  await sh(`cp *.md lib/`)
+  await sh('cp *.md lib/')
 })
 
 desc('Fetch and compile dependencies')
