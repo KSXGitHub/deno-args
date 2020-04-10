@@ -1,0 +1,2 @@
+DESCRIPTION:
+  Sub command without flags
