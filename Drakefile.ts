@@ -1,20 +1,51 @@
+import * as path from "https://deno.land/std@v0.40.0/path/mod.ts";
+
 import {
   desc,
   task,
   sh,
   run,
+  outOfDate
 } from "https://deno.land/x/drake@v0.16.0/mod.ts";
+
+import { dirname } from "https://deno.land/x/dirname/mod.ts";
 
 const {
   UPDATE = "false",
 } = Deno.env();
 
+const __dirname = dirname(import.meta);
+
 const shouldUpdate = UPDATE.toLowerCase() === "true";
 console.log({ shouldUpdate });
 
-desc("Copy markdown files");
-task("copy-markdown", [], async () => {
-  await sh("cp *.md lib/");
+desc("Sync markdown files");
+task("markdown", [], async () => {
+  let outdated: string[] = []
+  type UpdateFunc = (name: string, src: string, dst: string) => void
+  const update: UpdateFunc = shouldUpdate
+    ? (name, src, dst) => {
+      console.log(`File ${name} is out-of-date. Syncing.`);
+      Deno.copyFileSync(src, dst)
+    }
+    : name => outdated.push(name);
+  for (const info of Deno.readdirSync(__dirname)) {
+    if (!info.name?.endsWith('.md')) continue
+    const name = info.name!
+    const src = path.join(__dirname, name)
+    const dst = path.join(__dirname, "lib", name)
+    if (outOfDate(dst, [src])) {
+      update(name, src, dst);
+    } else {
+      console.log(`File ${name} is up-to-date. Skipping.`);
+    }
+  }
+  if (outdated.length) {
+    for (const name of outdated) {
+      console.error(`File ${name} is outdated`);
+    }
+    throw "Some files are not up-to-date";
+  }
 });
 
 desc("Fetch and compile dependencies");
@@ -37,7 +68,7 @@ task("fmt", [], async () => {
 
 desc("Run all tasks");
 task("all", [
-  "copy-markdown",
+  "markdown",
   "cache",
   "test",
   "fmt",
