@@ -1,6 +1,7 @@
 DESCRIPTION:
   Top level command
 OPTIONS:
+  --early-exit
   --foo, -f
     Boolean flag of foo
   --bar

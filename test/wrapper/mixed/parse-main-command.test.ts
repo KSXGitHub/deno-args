@@ -23,6 +23,7 @@ type OkCase = Case<{
 }>
 
 interface Value {
+  readonly 'early-exit': undefined
   readonly foo: boolean
   readonly bar: boolean
   readonly count: number
@@ -44,6 +45,7 @@ const okCases: OkCase[] = [
     ],
     output: {
       value: {
+        'early-exit': undefined,
         foo: false,
         bar: false,
         count: 0,
@@ -67,6 +69,7 @@ const okCases: OkCase[] = [
     ],
     output: {
       value: {
+        'early-exit': undefined,
         foo: false,
         bar: false,
         count: 0,
@@ -93,6 +96,7 @@ const okCases: OkCase[] = [
     ],
     output: {
       value: {
+        'early-exit': undefined,
         foo: true,
         bar: true,
         count: 3,
@@ -117,6 +121,7 @@ const okCases: OkCase[] = [
     ],
     output: {
       value: {
+        'early-exit': undefined,
         foo: true,
         bar: false,
         count: 5,
@@ -141,6 +146,7 @@ const okCases: OkCase[] = [
     ],
     output: {
       value: {
+        'early-exit': undefined,
         foo: false,
         bar: false,
         count: 0,
@@ -167,6 +173,7 @@ const okCases: OkCase[] = [
     ],
     output: {
       value: {
+        'early-exit': undefined,
         foo: false,
         bar: false,
         count: 0,
@@ -199,6 +206,7 @@ const okCases: OkCase[] = [
     ],
     output: {
       value: {
+        'early-exit': undefined,
         foo: false,
         bar: false,
         count: 1,

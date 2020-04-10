@@ -1,10 +1,15 @@
 import args from '../../../lib/wrapper.ts'
-import { Flag, CountFlag, Option, PartialOption } from '../../../lib/flag-types.ts'
+import { EarlyExitFlag, Flag, CountFlag, Option, PartialOption } from '../../../lib/flag-types.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../../../lib/value-types.ts'
 import { fmtTestName } from '../../utils.ts'
 
 export const setup = () => args
   .describe('Top level command')
+  .with(EarlyExitFlag('early-exit', {
+    exit () {
+      throw 'Not meant to be called!'
+    }
+  }))
   .with(Flag('foo', {
     alias: ['f'],
     describe: 'Boolean flag of foo'
