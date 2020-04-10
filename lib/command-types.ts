@@ -174,9 +174,10 @@ export interface Command<
 
   /**
    * All components to construct help message so far
+   * @param cmdPath Path to target subcommand
    * @returns An iterable of components
    */
-  help (): Iterable<CommandHelp>
+  help (cmdPath: readonly string[]): Iterable<CommandHelp>
 }
 
 /**
@@ -287,8 +288,9 @@ export const FlaggedCommand = <
     } as const, args)
   },
   describe: () => main.describe(),
-  * help (): Iterable<CommandHelp> {
-    yield * main.help()
+  * help (cmdPath): Iterable<CommandHelp> {
+    if (cmdPath.length) return
+    yield * main.help(cmdPath)
     yield {
       category: 'OPTIONS',
       ...flag.help()
@@ -342,8 +344,16 @@ export const SubCommand = <
     } as const, args) as CommandReturn.Sub<Name, Sub>
   },
   describe: () => main.describe(),
-  * help (): Iterable<CommandHelp> {
-    yield * main.help()
+  * help (cmdPath): Iterable<CommandHelp> {
+    if (cmdPath.length) {
+      const [first, ...rest] = cmdPath
+      yield * first === name
+        ? sub.help(rest)
+        : main.help(cmdPath)
+      return
+    }
+
+    yield * main.help(cmdPath)
     yield {
       category: 'SUBCOMMANDS',
       title: name,

@@ -1,0 +1,7 @@
+DESCRIPTION:
+  Sub command with two flags
+OPTIONS:
+  --number <number>
+    Number option for sub2
+  --text <text>
+    Text option for sub2

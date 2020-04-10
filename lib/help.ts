@@ -14,9 +14,12 @@ class HelpCategories extends InitMap<string, CommandHelp[]> {
   }
 }
 
-export function * helpLines (command: Command<any, any>): Generator<string, void, unknown> {
+export function * helpLines (
+  command: Command<any, any>,
+  cmdPath: readonly string[]
+): Generator<string, void, unknown> {
   const catMap = new HelpCategories()
-  for (const item of command.help()) {
+  for (const item of command.help(cmdPath)) {
     catMap.get(item.category).push(item)
   }
 
@@ -30,5 +33,9 @@ export function * helpLines (command: Command<any, any>): Generator<string, void
   }
 }
 
-export const help = (command: Command<any, any>): string => [...helpLines(command)].join('\n')
+export const help = (
+  command: Command<any, any>,
+  cmdPath: readonly string[]
+): string => [...helpLines(command, cmdPath)].join('\n')
+
 export default help

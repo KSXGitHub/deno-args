@@ -104,10 +104,11 @@ class Wrapper<
 
   /**
    * Get help message
+   * @param cmdPath Path to target subcommand
    * @returns Help message
    */
-  public help (): string {
-    return help(this._command)
+  public help (...cmdPath: readonly string[]): string {
+    return help(this._command, cmdPath)
   }
 }
 
