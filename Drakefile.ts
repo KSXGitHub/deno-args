@@ -10,4 +10,12 @@ task('cache', [], async () => {
   await sh('deno cache **/*.ts')
 })
 
+desc('Run tests')
+task('test', ['cache'], async () => {
+  const permissions = [
+    '--allow-read'
+  ]
+  await sh(`deno test ${permissions.join(' ')} test/**/*.test.ts`)
+})
+
 run()
