@@ -1,0 +1,5 @@
+DESCRIPTION:
+  Sub command with one flag
+OPTIONS:
+  --test
+    Test flag for sub1
