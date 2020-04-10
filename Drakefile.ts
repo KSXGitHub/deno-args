@@ -2,32 +2,43 @@ import {
   desc,
   task,
   sh,
-  run
-} from 'https://deno.land/x/drake@v0.16.0/mod.ts'
+  run,
+} from "https://deno.land/x/drake@v0.16.0/mod.ts";
 
-desc('Copy markdown files')
-task('copy-markdown', [], async () => {
-  await sh('cp *.md lib/')
-})
+desc("Copy markdown files");
+task("copy-markdown", [], async () => {
+  await sh("cp *.md lib/");
+});
 
-desc('Fetch and compile dependencies')
-task('cache', [], async () => {
-  await sh('deno cache **/*.ts')
-})
+desc("Fetch and compile dependencies");
+task("cache", [], async () => {
+  await sh("deno cache **/*.ts");
+});
 
-desc('Run tests')
-task('test', ['cache'], async () => {
+desc("Run tests");
+task("test", ["cache"], async () => {
   const permissions = [
-    '--allow-read'
-  ]
-  await sh(`deno test ${permissions.join(' ')} test/**/*.test.ts`)
-})
+    "--allow-read",
+  ];
+  await sh(`deno test ${permissions.join(" ")} test/**/*.test.ts`);
+});
 
-desc('Run all tasks')
-task('all', [
-  'copy-markdown',
-  'cache',
-  'test'
-])
+desc("Check formatting");
+task("fmt-check", [], async () => {
+  await sh("deno fmt --check");
+});
 
-run()
+desc("Use deno fmt to format all codes");
+task("fmt", [], async () => {
+  await sh("deno fmt");
+});
+
+desc("Run all tasks");
+task("all", [
+  "copy-markdown",
+  "cache",
+  "test",
+  "fmt-check",
+]);
+
+run();

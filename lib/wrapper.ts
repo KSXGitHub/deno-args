@@ -1,11 +1,11 @@
 import {
   ParseError,
-  FlagType
-} from './types.ts'
+  FlagType,
+} from "./types.ts";
 
 import {
-  iterateArguments
-} from './utils.ts'
+  iterateArguments,
+} from "./utils.ts";
 
 import {
   BLANK,
@@ -16,15 +16,15 @@ import {
   CommandReturn,
   FlaggedCommandReturn,
   SubCommandReturn,
-  ParseFailure
-} from './command-types.ts'
+  ParseFailure,
+} from "./command-types.ts";
 
-import help from './help.ts'
+import help from "./help.ts";
 
 type ParseResult<
   Main extends CommandReturn<any, any, any>,
-  ErrList extends readonly ParseError[]
-> = Main | ParseFailure<ErrList>
+  ErrList extends readonly ParseError[],
+> = Main | ParseFailure<ErrList>;
 
 /**
  * @template MainVal Type of value of current pipeline
@@ -34,10 +34,10 @@ type ParseResult<
 class Wrapper<
   MainVal,
   Main extends CommandReturn<any, any, any>,
-  ErrList extends readonly ParseError[]
+  ErrList extends readonly ParseError[],
 > {
-  constructor (
-    private readonly _command: Command<Main, ErrList>
+  constructor(
+    private readonly _command: Command<Main, ErrList>,
   ) {}
 
   /**
@@ -45,8 +45,8 @@ class Wrapper<
    * @param args List of raw arguments
    * @returns Parsing result
    */
-  public parse (args: readonly string[]): ParseResult<Main, ErrList> {
-    return this._command.extract([...iterateArguments(args)])
+  public parse(args: readonly string[]): ParseResult<Main, ErrList> {
+    return this._command.extract([...iterateArguments(args)]);
   }
 
   /**
@@ -54,8 +54,8 @@ class Wrapper<
    * @param description Command's description
    * @returns A wrapper with a new description
    */
-  public describe (description: string): Wrapper<MainVal, Main, ErrList> {
-    return new Wrapper(Describe(this._command, description))
+  public describe(description: string): Wrapper<MainVal, Main, ErrList> {
+    return new Wrapper(Describe(this._command, description));
   }
 
   /**
@@ -67,15 +67,15 @@ class Wrapper<
    */
   public with<
     NextKey extends string,
-    NextVal
-  > (
-    flag: FlagType<NextKey, NextVal>
+    NextVal,
+  >(
+    flag: FlagType<NextKey, NextVal>,
   ): Wrapper<
     MainVal & Record<NextKey, NextVal>,
     FlaggedCommandReturn<MainVal, NextKey, NextVal>,
     readonly ParseError[]
   > {
-    return new Wrapper(FlaggedCommand(this._command, flag))
+    return new Wrapper(FlaggedCommand(this._command, flag));
   }
 
   /**
@@ -90,16 +90,16 @@ class Wrapper<
   public sub<
     Name extends string,
     SubVal extends CommandReturn<any, any, any>,
-    NextErrList extends readonly ParseError[]
-  > (
+    NextErrList extends readonly ParseError[],
+  >(
     name: Name,
-    sub: Wrapper<MainVal, SubVal, ErrList>
+    sub: Wrapper<MainVal, SubVal, ErrList>,
   ): Wrapper<
     SubVal,
     SubCommandReturn<Main, Name, SubVal>,
     ErrList | NextErrList
   > {
-    return new Wrapper(SubCommand(this._command, name, sub._command))
+    return new Wrapper(SubCommand(this._command, name, sub._command));
   }
 
   /**
@@ -107,11 +107,11 @@ class Wrapper<
    * @param cmdPath Path to target subcommand
    * @returns Help message
    */
-  public help (...cmdPath: readonly string[]): string {
-    return help(this._command, cmdPath)
+  public help(...cmdPath: readonly string[]): string {
+    return help(this._command, cmdPath);
   }
 }
 
 /** Starting point of parser construction pipeline */
-export const args = new Wrapper(BLANK)
-export default args
+export const args = new Wrapper(BLANK);
+export default args;

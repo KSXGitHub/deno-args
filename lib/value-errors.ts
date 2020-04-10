@@ -1,29 +1,29 @@
 import {
-  ParseError
-} from './types.ts'
+  ParseError,
+} from "./types.ts";
 
 /**
  * Base class of all `ValueError`
  */
 export abstract class ValueError implements ParseError {
   /** Raw input */
-  public abstract readonly raw: string
-  public abstract toString (): string
+  public abstract readonly raw: string;
+  public abstract toString(): string;
 }
 
 /**
  * `ValueError` class for when non-number raw input being place in where a number is expected
  */
 export class NotANumber extends ValueError {
-  constructor (
+  constructor(
     /** Raw input */
-    public readonly raw: string
+    public readonly raw: string,
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Not a number: ${this.raw}`
+  public toString() {
+    return `Not a number: ${this.raw}`;
   }
 }
 
@@ -31,17 +31,17 @@ export class NotANumber extends ValueError {
  * `ValueError` class for when non-integer raw input being place in where an integer is expected
  */
 export class NotAnInteger extends ValueError {
-  constructor (
+  constructor(
     /** Raw input */
     public readonly raw: string,
     /** BigInt parsing error */
-    public readonly error: SyntaxError
+    public readonly error: SyntaxError,
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Not an integer: ${this.raw} (${this.error})`
+  public toString() {
+    return `Not an integer: ${this.raw} (${this.error})`;
   }
 }
 
@@ -49,17 +49,20 @@ export class NotAnInteger extends ValueError {
  * `ValueError` class for when raw input not matching any expected choice
  * @template ValidChoice Union type of valid choices
  */
-export class InvalidChoice<ValidChoice extends string | number> extends ValueError {
-  constructor (
+export class InvalidChoice<ValidChoice extends string | number>
+  extends ValueError {
+  constructor(
     /** Raw input */
     public readonly raw: string,
     /** List of valid choices */
-    public readonly choices: readonly ValidChoice[]
+    public readonly choices: readonly ValidChoice[],
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Invalid choice: ${this.raw} is not one of ${this.choices.join(', ')}`
+  public toString() {
+    return `Invalid choice: ${this.raw} is not one of ${this.choices.join(
+      ", ",
+    )}`;
   }
 }

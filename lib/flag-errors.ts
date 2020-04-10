@@ -1,37 +1,37 @@
 import {
-  ParseError
-} from './types.ts'
+  ParseError,
+} from "./types.ts";
 
 import {
-  flag
-} from './utils.ts'
+  flag,
+} from "./utils.ts";
 
 import {
-  ValueError
-} from './value-errors.ts'
+  ValueError,
+} from "./value-errors.ts";
 
-const fmtFlagList = (names: readonly string[]) => names.map(flag).join(' ')
+const fmtFlagList = (names: readonly string[]) => names.map(flag).join(" ");
 
 /**
  * Base class of all `FlagError`
  */
 export abstract class FlagError implements ParseError {
-  public abstract toString (): string
+  public abstract toString(): string;
 }
 
 /**
  * `FlagError` class for when unknown flags being detected in argument list
  */
 export class UnknownFlags extends FlagError {
-  constructor (
+  constructor(
     /** Flag names */
-    public readonly names: readonly string[]
+    public readonly names: readonly string[],
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Unknown flags: ${fmtFlagList(this.names)}`
+  public toString() {
+    return `Unknown flags: ${fmtFlagList(this.names)}`;
   }
 }
 
@@ -39,15 +39,15 @@ export class UnknownFlags extends FlagError {
  * `FlagError` class for when required flags not being specified
  */
 export class MissingFlag extends FlagError {
-  constructor (
+  constructor(
     /** Flag name */
-    public readonly name: string
+    public readonly name: string,
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Flag ${flag(this.name)} is required but missing`
+  public toString() {
+    return `Flag ${flag(this.name)} is required but missing`;
   }
 }
 
@@ -55,15 +55,15 @@ export class MissingFlag extends FlagError {
  * `FlagError` class for when two or more aliases of the same option being specified
  */
 export class ConflictFlags extends FlagError {
-  constructor (
+  constructor(
     /** Aliases */
-    public readonly names: readonly string[]
+    public readonly names: readonly string[],
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Conflicting options: ${fmtFlagList(this.names)}`
+  public toString() {
+    return `Conflicting options: ${fmtFlagList(this.names)}`;
   }
 }
 
@@ -71,15 +71,15 @@ export class ConflictFlags extends FlagError {
  * `FlagError` class for when an option flag being specified without a value
  */
 export class MissingValue extends FlagError {
-  constructor (
+  constructor(
     /** Option name */
-    public readonly name: string | readonly string[]
+    public readonly name: string | readonly string[],
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Option ${flag(this.name)} requires a value but none was found`
+  public toString() {
+    return `Option ${flag(this.name)} requires a value but none was found`;
   }
 }
 
@@ -87,17 +87,19 @@ export class MissingValue extends FlagError {
  * `FlagError` class for when a flag being place where a value is expected
  */
 export class UnexpectedFlag extends FlagError {
-  constructor (
+  constructor(
     /** Option name */
     public readonly name: string | readonly string[],
     /** Offender flag (raw form) */
-    public readonly unexpectedFlag: string
+    public readonly unexpectedFlag: string,
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Option ${flag(this.name)} requires a value but received flag ${this.unexpectedFlag} instead`
+  public toString() {
+    return `Option ${flag(
+      this.name,
+    )} requires a value but received flag ${this.unexpectedFlag} instead`;
   }
 }
 
@@ -105,16 +107,16 @@ export class UnexpectedFlag extends FlagError {
  * `FlagError` class for when an argument fails to convert to a value
  */
 export class ValueParsingFailure extends FlagError {
-  constructor (
+  constructor(
     /** Option name */
     public readonly name: string | readonly string[],
     /** Value parsing error */
-    public readonly error: ValueError
+    public readonly error: ValueError,
   ) {
-    super()
+    super();
   }
 
-  public toString () {
-    return `Failed to parse ${flag(this.name)}: ${this.error.toString()}`
+  public toString() {
+    return `Failed to parse ${flag(this.name)}: ${this.error.toString()}`;
   }
 }
