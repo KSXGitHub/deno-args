@@ -7,8 +7,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        vars:
+          - deno: v0.40.0
+
     steps:
       - uses: actions/checkout@v2
-      - uses: denolib/deno-action@0.20.0
+      - name: Install Deno
+        run: |
+          curl -fsSL https://deno.land/x/install/install.sh | sh -s ${{ matrix.vars.deno }}
       - name: Run all targets in Drakefile
-        run: deno run --allow-all Drakefile.ts all
+        run: |
+          deno run --allow-all Drakefile.ts all
