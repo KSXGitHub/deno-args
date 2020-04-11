@@ -84,10 +84,10 @@ if (res.error) {
   * Use [Pika CDN](https://cdn.pika.dev), [JSPM](https://jspm.io) does not support TypeScript header.
   * [ ] ~~Update `preview/parser.ts`~~
   * [ ] ~~Update example in `README.md`~~ (`wrapper.ts` is simpler)
-* [ ] TSDoc
+* [x] TSDoc
   * [x] Describe all public APIs
-  * [ ] Add examples to `flag-types.ts`
-  * [ ] Add examples to `wrapper.ts`
+  * [ ] ~~Add examples to `flag-types.ts`~~ (Just read `README.md`)
+  * [ ] ~~Add examples to `wrapper.ts`~~ (Just read `README.md`)
 * [x] Support subcommands
   * [x] Known subcommands (subcommands that are known and defined by the programmer)
   * [ ] ~~Unknown subcommands~~ (Use remaining of main command)
