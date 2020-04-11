@@ -90,9 +90,9 @@ if (res.error) {
   * [x] Known subcommands (subcommands that are known and defined by the programmer)
   * [ ] ~~Unknown subcommands~~ (Use remaining of main command)
 * [ ] ~~Release for Node.js~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
-* [ ] Add CI
-  * [ ] GitHub actions
-  * [ ] Travis CI
+* [x] Add CI
+  * [x] GitHub actions
+  * [x] Travis CI
 * [x] Test
   * [ ] ~~Use `jest` (Deno test ecosystem is yet matured)~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
   * [ ] ~~Use `jest` to snapshot `preview`~~ _(No needs)_
