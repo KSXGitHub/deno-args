@@ -9,7 +9,8 @@ language: minimal
 
 cache:
   directories:
-    - $HOME/.deno
+    - $HOME/.deno/deps
+    - $HOME/.deno/gen
     - $HOME/.pnpm-store
     - $HOME/.node-gyp
     - $HOME/.node_libraries
