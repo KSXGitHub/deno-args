@@ -25,7 +25,7 @@ jobs:
       - name: Install Deno
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh -s ${{ matrix.vars.deno }}
+          sudo ln -s "$HOME/.deno/bin/zsh" /bin/zsh
       - name: Run all targets in Drakefile
         run: |
-          export PATH="$HOME/.deno/bin:$PATH"
           deno run --allow-all Drakefile.ts all
