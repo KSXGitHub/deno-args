@@ -6,6 +6,8 @@ import { assert } from "../deps.ts";
 const a = tsfun.setup().extract([]);
 const b = wrapper.setup().parse([]);
 assert<typeof b>(a);
+assert<typeof b.tag>(a.tag);
+assert<typeof a.tag>(b.tag);
 
 if (a.tag === MAIN_COMMAND && b.tag === MAIN_COMMAND) {
   assert<typeof a>(b);
