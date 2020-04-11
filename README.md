@@ -67,7 +67,7 @@ if (res.error) {
 
 ## Development
 
-All tasks are in [Drakefile.ts](./Drakefile.ts).
+All tasks are in [Drakefile.ts](https://git.io/JvhVf).
 
 ### Run all tests
 
