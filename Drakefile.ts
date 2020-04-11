@@ -14,11 +14,16 @@ import { dirname } from "https://deno.land/x/dirname/mod.ts";
 
 const {
   UPDATE = "false",
+  SHELL,
 } = Deno.env();
 
 const __dirname = dirname(import.meta);
 
 const shouldUpdate = UPDATE.toLowerCase() === "true";
+
+if (!SHELL || path.basename(SHELL) !== "zsh") {
+  throw `Invalid $SHELL. Expecting zsh, received ${SHELL}.`;
+}
 
 desc("Sync markdown files");
 task("markdown", [], async () => {
