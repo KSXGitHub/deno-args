@@ -4,7 +4,7 @@ import {
   fs,
   dirname,
 } from "../../deps.ts";
-import setup from "./setup.ts";
+import { setup } from "./setup.ts";
 
 const __dirname = dirname(import.meta);
 
