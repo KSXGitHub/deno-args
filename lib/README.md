@@ -78,10 +78,10 @@ if (res.error) {
 * [x] `index.ts`
 * [x] Copy `README.md` to `lib`
   * [x] Wait for [task runner](#task-runner)
-* [ ] Integration with `@tsfun/pipe`
+* [x] Integration with `@tsfun/pipe`
   * Use [Pika CDN](https://cdn.pika.dev), [JSPM](https://jspm.io) does not support TypeScript header.
   * [ ] ~~Update `preview/parser.ts`~~
-  * [ ] Update example in `README.md`
+  * [ ] ~~Update example in `README.md`~~ (`wrapper.ts` is simpler)
 * [ ] TSDoc
   * [x] Describe all public APIs
   * [ ] Add examples to `flag-types.ts`
