@@ -61,46 +61,6 @@ if (res.error) {
 }
 ```
 
-## TODO
-
-* [x] Report multiple errors at the same time
-* [x] Improve help
-  * [x] Implement as `EarlyExit`
-  * [ ] ~~Support both flag and subcommand (`--help` and `help`)~~ (Do it manually)
-  * [x] Help for subcommand: (`prog cmd --help` and `prog help cmd`)
-  * [x] Proper indentation
-  * [x] Categories
-  * Reference [clap](https://clap.rs/)'s
-* [x] <a id="task-runner">Use a task runner</a>
-* [x] Negative numbers
-* [x] Optional flags
-* [x] Sharing flags between subcommands
-* [x] `index.ts`
-* [x] Copy `README.md` to `lib`
-  * [x] Wait for [task runner](#task-runner)
-* [x] Integration with `@tsfun/pipe`
-  * Use [Pika CDN](https://cdn.pika.dev), [JSPM](https://jspm.io) does not support TypeScript header.
-  * [ ] ~~Update `preview/parser.ts`~~
-  * [ ] ~~Update example in `README.md`~~ (`wrapper.ts` is simpler)
-* [x] TSDoc
-  * [x] Describe all public APIs
-  * [ ] ~~Add examples to `flag-types.ts`~~ (Just read `README.md`)
-  * [ ] ~~Add examples to `wrapper.ts`~~ (Just read `README.md`)
-* [x] Support subcommands
-  * [x] Known subcommands (subcommands that are known and defined by the programmer)
-  * [ ] ~~Unknown subcommands~~ (Use remaining of main command)
-* [ ] ~~Release for Node.js~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
-* [x] Add CI
-  * [x] GitHub actions
-  * [x] Travis CI
-* [x] Test
-  * [ ] ~~Use `jest` (Deno test ecosystem is yet matured)~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
-  * [ ] ~~Use `jest` to snapshot `preview`~~ _(No needs)_
-  * [x] Use `deno test` to make some assertions
-* [x] Use ~~`prettier`~~ `deno fmt` to format
-* [x] Type test
-* [x] When all is done, remove warning
-
 ## License
 
 [MIT](https://git.io/JvK1f) © [Hoàng Văn Khải](https://github.com/KSXGitHub)
