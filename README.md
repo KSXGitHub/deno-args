@@ -86,7 +86,7 @@ if (res.error) {
   * [x] Describe all public APIs
   * [ ] Add examples to `flag-types.ts`
   * [ ] Add examples to `wrapper.ts`
-* [ ] Support subcommands
+* [x] Support subcommands
   * [x] Known subcommands (subcommands that are known and defined by the programmer)
   * [ ] ~~Unknown subcommands~~ (Use remaining of main command)
 * [ ] ~~Release for Node.js~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
