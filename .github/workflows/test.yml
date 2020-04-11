@@ -8,7 +8,7 @@ env:
   SHELL: /bin/zsh
 
 jobs:
-  build:
+  all:
     runs-on: ubuntu-latest
 
     strategy:
