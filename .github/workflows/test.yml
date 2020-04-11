@@ -22,7 +22,7 @@ jobs:
       - name: Install Deno
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh -s ${{ matrix.vars.deno }}
-          cp "$HOME"/.deno/bin/deno "$HOME"/bin/deno
+          ln -s "$HOME"/.deno/bin/deno "$HOME"/bin/deno
       - name: Run all targets in Drakefile
         run: |
           deno run --allow-all Drakefile.ts all
