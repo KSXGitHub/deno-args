@@ -378,7 +378,7 @@ export const SubCommand = <
  */
 export type MergeCommandReturn<
   LeftVal,
-  RightVal
+  RightVal,
 > = CommandReturn.Main<LeftVal & RightVal>;
 /**
  * Merge two command parsers
@@ -393,35 +393,39 @@ export const MergeCommand = <
   LeftVal,
   RightVal,
   Error extends ParseError,
-> (
+>(
   left: Command<CommandReturn.Main<LeftVal>, readonly Error[]>,
   right: Command<CommandReturn.Main<RightVal>, readonly Error[]>,
 ): Command<MergeCommandReturn<LeftVal, RightVal>, readonly Error[]> => ({
-  extract(args): MergeCommandReturn<LeftVal, RightVal> | ParseFailure<readonly Error[]> {
+  extract(
+    args,
+  ): MergeCommandReturn<LeftVal, RightVal> | ParseFailure<readonly Error[]> {
     const leftRes = left.extract(args);
     const rightRes = right.extract(args);
     if (leftRes.tag === MAIN_COMMAND && rightRes.tag === MAIN_COMMAND) {
       const value = { ...leftRes.value, ...rightRes.value };
-      const consumedArgs = new Set([...leftRes.consumedArgs, ...rightRes.consumedArgs])
+      const consumedArgs = new Set(
+        [...leftRes.consumedArgs, ...rightRes.consumedArgs],
+      );
       return addExtraProps({
         tag: MAIN_COMMAND,
         value,
-        consumedArgs
+        consumedArgs,
       } as const, args);
     } else {
       const errors = [
         ...leftRes.error?.errors || [],
         ...rightRes.error?.errors || [],
-      ]
+      ];
       return {
         tag: PARSE_FAILURE,
-        error: new CommandError(errors)
-      }
+        error: new CommandError(errors),
+      };
     }
   },
   *describe(): Iterable<string> {
-    yield * left.describe();
-    yield * right.describe();
+    yield* left.describe();
+    yield* right.describe();
   },
   *help(cmdPath): Iterable<CommandHelp> {
     yield* left.help(cmdPath);

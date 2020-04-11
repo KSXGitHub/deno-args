@@ -109,14 +109,16 @@ class Wrapper<
    * @param next Wrapper to merge with
    * @returns A merged wrapper
    */
-  public merge<NextVal> (
-    next: Wrapper<NextVal, CommandReturn.Main<NextVal>, readonly ParseError[]>
+  public merge<NextVal>(
+    next: Wrapper<NextVal, CommandReturn.Main<NextVal>, readonly ParseError[]>,
   ): Wrapper<
     MainVal & NextVal,
     CommandReturn.Main<MainVal & NextVal>,
     readonly ParseError[]
   > {
-    return new Wrapper(MergeCommand<MainVal, NextVal, ParseError>(this._command, next._command))
+    return new Wrapper(
+      MergeCommand<MainVal, NextVal, ParseError>(this._command, next._command),
+    );
   }
 
   /**
