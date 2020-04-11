@@ -1,5 +1,3 @@
-import * as path from "https://deno.land/std@v0.40.0/path/mod.ts";
-
 import {
   desc,
   task,
@@ -20,6 +18,7 @@ const shouldUpdate = UPDATE.toLowerCase() === "true";
 
 desc("Sync markdown files");
 task("markdown", [], async () => {
+  const path = await import("https://deno.land/std@v0.40.0/path/mod.ts");
   let outdated: string[] = [];
   type UpdateFunc = (name: string, src: string, dst: string) => void;
   const update: UpdateFunc = shouldUpdate
