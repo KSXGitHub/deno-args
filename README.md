@@ -4,8 +4,6 @@
 
 Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent TypeScript inference.
 
-**⚠ Warning:** This project is in an early stage of development. Things may break without notice. Be sure to specify exact version when use.
-
 ## Usage Examples
 
 ```typescript
@@ -101,7 +99,7 @@ if (res.error) {
   * [x] Use `deno test` to make some assertions
 * [x] Use ~~`prettier`~~ `deno fmt` to format
 * [x] Type test
-* [ ] When all is done, remove warning
+* [x] When all is done, remove warning
 
 ## License
 
