@@ -27,4 +27,5 @@ install:
   - sudo ln -s "$HOME/.deno/bin/deno" /bin/deno
 
 script:
+  - export SHELL=/bin/zsh
   - deno run --allow-all ./Drakefile.ts all
