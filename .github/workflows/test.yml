@@ -19,6 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Install some necessary programs
+        run: |
+          sudo apt install -y zsh
       - name: Install Deno
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh -s ${{ matrix.vars.deno }}
