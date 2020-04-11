@@ -326,6 +326,7 @@ export type SubCommandReturn<
  * @param main Main command parser
  * @param name Subcommand name
  * @param sub Subcommand parser
+ * @returns A command parser that parses either subcommand or main command
  */
 export const SubCommand = <
   Main extends CommandReturn<any, any, any>,
