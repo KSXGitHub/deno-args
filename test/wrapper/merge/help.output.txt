@@ -1,0 +1,16 @@
+DESCRIPTION:
+  <Description of main command>
+  <Description of shared flags>
+OPTIONS:
+  --before-merge
+    Flag defined before merge operation
+  --shared-binary-flag
+    Shared binary flag
+  --shared-count-flag
+    Shared count flag
+  --after-merge
+    Flag defined after merge operation
+SUBCOMMANDS:
+  sub
+    <Description of sub command>
+    <Description of shared flags>
