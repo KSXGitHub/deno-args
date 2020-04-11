@@ -17,7 +17,6 @@ import {
   CommandReturn,
   FlaggedCommandReturn,
   SubCommandReturn,
-  MergeCommandReturn,
   ParseFailure,
 } from "./command-types.ts";
 
