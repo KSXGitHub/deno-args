@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+
+env:
+  SHELL: /bin/zsh
+
+jobs:
+  all:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        vars:
+          - deno: v0.40.0
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install some necessary programs
+        run: |
+          sudo apt install -y zsh
+      - name: Install Deno
+        run: |
+          curl -fsSL https://deno.land/x/install/install.sh | sh -s ${{ matrix.vars.deno }}
+          sudo ln -s "$HOME/.deno/bin/deno" /bin/deno
+      - name: Run all targets in Drakefile
+        run: |
+          deno run --allow-all Drakefile.ts all

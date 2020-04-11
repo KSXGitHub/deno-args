@@ -1,5 +1,7 @@
 #! /usr/bin/env -S deno --allow-all
 
+import * as path from "https://deno.land/std@v0.40.0/path/mod.ts";
+
 import {
   desc,
   task,
@@ -12,15 +14,19 @@ import { dirname } from "https://deno.land/x/dirname/mod.ts";
 
 const {
   UPDATE = "false",
+  SHELL,
 } = Deno.env();
 
 const __dirname = dirname(import.meta);
 
 const shouldUpdate = UPDATE.toLowerCase() === "true";
 
+if (!SHELL || path.basename(SHELL) !== "zsh") {
+  throw `Invalid $SHELL. Expecting zsh, received ${SHELL}.`;
+}
+
 desc("Sync markdown files");
 task("markdown", [], async () => {
-  const path = await import("https://deno.land/std@v0.40.0/path/mod.ts");
   let outdated: string[] = [];
   type UpdateFunc = (name: string, src: string, dst: string) => void;
   const update: UpdateFunc = shouldUpdate
