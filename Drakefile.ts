@@ -1,3 +1,5 @@
+#! /usr/bin/env -S deno --allow-all
+
 import * as path from "https://deno.land/std@v0.40.0/path/mod.ts";
 
 import {
