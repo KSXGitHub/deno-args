@@ -13,9 +13,11 @@ import {
   Describe,
   FlaggedCommand,
   SubCommand,
+  MergeCommand,
   CommandReturn,
   FlaggedCommandReturn,
   SubCommandReturn,
+  MergeCommandReturn,
   ParseFailure,
 } from "./command-types.ts";
 
@@ -100,6 +102,23 @@ class Wrapper<
     ErrList | NextErrList
   > {
     return new Wrapper(SubCommand(this._command, name, sub._command));
+  }
+
+  /**
+   * Merge with another wrapper
+   * @param next Wrapper to merge with
+   * @returns A merged wrapper
+   */
+  public merge<NextVal>(
+    next: Wrapper<NextVal, CommandReturn.Main<NextVal>, readonly ParseError[]>,
+  ): Wrapper<
+    MainVal & NextVal,
+    CommandReturn.Main<MainVal & NextVal>,
+    readonly ParseError[]
+  > {
+    return new Wrapper(
+      MergeCommand<MainVal, NextVal, ParseError>(this._command, next._command),
+    );
   }
 
   /**

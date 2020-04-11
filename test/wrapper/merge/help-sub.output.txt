@@ -1,0 +1,10 @@
+DESCRIPTION:
+  <Description of sub command>
+  <Description of shared flags>
+OPTIONS:
+  --sub-binary-flag
+    Sub's own binary flag
+  --shared-binary-flag
+    Shared binary flag
+  --shared-count-flag
+    Shared count flag

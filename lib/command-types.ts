@@ -326,6 +326,7 @@ export type SubCommandReturn<
  * @param main Main command parser
  * @param name Subcommand name
  * @param sub Subcommand parser
+ * @returns A command parser that parses either subcommand or main command
  */
 export const SubCommand = <
   Main extends CommandReturn<any, any, any>,
@@ -367,5 +368,67 @@ export const SubCommand = <
       title: name,
       description: [...sub.describe()].join("\n"),
     };
+  },
+});
+
+/**
+ * Type of value of {@link MergeCommand}
+ * @template LeftVal Type of left dictionary
+ * @template RightVal Type of right dictionary
+ */
+export type MergeCommandReturn<
+  LeftVal,
+  RightVal,
+> = CommandReturn.Main<LeftVal & RightVal>;
+/**
+ * Merge two command parsers
+ * @template LeftVal Type of left dictionary
+ * @template RightVal Type of right dictionary
+ * @template Error Type of element of error
+ * @param left Left command parser
+ * @param right Right command parser
+ * @returns A command parser that parses two sets of flags
+ */
+export const MergeCommand = <
+  LeftVal,
+  RightVal,
+  Error extends ParseError,
+>(
+  left: Command<CommandReturn.Main<LeftVal>, readonly Error[]>,
+  right: Command<CommandReturn.Main<RightVal>, readonly Error[]>,
+): Command<MergeCommandReturn<LeftVal, RightVal>, readonly Error[]> => ({
+  extract(
+    args,
+  ): MergeCommandReturn<LeftVal, RightVal> | ParseFailure<readonly Error[]> {
+    const leftRes = left.extract(args);
+    const rightRes = right.extract(args);
+    if (leftRes.tag === MAIN_COMMAND && rightRes.tag === MAIN_COMMAND) {
+      const value = { ...leftRes.value, ...rightRes.value };
+      const consumedArgs = new Set(
+        [...leftRes.consumedArgs, ...rightRes.consumedArgs],
+      );
+      return addExtraProps({
+        tag: MAIN_COMMAND,
+        value,
+        consumedArgs,
+      } as const, args);
+    } else {
+      const errors = [
+        ...leftRes.error?.errors || [],
+        ...rightRes.error?.errors || [],
+      ];
+      return {
+        tag: PARSE_FAILURE,
+        error: new CommandError(errors),
+      };
+    }
+  },
+  *describe(): Iterable<string> {
+    yield* left.describe();
+    yield* right.describe();
+  },
+  *help(cmdPath): Iterable<CommandHelp> {
+    yield* left.help(cmdPath);
+    yield* right.help(cmdPath);
   },
 });
