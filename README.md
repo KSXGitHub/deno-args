@@ -74,7 +74,7 @@ if (res.error) {
 * [x] <a id="task-runner">Use a task runner</a>
 * [x] Negative numbers
 * [x] Optional flags
-* [ ] Sharing flags between subcommands
+* [x] Sharing flags between subcommands
 * [x] `index.ts`
 * [x] Copy `README.md` to `lib`
   * [x] Wait for [task runner](#task-runner)
