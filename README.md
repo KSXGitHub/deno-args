@@ -1,5 +1,7 @@
 # Deno Args
 
+[![Travis Build Status](https://travis-ci.org/KSXGitHub/deno-args.svg?branch=master)](https://travis-ci.org/KSXGitHub/deno-args)
+
 Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent TypeScript inference.
 
 **⚠ Warning:** This project is in an early stage of development. Things may break without notice. Be sure to specify exact version when use.
