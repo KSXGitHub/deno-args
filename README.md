@@ -88,7 +88,7 @@ if (res.error) {
   * [ ] Add examples to `wrapper.ts`
 * [ ] Support subcommands
   * [x] Known subcommands (subcommands that are known and defined by the programmer)
-  * [ ] Unknown subcommands (e.g. `git foo` will find `git-foo` and execute it)
+  * [ ] ~~Unknown subcommands~~ (Use remaining of main command)
 * [ ] ~~Release for Node.js~~ _(Blocker: https://github.com/denoland/deno/issues/4538, https://github.com/denoland/deno/issues/4539, https://github.com/denoland/deno/issues/4542)_
 * [ ] Add CI
   * [ ] GitHub actions
