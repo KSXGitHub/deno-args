@@ -65,6 +65,22 @@ if (res.error) {
 
 [My Patreon Page](https://patreon.com/khai96_).
 
+## Development
+
+All tasks are in [Drakefile.ts](./Drakefile.ts).
+
+### Run all tests
+
+```sh
+deno -A Drakefile.ts all
+```
+
+### Fix files
+
+```sh
+env UPDATE=true deno -A Drakefile.ts all
+```
+
 ## License
 
 [MIT](https://git.io/JvK1f) © [Hoàng Văn Khải](https://github.com/KSXGitHub)
