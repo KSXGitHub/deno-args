@@ -61,6 +61,10 @@ if (res.error) {
 }
 ```
 
+## Become a Patron
+
+[My Patreon Page](https://patreon.com/khai96_).
+
 ## License
 
 [MIT](https://git.io/JvK1f) © [Hoàng Văn Khải](https://github.com/KSXGitHub)
