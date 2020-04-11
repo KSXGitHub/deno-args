@@ -1,5 +1,7 @@
 import args from "../../../lib/wrapper.ts";
 import { BinaryFlag, CountFlag } from "../../../lib/flag-types.ts";
+import { fmtTestName } from "../../utils.ts";
+
 export function setup() {
   const shared = args
     .describe("<Description of shared flags>")
@@ -26,4 +28,14 @@ export function setup() {
       .merge(shared));
   return parser;
 }
-export default setup;
+
+export interface Case<Output> {
+  readonly title: string;
+  readonly input: readonly string[];
+  readonly output: Output;
+}
+
+export const test = (
+  param: Case<unknown>,
+  fn: () => void | Promise<void>,
+) => Deno.test(fmtTestName(param.title, param.input), fn);
