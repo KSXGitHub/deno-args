@@ -386,7 +386,7 @@ export type MergeCommandReturn<
  * @template Error Type of element of error
  * @param left Left command parser
  * @param right Right command parser
- * @returns A command parser that parse two sets of flags
+ * @returns A command parser that parses two sets of flags
  */
 export const MergeCommand = <
   LeftVal,
