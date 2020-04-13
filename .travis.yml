@@ -20,20 +20,20 @@ addons:
   apt:
     packages:
       - zsh
+      - tree
 
 env:
   - DENO_VERSION=v0.40.0
 
-before_install:
-  - echo HOME $HOME
-  - echo TRAVIS_HOME $TRAVIS_HOME
-  - ls -A $HOME/.deno
-  - ls -A $TRAVIS_HOME/.deno
-  - sh -c 'exit 1'
-
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
   - sudo ln -s "$HOME/.deno/bin/deno" /bin/deno
+  - zsh -c 'deno cache **/*.ts; deno cache **/*.js; true'
+  - echo HOME $HOME
+  - echo TRAVIS_HOME $TRAVIS_HOME
+  - tree $HOME/.deno
+  - tree $TRAVIS_HOME/.deno
+  - false
 
 script:
   - export SHELL=/bin/zsh
