@@ -8,6 +8,7 @@ import {
   sh,
   run,
   outOfDate,
+  glob,
 } from "https://deno.land/x/drake@v0.16.0/mod.ts";
 
 import { dirname } from "https://deno.land/x/dirname/mod.ts";
@@ -35,9 +36,7 @@ task("markdown", [], async () => {
       Deno.copyFileSync(src, dst);
     }
     : (name) => outdated.push(name);
-  for (const info of Deno.readdirSync(__dirname)) {
-    if (!info.name?.endsWith(".md")) continue;
-    const name = info.name!;
+  for (const name of glob("*.md")) {
     const src = path.join(__dirname, name);
     const dst = path.join(__dirname, "lib", name);
     if (outOfDate(dst, [src])) {
