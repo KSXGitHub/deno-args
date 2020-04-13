@@ -16,11 +16,13 @@ cache:
 
 dist: bionic
 
+addons:
+  apt:
+    packages:
+      - zsh
+
 env:
   - DENO_VERSION=v0.40.0
-
-before_install:
-  - sudo apt install -y zsh
 
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
