@@ -61,6 +61,10 @@ if (res.error) {
 }
 ```
 
+## Sample Apps
+
+* https://github.com/KSXGitHub/deno_run_tests_on_localhost/blob/master/cli.ts
+
 ## Become a Patron
 
 [My Patreon Page](https://patreon.com/khai96_).
