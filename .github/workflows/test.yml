@@ -22,6 +22,15 @@ jobs:
       - name: Install some necessary programs
         run: |
           sudo apt install -y zsh
+      - name: Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/deno
+          key: deno-${{ runner.os }}-${{ hashFiles('deno-lock.json') }}
+          restore-keys: |
+            deno-${{ runner.os }}-${{ hashFiles('deno-lock.json') }}
+            deno-${{ runner.os }}-
+            deno-
       - name: Install Deno
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh -s ${{ matrix.vars.deno }}
