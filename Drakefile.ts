@@ -56,7 +56,7 @@ task("markdown", [], async () => {
 desc("Fetch and compile dependencies");
 task("cache", [], async () => {
   const lockWrite = shouldUpdate ? "--lock-write" : "";
-  await sh(`deno cache **/*.ts --lock deno-lock.json ${lockWrite}`);
+  await sh(`deno cache **/*.ts --lock=deno-lock.json ${lockWrite}`);
 });
 
 desc("Run tests");
