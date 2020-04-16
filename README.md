@@ -7,63 +7,77 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 ## Usage Examples
 
 ```typescript
-import args from 'https://deno.land/x/args@1.0.0/wrapper.ts'
-import { HelpFlag, Option } from 'https://deno.land/x/args@1.0.0/argument-types.ts'
-import { FiniteNumber, Choice } from 'https://deno.land/x/args@1.0.0/value-types.ts'
+import args from "https://deno.land/x/args@1.0.2/wrapper.ts";
+import {
+  EarlyExitFlag,
+  Option,
+} from "https://deno.land/x/args@1.0.2/flag-types.ts";
+import {
+  FiniteNumber,
+  Choice,
+} from "https://deno.land/x/args@1.0.2/value-types.ts";
 
 const parser = args
-  .with(EarlyExitFlag('help', {
-    describe: 'Show help',
-    exit () {
-      console.log(parser.help())
-      return Deno.exit()
-    }
-  }))
-  .with(Option('a', {
-    type: FiniteNumber,
-    describe: 'Value of a'
-  }))
-  .with(Option('b', {
-    type: FiniteNumber,
-    describe: 'Value of b'
-  }))
-  .with(Option('operator', {
-    type: Choice<'add' | 'sub'>(
-      {
-        value: 'add',
-        describe: 'Add two numbers'
+  .with(
+    EarlyExitFlag("help", {
+      describe: "Show help",
+      exit() {
+        console.log(parser.help());
+        return Deno.exit();
       },
-      {
-        value: 'sub',
-        describe: 'Subtract two numbers'
-      }
-    ),
-    alias: ['o'],
-    describe: 'Operator to use'
-  }))
+    })
+  )
+  .with(
+    Option("a", {
+      type: FiniteNumber,
+      describe: "Value of a",
+    })
+  )
+  .with(
+    Option("b", {
+      type: FiniteNumber,
+      describe: "Value of b",
+    })
+  )
+  .with(
+    Option("operator", {
+      type: Choice<"add" | "sub">(
+        {
+          value: "add",
+          describe: "Add two numbers",
+        },
+        {
+          value: "sub",
+          describe: "Subtract two numbers",
+        }
+      ),
+      alias: ["o"],
+      describe: "Operator to use",
+    })
+  );
 
-const res = parser.parse(Deno.args)
+const res = parser.parse(Deno.args);
 
 if (res.error) {
-  console.error('Failed to parse CLI arguments')
+  console.error("Failed to parse CLI arguments");
   for (const e of res.error) {
-    console.error(e.toString)
+    console.error(e.toString);
   }
-  Deno.exit(1)
+  Deno.exit(1);
 } else {
-  const { a, b, operator } = res.value
+  const { a, b, operator } = res.value;
   switch (operator) {
-    case 'add':
-      console.log(a + b)
-    case 'sub':
-      console.log(a - b)
+    case "add":
+      console.log(a + b);
+    case "sub":
+      console.log(a - b);
   }
 }
 ```
 
 ## Sample Apps
 
-* https://github.com/KSXGitHub/deno_run_tests_on_localhost/blob/master/cli.ts
+- https://github.com/KSXGitHub/deno_run_tests_on_localhost/blob/master/cli.ts
 
 ## Become a Patron
 
