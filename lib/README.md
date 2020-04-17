@@ -4,7 +4,9 @@
 
 Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent TypeScript inference.
 
-## Usage Examples
+## Demo and Examples
+
+### Example Code
 
 ```typescript
 import args from "https://deno.land/x/args@1.0.7/wrapper.ts";
@@ -77,7 +79,7 @@ if (res.tag === PARSE_FAILURE) { // Alternatively, `if (res.error) {`
 }
 ```
 
-## Sample Apps
+### Sample Apps
 
 - https://github.com/KSXGitHub/deno_run_tests_on_localhost/blob/master/cli.ts
 
