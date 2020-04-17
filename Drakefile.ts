@@ -7,7 +7,7 @@ import {
   task,
   sh,
   run,
-  outOfDate,
+  readFile,
   glob,
 } from "https://deno.land/x/drake@v0.16.0/mod.ts";
 
@@ -26,6 +26,10 @@ if (!SHELL || path.basename(SHELL) !== "zsh") {
   throw `Invalid $SHELL. Expecting zsh, received ${SHELL}.`;
 }
 
+const compareFile = (a: string, b: string): boolean =>
+  Deno.statSync(a).size === Deno.statSync(b).size &&
+  readFile(a) === readFile(b);
+
 desc("Sync markdown files");
 task("markdown", [], async () => {
   let outdated: string[] = [];
@@ -39,10 +43,10 @@ task("markdown", [], async () => {
   for (const name of glob("*.md")) {
     const src = path.join(__dirname, name);
     const dst = path.join(__dirname, "lib", name);
-    if (outOfDate(dst, [src])) {
-      update(name, src, dst);
-    } else {
+    if (compareFile(src, dst)) {
       console.log(`File ${name} is up-to-date. Skipping.`);
+    } else {
+      update(name, src, dst);
     }
   }
   if (outdated.length) {
