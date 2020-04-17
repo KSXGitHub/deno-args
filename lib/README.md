@@ -18,6 +18,7 @@ import {
 } from "https://deno.land/x/args@1.0.7/value-types.ts";
 
 const parser = args
+  .describe("Add or subtract two numbers")
   .with(
     EarlyExitFlag("help", {
       describe: "Show help",
