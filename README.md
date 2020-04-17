@@ -6,6 +6,10 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 ## Demo and Examples
 
+### Demo on YouTube
+
+https://youtu.be/luzgMWrRJxw
+
 ### Example Code
 
 ```typescript
