@@ -15,7 +15,7 @@ jobs:
       fail-fast: true
       matrix:
         vars:
-          - deno: v0.40.0
+          - deno: v0.41.0
 
     steps:
       - uses: actions/checkout@v2
