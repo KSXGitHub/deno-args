@@ -35,3 +35,11 @@ jobs:
       - name: Run all targets in Drakefile
         run: |
           deno run --allow-all Drakefile.ts all
+      - name: Prepare for uploading deno cache as artifacts
+        run: |
+          cp -r ~/.cache/deno deno-cache.tmp
+      - name: Upload deno cache as artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: deno-cache
+          path: deno-cache.tmp
