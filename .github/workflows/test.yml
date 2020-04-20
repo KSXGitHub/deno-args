@@ -19,6 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Inspect variables
+        run: |
+          echo github.ref = ${{ github.ref }}
       - name: Install some necessary programs
         run: |
           sudo apt install -y zsh
