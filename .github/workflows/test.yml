@@ -24,12 +24,12 @@ jobs:
           sudo apt install -y zsh
       - name: Test JavaScript
         env:
-          JSON_STR: ${{ JSON.stringify([0, 1, 2, 3]) }}
-          FUNCTION_STR: ${{ String(Function) }}
+          # JSON_STR: ${{ JSON.stringify([0, 1, 2, 3]) }}
+          # FUNCTION_STR: ${{ String(Function) }}
           GLOBAL_KEYS: ${{ Object.keys(globalThis) }}
         run: |
-          zsh -c 'echo JSON $JSON_STR'
-          zsh -c 'echo FUNCTION $FUNCTION_STR'
+          # zsh -c 'echo JSON $JSON_STR'
+          # zsh -c 'echo FUNCTION $FUNCTION_STR'
           zsh -c 'echo GLOBAL $GLOBAL_KEYS'
       - name: Cache
         uses: actions/cache@v1
