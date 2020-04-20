@@ -22,6 +22,15 @@ jobs:
       - name: Install some necessary programs
         run: |
           sudo apt install -y zsh
+      - name: Test JavaScript
+        env:
+          JSON: ${{ JSON.stringify([0, 1, 2, 3]) }}
+          FUNCTION: ${{ String(Function) }}
+          GLOBAL: ${{ Object.keys(globalThis) }}
+        run: |
+          zsh -c 'echo JSON $JSON'
+          zsh -c 'echo FUNCTION $FUNCTION'
+          zsh -c 'echo GLOBAL $GLOBAL'
       - name: Cache
         uses: actions/cache@v1
         with:
