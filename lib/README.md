@@ -1,5 +1,6 @@
 # Deno Args
 
+[![GitHub Actions: CI](https://github.com/KSXGitHub/deno-args/workflows/CI/badge.svg)](https://github.com/KSXGitHub/deno-args/actions?query=workflow%3ACI)
 [![Travis Build Status](https://travis-ci.org/KSXGitHub/deno-args.svg?branch=master)](https://travis-ci.org/KSXGitHub/deno-args)
 
 Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent TypeScript inference.
