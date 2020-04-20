@@ -21,6 +21,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Inspect variables
         run: |
+          echo github.action = ${{ github.action }}
+          echo github.event_name = ${{ github.event_name }}
+          echo github.sha = ${{ github.sha }}
           echo github.ref = ${{ github.ref }}
       - name: Install some necessary programs
         run: |
