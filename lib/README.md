@@ -86,7 +86,7 @@ if (res.tag === PARSE_FAILURE) { // Alternatively, `if (res.error) {`
 
 ### Sample Apps
 
-- https://github.com/KSXGitHub/deno_run_tests_on_localhost/blob/master/cli.ts
+- https://github.com/KSXGitHub/deno_run_tests_on_localhost/blob/0.2.2/cli.ts
 
 ## Become a Patron
 
