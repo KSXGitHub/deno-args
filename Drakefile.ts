@@ -79,7 +79,11 @@ task("cache", [], async () => {
   if (shouldUpdate) {
     writeFile("deno-lock.json", sortedLockContent);
   } else {
-    assertEquals(unsortedLockContent, sortedLockContent, "deno-lock.json isn't formatted correctly");
+    assertEquals(
+      unsortedLockContent,
+      sortedLockContent,
+      "deno-lock.json isn't formatted correctly",
+    );
   }
 });
 
