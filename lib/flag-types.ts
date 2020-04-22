@@ -5,6 +5,7 @@ import {
 import {
   FlagType,
   ValueType,
+  ArgvItem,
 } from "./types.ts";
 
 import {
@@ -261,3 +262,51 @@ export interface PartialOptionDescriptor<Value, Default>
   /** Default value description */
   readonly describeDefault?: string;
 }
+
+/**
+ * Declare a multi-value option
+ *
+ * CLI example: `--opt foo --opt bar --opt baz` → `["foo", "bar", "baz"]`
+ */
+export const MultiOption = <Name extends string, Value>(
+  name: Name,
+  descriptor: MultiOptionDescriptor<Value>,
+): FlagType<Name, Value[]> => ({
+  name,
+  extract(args) {
+    const flags = listFlags(name, descriptor);
+    const findRes = findFlags(args, flags);
+    const value: Value[] = [];
+    const consumedFlags = new Set<ArgvItem>();
+    // TODO: Return multiple errors at once
+    for (const item of findRes) {
+      const valPos = item.index + 1;
+      if (args.length <= valPos) return err(new MissingValue(name));
+      const val = args[valPos];
+      if (val.type !== "value") return err(new UnexpectedFlag(name, val.raw));
+      const parseResult = descriptor.type.extract([val.raw]);
+      if (!parseResult.tag) return parseResult;
+      value.push(parseResult.value);
+      consumedFlags.add(item).add(val);
+    }
+    return ok({
+      value,
+      consumedFlags,
+    });
+  },
+  help: once(() => {
+    const typeName = descriptor.type.getTypeName();
+    const titleSection = `${fmtTitle(name, descriptor)} <${typeName}>`;
+    const title = `${titleSection} [${titleSection} ...]`;
+    const description = (descriptor.describe || "") +
+      fmtTypeHelp(descriptor.type.help);
+    return { title, description };
+  }),
+  ...sharedProps("MultiOption", descriptor),
+});
+
+/**
+ * Interface of descriptor of {@link MultiOption}
+ * @template Value Type of values
+ */
+export interface MultiOptionDescriptor<Value> extends OptionDescriptor<Value> {}
