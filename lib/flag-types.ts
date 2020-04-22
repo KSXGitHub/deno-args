@@ -283,7 +283,9 @@ export const MultiOption = <Name extends string, Value>(
       const valPos = item.index + 1;
       if (args.length <= valPos) return err(new MissingValue(item.name));
       const val = args[valPos];
-      if (val.type !== "value") return err(new UnexpectedFlag(item.name, val.raw));
+      if (val.type !== "value") {
+        return err(new UnexpectedFlag(item.name, val.raw));
+      }
       const parseResult = descriptor.type.extract([val.raw]);
       if (!parseResult.tag) return parseResult;
       value.push(parseResult.value);
