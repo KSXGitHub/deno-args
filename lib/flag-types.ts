@@ -268,9 +268,9 @@ export interface PartialOptionDescriptor<Value, Default>
  *
  * CLI example: `--opt foo --opt bar --opt baz` → `["foo", "bar", "baz"]`
  */
-export const MultiOption = <Name extends string, Value>(
+export const CollectOption = <Name extends string, Value>(
   name: Name,
-  descriptor: MultiOptionDescriptor<Value>,
+  descriptor: CollectOptionDescriptor<Value>,
 ): FlagType<Name, Value[]> => ({
   name,
   extract(args) {
@@ -308,7 +308,7 @@ export const MultiOption = <Name extends string, Value>(
 });
 
 /**
- * Interface of descriptor of {@link MultiOption}
+ * Interface of descriptor of {@link CollectOption}
  * @template Value Type of values
  */
-export interface MultiOptionDescriptor<Value> extends OptionDescriptor<Value> {}
+export interface CollectOptionDescriptor<Value> extends OptionDescriptor<Value> {}
