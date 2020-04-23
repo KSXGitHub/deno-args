@@ -311,4 +311,5 @@ export const CollectOption = <Name extends string, Value>(
  * Interface of descriptor of {@link CollectOption}
  * @template Value Type of values
  */
-export interface CollectOptionDescriptor<Value> extends OptionDescriptor<Value> {}
+export interface CollectOptionDescriptor<Value>
+  extends OptionDescriptor<Value> {}
