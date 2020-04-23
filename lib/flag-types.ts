@@ -264,7 +264,7 @@ export interface PartialOptionDescriptor<Value, Default>
 }
 
 /**
- * Declare a multi-value option
+ * Declare an option that collects value after flags
  *
  * CLI example: `--opt foo --opt bar --opt baz` → `["foo", "bar", "baz"]`
  */
