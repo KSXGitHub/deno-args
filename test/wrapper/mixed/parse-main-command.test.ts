@@ -32,6 +32,7 @@ interface Value {
   readonly text: string;
   readonly "partial-integer": bigint;
   readonly choice: 123 | "foo" | 456 | "bar" | "789";
+  readonly collect: readonly string[];
 }
 
 const okCases: OkCase[] = [
@@ -58,6 +59,7 @@ const okCases: OkCase[] = [
         text: "hello",
         "partial-integer": 123n,
         choice: "foo",
+        collect: [],
       },
       remainingRawArgs: [],
     },
@@ -86,6 +88,7 @@ const okCases: OkCase[] = [
         text: "world",
         "partial-integer": 123n,
         choice: "bar",
+        collect: [],
       },
       remainingRawArgs: [],
     },
@@ -107,6 +110,12 @@ const okCases: OkCase[] = [
       "",
       "--choice",
       "123",
+      "--collect",
+      "a",
+      "--collect",
+      "b",
+      "--collect",
+      "c",
     ],
     output: {
       value: {
@@ -119,6 +128,7 @@ const okCases: OkCase[] = [
         "partial-integer": 123n,
         text: "",
         choice: 123,
+        collect: ["a", "b", "c"],
       },
       remainingRawArgs: [],
     },
@@ -148,6 +158,7 @@ const okCases: OkCase[] = [
         "partial-integer": 123n,
         text: "",
         choice: "789",
+        collect: [],
       },
       remainingRawArgs: [],
     },
@@ -178,6 +189,7 @@ const okCases: OkCase[] = [
         choice: 456,
         number: 0,
         text: "",
+        collect: [],
       },
       remainingRawArgs: [],
     },
@@ -190,6 +202,8 @@ const okCases: OkCase[] = [
       "def",
       "-N",
       "0",
+      "--collect",
+      "abc",
       "--integer",
       "0",
       "--text",
@@ -198,6 +212,8 @@ const okCases: OkCase[] = [
       "--choice",
       "123",
       "jkl",
+      "--collect",
+      "def",
       "mno",
       "pqrs",
     ],
@@ -212,6 +228,7 @@ const okCases: OkCase[] = [
         choice: 123,
         number: 0,
         text: "",
+        collect: ["abc", "def"],
       },
       remainingRawArgs: [
         "abc",
@@ -252,6 +269,7 @@ const okCases: OkCase[] = [
         choice: 123,
         number: 0,
         text: "",
+        collect: [],
       },
       remainingRawArgs: [
         "--not-a-flag",

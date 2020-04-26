@@ -21,6 +21,8 @@ OPTIONS:
     ‣ 456: Not 123
     ‣ bar: Not Foo
     ‣ 789: Not a number
+  --collect <text> [--collect <text> ...]
+    Text segments
 SUBCOMMANDS:
   sub0
     Sub command without flags

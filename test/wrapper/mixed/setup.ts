@@ -5,6 +5,7 @@ import {
   CountFlag,
   Option,
   PartialOption,
+  CollectOption,
 } from "../../../lib/flag-types.ts";
 import {
   FiniteNumber,
@@ -57,6 +58,10 @@ export const setup = () =>
         { value: "789", describe: "Not a number" },
       ),
       describe: "Choice to make",
+    }))
+    .with(CollectOption("collect", {
+      type: Text,
+      describe: "Text segments",
     }))
     .sub("sub0", args
       .describe("Sub command without flags"))
