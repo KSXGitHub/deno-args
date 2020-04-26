@@ -1,6 +1,4 @@
-import {
-  ParseError,
-} from "./types.ts";
+import { ParseError } from "./types.ts";
 
 /**
  * Base class of all `ValueError`
@@ -17,7 +15,7 @@ export abstract class ValueError implements ParseError {
 export class NotANumber extends ValueError {
   constructor(
     /** Raw input */
-    public readonly raw: string,
+    public readonly raw: string
   ) {
     super();
   }
@@ -35,7 +33,7 @@ export class NotAnInteger extends ValueError {
     /** Raw input */
     public readonly raw: string,
     /** BigInt parsing error */
-    public readonly error: SyntaxError,
+    public readonly error: SyntaxError
   ) {
     super();
   }
@@ -49,20 +47,21 @@ export class NotAnInteger extends ValueError {
  * `ValueError` class for when raw input not matching any expected choice
  * @template ValidChoice Union type of valid choices
  */
-export class InvalidChoice<ValidChoice extends string | number>
-  extends ValueError {
+export class InvalidChoice<
+  ValidChoice extends string | number
+> extends ValueError {
   constructor(
     /** Raw input */
     public readonly raw: string,
     /** List of valid choices */
-    public readonly choices: readonly ValidChoice[],
+    public readonly choices: readonly ValidChoice[]
   ) {
     super();
   }
 
   public toString() {
     return `Invalid choice: ${this.raw} is not one of ${this.choices.join(
-      ", ",
+      ", "
     )}`;
   }
 }

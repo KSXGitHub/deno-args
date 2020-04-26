@@ -1,19 +1,8 @@
-import {
-  once,
-} from "./deps.ts";
+import { once } from "./deps.ts";
 
-import {
-  FlagType,
-  ValueType,
-  ArgvItem,
-} from "./types.ts";
+import { FlagType, ValueType, ArgvItem } from "./types.ts";
 
-import {
-  ok,
-  err,
-  flagPrefix,
-  findFlags,
-} from "./utils.ts";
+import { ok, err, flagPrefix, findFlags } from "./utils.ts";
 
 import {
   MissingFlag,
@@ -27,20 +16,20 @@ const listFlags = <Name extends string>(
   name: Name,
   descriptor: {
     readonly alias?: Iterable<string>;
-  },
-): [Name, ...string[]] => [name, ...descriptor.alias || []];
+  }
+): [Name, ...string[]] => [name, ...(descriptor.alias || [])];
 
-const fmtTitle = (name: string, descriptor: {
-  readonly alias?: Iterable<string>;
-}): string =>
+const fmtTitle = (
+  name: string,
+  descriptor: {
+    readonly alias?: Iterable<string>;
+  }
+): string =>
   listFlags(name, descriptor)
     .map((flag) => flagPrefix(flag) + flag)
     .join(", ");
 
-const fmtTypeHelp = (help?: () => string) =>
-  help
-    ? "\n" + help()
-    : "";
+const fmtTypeHelp = (help?: () => string) => (help ? "\n" + help() : "");
 
 type FlagHelpFunc = FlagType<any, any>["help"];
 const FlagHelpFunc = (
@@ -48,7 +37,7 @@ const FlagHelpFunc = (
   descriptor: {
     readonly alias?: readonly string[];
     readonly describe?: string;
-  },
+  }
 ): FlagHelpFunc =>
   once(() => ({
     title: fmtTitle(name, descriptor),
@@ -59,11 +48,10 @@ const sharedProps = (
   typeName: string,
   descriptor?: {
     readonly type: ValueType<any, any>;
-  },
+  }
 ) => ({
-  [Symbol.toStringTag]: typeName + (
-    descriptor ? `(${descriptor.type[Symbol.toStringTag]})` : ""
-  ),
+  [Symbol.toStringTag]:
+    typeName + (descriptor ? `(${descriptor.type[Symbol.toStringTag]})` : ""),
 });
 
 interface FlagDescriptorSharedProps {
@@ -78,7 +66,7 @@ interface FlagDescriptorSharedProps {
  */
 export const EarlyExitFlag = <Name extends string>(
   name: Name,
-  descriptor: EarlyExitDescriptor,
+  descriptor: EarlyExitDescriptor
 ): FlagType<Name, void> => ({
   name,
   extract(args) {
@@ -107,7 +95,7 @@ export interface EarlyExitDescriptor extends FlagDescriptorSharedProps {
  */
 export const BinaryFlag = <Name extends string>(
   name: Name,
-  descriptor: FlagDescriptor = {},
+  descriptor: FlagDescriptor = {}
 ): FlagType<Name, boolean> => ({
   name,
   extract(args) {
@@ -128,7 +116,7 @@ export { BinaryFlag as Flag };
  */
 export const CountFlag = <Name extends string>(
   name: Name,
-  descriptor: FlagDescriptor = {},
+  descriptor: FlagDescriptor = {}
 ): FlagType<Name, number> => ({
   name,
   extract(args) {
@@ -138,9 +126,7 @@ export const CountFlag = <Name extends string>(
       .map((flag) =>
         flag.type === "single-flag"
           ? 1
-          : flag.name
-            .filter((name) => allNames.includes(name))
-            .length
+          : flag.name.filter((name) => allNames.includes(name)).length
       )
       .reduce((acc, cur) => acc + cur, 0);
     return ok({
@@ -164,7 +150,7 @@ export interface FlagDescriptor extends FlagDescriptorSharedProps {}
  */
 export const Option = <Name extends string, Value>(
   name: Name,
-  descriptor: OptionDescriptor<Value>,
+  descriptor: OptionDescriptor<Value>
 ): FlagType<Name, Value> => ({
   name,
   extract(args) {
@@ -188,8 +174,8 @@ export const Option = <Name extends string, Value>(
   },
   help: once(() => ({
     title: `${fmtTitle(name, descriptor)} <${descriptor.type.getTypeName()}>`,
-    description: (descriptor.describe || "") +
-      fmtTypeHelp(descriptor.type.help),
+    description:
+      (descriptor.describe || "") + fmtTypeHelp(descriptor.type.help),
   })),
   ...sharedProps("Option", descriptor),
 });
@@ -211,7 +197,7 @@ export interface OptionDescriptor<Value> extends FlagDescriptorSharedProps {
 export const Partial = <Name extends string, Value, Default>(
   x: FlagType<Name, Value>,
   def: Default,
-  descDef: string = String(def),
+  descDef: string = String(def)
 ): FlagType<Name, Value | Default> => ({
   name: x.name,
   extract(args) {
@@ -242,12 +228,12 @@ export const Partial = <Name extends string, Value, Default>(
  */
 export const PartialOption = <Name extends string, Value, Default>(
   name: Name,
-  descriptor: PartialOptionDescriptor<Value, Default>,
+  descriptor: PartialOptionDescriptor<Value, Default>
 ): FlagType<Name, Value | Default> =>
   Partial(
     Option(name, descriptor),
     descriptor.default,
-    descriptor.describeDefault,
+    descriptor.describeDefault
   );
 
 /**
@@ -270,7 +256,7 @@ export interface PartialOptionDescriptor<Value, Default>
  */
 export const CollectOption = <Name extends string, Value>(
   name: Name,
-  descriptor: CollectOptionDescriptor<Value>,
+  descriptor: CollectOptionDescriptor<Value>
 ): FlagType<Name, Value[]> => ({
   name,
   extract(args) {
@@ -300,8 +286,8 @@ export const CollectOption = <Name extends string, Value>(
     const typeName = descriptor.type.getTypeName();
     const titleSection = `${fmtTitle(name, descriptor)} <${typeName}>`;
     const title = `${titleSection} [${titleSection} ...]`;
-    const description = (descriptor.describe || "") +
-      fmtTypeHelp(descriptor.type.help);
+    const description =
+      (descriptor.describe || "") + fmtTypeHelp(descriptor.type.help);
     return { title, description };
   }),
   ...sharedProps("MultiOption", descriptor),

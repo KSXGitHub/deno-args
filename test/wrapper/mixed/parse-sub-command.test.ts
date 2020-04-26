@@ -1,20 +1,10 @@
-import {
-  PARSE_FAILURE,
-} from "../../../lib/symbols.ts";
+import { PARSE_FAILURE } from "../../../lib/symbols.ts";
 
-import {
-  assertEquals,
-} from "../../deps.ts";
+import { assertEquals } from "../../deps.ts";
 
-import {
-  dbg,
-} from "../../utils.ts";
+import { dbg } from "../../utils.ts";
 
-import {
-  Case,
-  setup,
-  test,
-} from "./setup.ts";
+import { Case, setup, test } from "./setup.ts";
 
 interface Variant<Tag, Value> {
   readonly tag: Tag;
@@ -22,14 +12,20 @@ interface Variant<Tag, Value> {
 }
 
 type OkCase = Case<
-    | Variant<"sub0", {}>
-    | Variant<"sub1", {
-      readonly test: boolean;
-    }>
-    | Variant<"sub2", {
-      readonly number: number;
-      readonly text: string;
-    }>
+  | Variant<"sub0", {}>
+  | Variant<
+      "sub1",
+      {
+        readonly test: boolean;
+      }
+    >
+  | Variant<
+      "sub2",
+      {
+        readonly number: number;
+        readonly text: string;
+      }
+    >
 >;
 
 const okCases: OkCase[] = [
@@ -66,13 +62,7 @@ const okCases: OkCase[] = [
 
   {
     title: "sub2",
-    input: [
-      "sub2",
-      "--number",
-      "123",
-      "--text",
-      "hello",
-    ],
+    input: ["sub2", "--number", "123", "--text", "hello"],
     output: {
       tag: "sub2",
       value: {
@@ -88,14 +78,19 @@ okCases.forEach((param) =>
     const { input, output } = param;
     const result = setup().parse(input);
     if (
-      result.tag !== "sub0" && result.tag !== "sub1" && result.tag !== "sub2"
+      result.tag !== "sub0" &&
+      result.tag !== "sub1" &&
+      result.tag !== "sub2"
     ) {
       throw dbg`unexpected tag\nResult: ${result}`;
     }
-    assertEquals({
-      tag: result.tag,
-      value: result.value.value,
-    }, output);
+    assertEquals(
+      {
+        tag: result.tag,
+        value: result.value.value,
+      },
+      output
+    );
   })
 );
 
@@ -116,12 +111,7 @@ const errCases: ErrCase[] = [
 
   {
     title: "sub2 unexpected flag",
-    input: [
-      "sub2",
-      "--number",
-      "--text",
-      "foo",
-    ],
+    input: ["sub2", "--number", "--text", "foo"],
     output: {
       types: ["UnexpectedFlag"],
       messages:
@@ -131,12 +121,7 @@ const errCases: ErrCase[] = [
 
   {
     title: "sub2 missing flag",
-    input: [
-      "sub2",
-      "--number",
-      "123",
-      "--text",
-    ],
+    input: ["sub2", "--number", "123", "--text"],
     output: {
       types: ["MissingValue"],
       messages: "Option --text requires a value but none was found",

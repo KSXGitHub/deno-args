@@ -5,14 +5,16 @@ import { assertEquals } from "../../deps.ts";
 import { dbg, fmtTestName } from "../../utils.ts";
 
 const setup = () =>
-  args.with(CountFlag("flag", {
-    alias: ["a", "b", "c"],
-  }));
+  args.with(
+    CountFlag("flag", {
+      alias: ["a", "b", "c"],
+    })
+  );
 
 const testOk = (
   title: string,
   argv: readonly string[],
-  expectedValue: unknown,
+  expectedValue: unknown
 ) =>
   Deno.test(fmtTestName(title, argv), () => {
     const result = setup().parse(argv);
@@ -27,8 +29,6 @@ testOk("full name", ["--flag"], { flag: 1 });
 testOk("alias", ["-a"], { flag: 1 });
 testOk("no conflict (grouped)", ["-abc", "--flag"], { flag: 3 + 1 });
 testOk("no conflict (separated)", ["-a", "-b", "-c", "--flag"], { flag: 4 });
-testOk(
-  "another",
-  ["-abc", "-a", "-b", "-c", "--flag", "--flag"],
-  { flag: 3 + 3 + 2 },
-);
+testOk("another", ["-abc", "-a", "-b", "-c", "--flag", "--flag"], {
+  flag: 3 + 3 + 2,
+});

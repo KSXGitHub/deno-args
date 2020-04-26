@@ -18,10 +18,7 @@ import { dirname } from "https://deno.land/x/dirname/mod.ts";
 
 import { pipe } from "https://deno.land/x/compose@1.3.0/index.js";
 
-const {
-  UPDATE = "false",
-  SHELL,
-} = Deno.env();
+const { UPDATE = "false", SHELL } = Deno.env();
 
 const __dirname = dirname(import.meta);
 
@@ -41,9 +38,9 @@ task("markdown", [], async () => {
   type UpdateFunc = (name: string, src: string, dst: string) => void;
   const update: UpdateFunc = shouldUpdate
     ? (name, src, dst) => {
-      console.log(`File ${name} is out-of-date. Syncing.`);
-      Deno.copyFileSync(src, dst);
-    }
+        console.log(`File ${name} is out-of-date. Syncing.`);
+        Deno.copyFileSync(src, dst);
+      }
     : (name) => outdated.push(name);
   for (const name of glob("*.md")) {
     const src = path.join(__dirname, name);
@@ -72,9 +69,9 @@ task("cache", [], async () => {
     unsortedLockContent,
     JSON.parse,
     Object.entries,
-    (pairs) => pairs.sort(([a], [b]) => a > b ? 1 : -1),
+    (pairs) => pairs.sort(([a], [b]) => (a > b ? 1 : -1)),
     Object.fromEntries,
-    (object) => JSON.stringify(object, undefined, 2) + "\n",
+    (object) => JSON.stringify(object, undefined, 2) + "\n"
   );
   if (shouldUpdate) {
     writeFile("deno-lock.json", sortedLockContent);
@@ -82,16 +79,14 @@ task("cache", [], async () => {
     assertEquals(
       unsortedLockContent,
       sortedLockContent,
-      "deno-lock.json isn't formatted correctly",
+      "deno-lock.json isn't formatted correctly"
     );
   }
 });
 
 desc("Run tests");
 task("test", ["cache"], async () => {
-  const permissions = [
-    "--allow-read",
-  ];
+  const permissions = ["--allow-read"];
   await sh(`deno test ${permissions.join(" ")} test/**/*.test.ts`);
 });
 
@@ -101,11 +96,6 @@ task("fmt", [], async () => {
 });
 
 desc("Run all tasks");
-task("all", [
-  "markdown",
-  "cache",
-  "test",
-  "fmt",
-]);
+task("all", ["markdown", "cache", "test", "fmt"]);
 
 run();

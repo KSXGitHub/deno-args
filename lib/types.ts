@@ -15,10 +15,15 @@ export interface FlagType<Name extends string, Value> {
    * @param args List of arguments
    * @returns `Ok(result)` if succeed, `Err(error)` otherwise
    */
-  extract(args: readonly ArgvItem[]): Result<{
-    value: Value;
-    consumedFlags: ReadonlySet<ArgvItem>;
-  }, FlagError>;
+  extract(
+    args: readonly ArgvItem[]
+  ): Result<
+    {
+      value: Value;
+      consumedFlags: ReadonlySet<ArgvItem>;
+    },
+    FlagError
+  >;
 
   /**
    * Create a `FlagHelp` to display in `help::help()` or `wrapper::help()`

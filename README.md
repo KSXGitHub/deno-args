@@ -23,9 +23,7 @@ import {
   FiniteNumber,
   Choice,
 } from "https://deno.land/x/args@1.0.7/value-types.ts";
-import {
-  PARSE_FAILURE,
-} from "https://deno.land/x/args@1.0.7/symbols.ts";
+import { PARSE_FAILURE } from "https://deno.land/x/args@1.0.7/symbols.ts";
 
 const parser = args
   .describe("Add or subtract two numbers")
@@ -69,7 +67,8 @@ const parser = args
 
 const res = parser.parse(Deno.args);
 
-if (res.tag === PARSE_FAILURE) { // Alternatively, `if (res.error) {`
+if (res.tag === PARSE_FAILURE) {
+  // Alternatively, `if (res.error) {`
   console.error("Failed to parse CLI arguments");
   console.error(res.error.toString());
   Deno.exit(1);

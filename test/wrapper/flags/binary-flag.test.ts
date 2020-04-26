@@ -5,14 +5,16 @@ import { assertEquals } from "../../deps.ts";
 import { dbg, fmtTestName } from "../../utils.ts";
 
 const setup = () =>
-  args.with(BinaryFlag("flag", {
-    alias: ["a", "b", "c"],
-  }));
+  args.with(
+    BinaryFlag("flag", {
+      alias: ["a", "b", "c"],
+    })
+  );
 
 const testOk = (
   title: string,
   argv: readonly string[],
-  expectedValue: unknown,
+  expectedValue: unknown
 ) =>
   Deno.test(fmtTestName(title, argv), () => {
     const result = setup().parse(argv);

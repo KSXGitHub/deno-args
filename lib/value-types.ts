@@ -1,17 +1,8 @@
-import {
-  ValueType,
-} from "./types.ts";
+import { ValueType } from "./types.ts";
 
-import {
-  ok,
-  err,
-} from "./utils.ts";
+import { ok, err } from "./utils.ts";
 
-import {
-  NotANumber,
-  NotAnInteger,
-  InvalidChoice,
-} from "./value-errors.ts";
+import { NotANumber, NotAnInteger, InvalidChoice } from "./value-errors.ts";
 
 const sharedProps = (typeName: string) => ({
   [Symbol.toStringTag]: typeName,
@@ -28,9 +19,7 @@ export const Text: ValueType<string, readonly [string]> = {
 export const FiniteNumber: ValueType<number, readonly [string]> = {
   extract([raw]) {
     const value = Number(raw);
-    return isFinite(value)
-      ? ok(value)
-      : err(new NotANumber(raw));
+    return isFinite(value) ? ok(value) : err(new NotANumber(raw));
   },
   getTypeName: () => "number",
   ...sharedProps("FiniteNumber"),
@@ -55,27 +44,29 @@ export const Integer: ValueType<bigint, readonly [string]> = {
  * @param choices Choices to make
  * @returns Type and parser of choices
  */
-export function Choice<
-  Value extends number | string,
->(...choices: {
-  readonly value: Value;
-  readonly describe?: string;
-}[]): ValueType<Value, readonly [string]> {
+export function Choice<Value extends number | string>(
+  ...choices: {
+    readonly value: Value;
+    readonly describe?: string;
+  }[]
+): ValueType<Value, readonly [string]> {
   const values = choices.map((x) => x.value);
   const valueStrings = values.map((x) => String(x));
 
-  { // check for duplication
-    const duplications = valueStrings.filter((x, i) =>
-      valueStrings.indexOf(x) !== i
+  {
+    // check for duplication
+    const duplications = valueStrings.filter(
+      (x, i) => valueStrings.indexOf(x) !== i
     );
     if (duplications.length) {
       throw new RangeError(`Duplicated choices: ${duplications.join(" ")}`);
     }
   }
 
-  { // check for invalid numbers
-    const invalidNumbers = values.filter((x) =>
-      typeof x === "number" && !isFinite(x)
+  {
+    // check for invalid numbers
+    const invalidNumbers = values.filter(
+      (x) => typeof x === "number" && !isFinite(x)
     );
     if (invalidNumbers.length) {
       throw new RangeError(`Invalid numbers: ${invalidNumbers.join(" ")}`);

@@ -8,21 +8,23 @@ import { dbg, fmtTestName, tryExec } from "../../utils.ts";
 type Choice = 0 | 1 | 2 | "a" | "b" | "3";
 
 const setup = () =>
-  args.with(Option("flag", {
-    type: Choice<Choice>(
-      { value: 0 },
-      { value: 1 },
-      { value: 2 },
-      { value: "a" },
-      { value: "b" },
-      { value: "3" },
-    ),
-  }));
+  args.with(
+    Option("flag", {
+      type: Choice<Choice>(
+        { value: 0 },
+        { value: 1 },
+        { value: 2 },
+        { value: "a" },
+        { value: "b" },
+        { value: "3" }
+      ),
+    })
+  );
 
 const testOk = (
   title: string,
   argv: readonly string[],
-  expectedValue: unknown,
+  expectedValue: unknown
 ) =>
   Deno.test(fmtTestName(title, argv), () => {
     const result = setup().parse(argv);
@@ -43,27 +45,30 @@ const testErr = (
   name: string,
   argv: readonly string[],
   expectedTypes: readonly string[],
-  expectedMessages: string,
+  expectedMessages: string
 ) =>
   Deno.test(name, () => {
     const result = setup().parse(argv);
     if (result.tag !== PARSE_FAILURE) {
       throw dbg`unexpected tag\nresult: ${result}`;
     }
-    assertEquals({
-      types: result.error.errors.map((x) => x.constructor.name),
-      messages: result.error.toString(),
-    }, {
-      types: expectedTypes,
-      messages: expectedMessages,
-    });
+    assertEquals(
+      {
+        types: result.error.errors.map((x) => x.constructor.name),
+        messages: result.error.toString(),
+      },
+      {
+        types: expectedTypes,
+        messages: expectedMessages,
+      }
+    );
   });
 
 testErr(
   "invalid choice",
   ["--flag", "not exist"],
   ["ValueParsingFailure"],
-  "Failed to parse --flag: Invalid choice: not exist is not one of 0, 1, 2, a, b, 3",
+  "Failed to parse --flag: Invalid choice: not exist is not one of 0, 1, 2, a, b, 3"
 );
 
 Deno.test("duplicated choice (same type)", () => {
@@ -76,9 +81,9 @@ Deno.test("duplicated choice (same type)", () => {
         { value: "a" },
         { value: "b" },
         { value: 1 },
-        { value: "b" },
+        { value: "b" }
       ),
-    (error): error is RangeError => error instanceof RangeError,
+    (error): error is RangeError => error instanceof RangeError
   );
   if (result.tag) throw "No error was thrown";
   assertEquals(result.error.toString(), "RangeError: Duplicated choices: 1 b");
@@ -93,9 +98,9 @@ Deno.test("duplicated choice (different type)", () => {
         { value: "1" },
         { value: 2 },
         { value: "2" },
-        { value: "3" },
+        { value: "3" }
       ),
-    (error): error is RangeError => error instanceof RangeError,
+    (error): error is RangeError => error instanceof RangeError
   );
   if (result.tag) throw "No error was thrown";
   assertEquals(result.error.toString(), "RangeError: Duplicated choices: 1 2");
@@ -110,13 +115,13 @@ Deno.test("invalid numbers", () => {
         { value: 2 },
         { value: Infinity },
         { value: -Infinity },
-        { value: NaN },
+        { value: NaN }
       ),
-    (error): error is RangeError => error instanceof RangeError,
+    (error): error is RangeError => error instanceof RangeError
   );
   if (result.tag) throw "No error was thrown";
   assertEquals(
     result.error.toString(),
-    "RangeError: Invalid numbers: Infinity -Infinity NaN",
+    "RangeError: Invalid numbers: Infinity -Infinity NaN"
   );
 });

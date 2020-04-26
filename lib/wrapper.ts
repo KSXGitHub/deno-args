@@ -1,11 +1,6 @@
-import {
-  ParseError,
-  FlagType,
-} from "./types.ts";
+import { ParseError, FlagType } from "./types.ts";
 
-import {
-  iterateArguments,
-} from "./utils.ts";
+import { iterateArguments } from "./utils.ts";
 
 import {
   BLANK,
@@ -24,7 +19,7 @@ import help from "./help.ts";
 
 type ParseResult<
   Main extends CommandReturn<any, any, any>,
-  ErrList extends readonly ParseError[],
+  ErrList extends readonly ParseError[]
 > = Main | ParseFailure<ErrList>;
 
 /**
@@ -35,11 +30,9 @@ type ParseResult<
 class Wrapper<
   MainVal,
   Main extends CommandReturn<any, any, any>,
-  ErrList extends readonly ParseError[],
+  ErrList extends readonly ParseError[]
 > {
-  constructor(
-    private readonly _command: Command<Main, ErrList>,
-  ) {}
+  constructor(private readonly _command: Command<Main, ErrList>) {}
 
   /**
    * Parse a list of raw arguments
@@ -66,11 +59,8 @@ class Wrapper<
    * @param flag Parser and type of flag to be added
    * @returns A wrapper with added flag
    */
-  public with<
-    NextKey extends string,
-    NextVal,
-  >(
-    flag: FlagType<NextKey, NextVal>,
+  public with<NextKey extends string, NextVal>(
+    flag: FlagType<NextKey, NextVal>
   ): Wrapper<
     MainVal & Record<NextKey, NextVal>,
     FlaggedCommandReturn<MainVal, NextKey, NextVal>,
@@ -91,10 +81,10 @@ class Wrapper<
   public sub<
     Name extends string,
     SubVal extends CommandReturn<any, any, any>,
-    NextErrList extends readonly ParseError[],
+    NextErrList extends readonly ParseError[]
   >(
     name: Name,
-    sub: Wrapper<MainVal, SubVal, ErrList>,
+    sub: Wrapper<MainVal, SubVal, ErrList>
   ): Wrapper<
     SubVal,
     SubCommandReturn<Main, Name, SubVal>,
@@ -109,14 +99,14 @@ class Wrapper<
    * @returns A merged wrapper
    */
   public merge<NextVal>(
-    next: Wrapper<NextVal, CommandReturn.Main<NextVal>, readonly ParseError[]>,
+    next: Wrapper<NextVal, CommandReturn.Main<NextVal>, readonly ParseError[]>
   ): Wrapper<
     MainVal & NextVal,
     CommandReturn.Main<MainVal & NextVal>,
     readonly ParseError[]
   > {
     return new Wrapper(
-      MergeCommand<MainVal, NextVal, ParseError>(this._command, next._command),
+      MergeCommand<MainVal, NextVal, ParseError>(this._command, next._command)
     );
   }
 

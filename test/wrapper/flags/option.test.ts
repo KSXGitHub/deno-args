@@ -6,15 +6,17 @@ import { assertEquals } from "../../deps.ts";
 import { dbg, fmtTestName } from "../../utils.ts";
 
 const setup = () =>
-  args.with(Option("flag", {
-    alias: ["a", "b", "c"],
-    type: Text,
-  }));
+  args.with(
+    Option("flag", {
+      alias: ["a", "b", "c"],
+      type: Text,
+    })
+  );
 
 const testOk = (
   title: string,
   argv: readonly string[],
-  expectedValue: unknown,
+  expectedValue: unknown
 ) =>
   Deno.test(fmtTestName(title, argv), () => {
     const result = setup().parse(argv);
@@ -33,43 +35,46 @@ const testErr = (
   name: string,
   argv: readonly string[],
   expectedTypes: readonly string[],
-  expectedMessages: string,
+  expectedMessages: string
 ) =>
   Deno.test(name, () => {
     const result = setup().parse(argv);
     if (result.tag !== PARSE_FAILURE) {
       throw dbg`unexpected tag\nresult: ${result}`;
     }
-    assertEquals({
-      types: result.error.errors.map((x) => x.constructor.name),
-      messages: result.error.toString(),
-    }, {
-      types: expectedTypes,
-      messages: expectedMessages,
-    });
+    assertEquals(
+      {
+        types: result.error.errors.map((x) => x.constructor.name),
+        messages: result.error.toString(),
+      },
+      {
+        types: expectedTypes,
+        messages: expectedMessages,
+      }
+    );
   });
 
 testErr(
   "missing flag",
   [],
   ["MissingFlag"],
-  "Flag --flag is required but missing",
+  "Flag --flag is required but missing"
 );
 testErr(
   "missing value",
   ["--flag"],
   ["MissingValue"],
-  "Option --flag requires a value but none was found",
+  "Option --flag requires a value but none was found"
 );
 testErr(
   "unexpected flag",
   ["--flag", "-X"],
   ["UnexpectedFlag"],
-  "Option --flag requires a value but received flag -X instead",
+  "Option --flag requires a value but received flag -X instead"
 );
 testErr(
   "conflict",
   ["--flag", "123", "-abc", "456"],
   ["ConflictFlags"],
-  "Conflicting options: --flag -a -b -c",
+  "Conflicting options: --flag -a -b -c"
 );

@@ -1,9 +1,4 @@
-import {
-  Ok,
-  Err,
-  ParseError,
-  ArgvItem,
-} from "./types.ts";
+import { Ok, Err, ParseError, ArgvItem } from "./types.ts";
 
 /**
  * Create an `Ok`
@@ -35,13 +30,10 @@ export const err = <Error extends ParseError>(error: Error): Err<Error> => ({
  * @param value Property value
  * @returns An object of one key-value pair
  */
-export const record = <
-  Key extends string | number | symbol,
-  Value,
->(
+export const record = <Key extends string | number | symbol, Value>(
   key: Key,
-  value: Value,
-) => ({ [key]: value }) as Record<Key, Value>;
+  value: Value
+) => ({ [key]: value } as Record<Key, Value>);
 
 /**
  * Determine flag prefix
@@ -73,33 +65,39 @@ export function flag(name: string | readonly string[]) {
 export function* iterateArguments(args: readonly string[]) {
   let fn = (raw: string, index: number): ArgvItem[] => {
     if (raw === "--") {
-      fn = (raw, index) => ([{ type: "value", index, raw }]);
+      fn = (raw, index) => [{ type: "value", index, raw }];
       return [];
     }
 
     if (raw.startsWith("--")) {
-      return [{
-        type: "single-flag",
-        name: raw.slice("--".length),
-        index,
-        raw,
-      }];
+      return [
+        {
+          type: "single-flag",
+          name: raw.slice("--".length),
+          index,
+          raw,
+        },
+      ];
     }
 
     if (raw.startsWith("-") && isNaN(raw as any)) {
-      return [{
-        type: "multi-flag",
-        name: [...raw.slice("-".length)],
-        index,
-        raw,
-      }];
+      return [
+        {
+          type: "multi-flag",
+          name: [...raw.slice("-".length)],
+          index,
+          raw,
+        },
+      ];
     }
 
-    return [{
-      type: "value",
-      index,
-      raw,
-    }];
+    return [
+      {
+        type: "value",
+        index,
+        raw,
+      },
+    ];
   };
 
   for (let i = 0; i !== args.length; ++i) {
@@ -117,7 +115,7 @@ export function* iterateArguments(args: readonly string[]) {
  */
 export function partition<X0, X1 extends X0>(
   xs: Iterable<X0>,
-  fn: (x: X0) => x is X1,
+  fn: (x: X0) => x is X1
 ): [X1[], X0[]] {
   const left: X1[] = [];
   const right: X0[] = [];
@@ -134,17 +132,18 @@ type ArgvFlag = ArgvItem.SingleFlag | ArgvItem.MultiFlag;
  * @param names Chosen flags' names
  * @returns Filter predicate
  */
-const flagPredicate = (names: readonly string[]) =>
-  (item: ArgvItem): item is ArgvFlag => {
-    switch (item.type) {
-      case "single-flag":
-        return names.includes(item.name);
-      case "multi-flag":
-        return item.name.some((flag) => names.includes(flag));
-      case "value":
-        return false;
-    }
-  };
+const flagPredicate = (names: readonly string[]) => (
+  item: ArgvItem
+): item is ArgvFlag => {
+  switch (item.type) {
+    case "single-flag":
+      return names.includes(item.name);
+    case "multi-flag":
+      return item.name.some((flag) => names.includes(flag));
+    case "value":
+      return false;
+  }
+};
 
 /**
  * Divide a list of classified arguments into two: one for flags with certain names, other for the rest
@@ -154,7 +153,7 @@ const flagPredicate = (names: readonly string[]) =>
  */
 export const partitionFlags = (
   args: Iterable<ArgvItem>,
-  names: readonly string[],
+  names: readonly string[]
 ) => partition(args, flagPredicate(names));
 
 /**
@@ -165,7 +164,7 @@ export const partitionFlags = (
  */
 export const findFlags = (
   args: readonly ArgvItem[],
-  names: readonly string[],
+  names: readonly string[]
 ) => args.filter(flagPredicate(names));
 
 /**

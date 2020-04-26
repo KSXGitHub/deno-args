@@ -6,14 +6,16 @@ import { assertEquals } from "../../deps.ts";
 import { dbg, fmtTestName } from "../../utils.ts";
 
 const setup = () =>
-  args.with(Option("flag", {
-    type: Text,
-  }));
+  args.with(
+    Option("flag", {
+      type: Text,
+    })
+  );
 
 const testOk = (
   title: string,
   argv: readonly string[],
-  expectedValue: unknown,
+  expectedValue: unknown
 ) =>
   Deno.test(fmtTestName(title, argv), () => {
     const result = setup().parse(argv);

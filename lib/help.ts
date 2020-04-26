@@ -1,12 +1,6 @@
-import {
-  makeIndentN,
-  InitMap,
-} from "./utils.ts";
+import { makeIndentN, InitMap } from "./utils.ts";
 
-import {
-  Command,
-  CommandHelp,
-} from "./command-types.ts";
+import { Command, CommandHelp } from "./command-types.ts";
 
 class HelpCategories extends InitMap<string, CommandHelp[]> {
   protected init(): CommandHelp[] {
@@ -16,7 +10,7 @@ class HelpCategories extends InitMap<string, CommandHelp[]> {
 
 export function* helpLines(
   command: Command<any, any>,
-  cmdPath: readonly string[],
+  cmdPath: readonly string[]
 ): Generator<string, void, unknown> {
   const catMap = new HelpCategories();
   for (const item of command.help(cmdPath)) {
@@ -35,7 +29,7 @@ export function* helpLines(
 
 export const help = (
   command: Command<any, any>,
-  cmdPath: readonly string[],
+  cmdPath: readonly string[]
 ): string => [...helpLines(command, cmdPath)].join("\n");
 
 export default help;

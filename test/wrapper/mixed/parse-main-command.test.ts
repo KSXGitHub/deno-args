@@ -1,21 +1,10 @@
-import {
-  MAIN_COMMAND,
-  PARSE_FAILURE,
-} from "../../../lib/symbols.ts";
+import { MAIN_COMMAND, PARSE_FAILURE } from "../../../lib/symbols.ts";
 
-import {
-  assertEquals,
-} from "../../deps.ts";
+import { assertEquals } from "../../deps.ts";
 
-import {
-  dbg,
-} from "../../utils.ts";
+import { dbg } from "../../utils.ts";
 
-import {
-  Case,
-  setup,
-  test,
-} from "./setup.ts";
+import { Case, setup, test } from "./setup.ts";
 
 type OkCase = Case<{
   readonly value: Value;
@@ -230,14 +219,7 @@ const okCases: OkCase[] = [
         text: "",
         collect: ["abc", "def"],
       },
-      remainingRawArgs: [
-        "abc",
-        "def",
-        "ghi",
-        "jkl",
-        "mno",
-        "pqrs",
-      ],
+      remainingRawArgs: ["abc", "def", "ghi", "jkl", "mno", "pqrs"],
     },
   },
 
@@ -271,11 +253,7 @@ const okCases: OkCase[] = [
         text: "",
         collect: [],
       },
-      remainingRawArgs: [
-        "--not-a-flag",
-        "-abcdef",
-        "--count",
-      ],
+      remainingRawArgs: ["--not-a-flag", "-abcdef", "--count"],
     },
   },
 ];
@@ -301,14 +279,7 @@ type ErrCase = Case<{
 const errCases: ErrCase[] = [
   {
     title: "missing flags",
-    input: [
-      "--integer",
-      "0",
-      "--text",
-      "",
-      "--choice",
-      "123",
-    ],
+    input: ["--integer", "0", "--text", "", "--choice", "123"],
     output: {
       types: ["MissingFlag"],
       messages: "Flag --number is required but missing",

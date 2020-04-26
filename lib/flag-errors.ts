@@ -1,14 +1,8 @@
-import {
-  ParseError,
-} from "./types.ts";
+import { ParseError } from "./types.ts";
 
-import {
-  flag,
-} from "./utils.ts";
+import { flag } from "./utils.ts";
 
-import {
-  ValueError,
-} from "./value-errors.ts";
+import { ValueError } from "./value-errors.ts";
 
 const fmtFlagList = (names: readonly string[]) => names.map(flag).join(" ");
 
@@ -25,7 +19,7 @@ export abstract class FlagError implements ParseError {
 export class UnknownFlags extends FlagError {
   constructor(
     /** Flag names */
-    public readonly names: readonly string[],
+    public readonly names: readonly string[]
   ) {
     super();
   }
@@ -41,7 +35,7 @@ export class UnknownFlags extends FlagError {
 export class MissingFlag extends FlagError {
   constructor(
     /** Flag name */
-    public readonly name: string,
+    public readonly name: string
   ) {
     super();
   }
@@ -57,7 +51,7 @@ export class MissingFlag extends FlagError {
 export class ConflictFlags extends FlagError {
   constructor(
     /** Aliases */
-    public readonly names: readonly string[],
+    public readonly names: readonly string[]
   ) {
     super();
   }
@@ -73,7 +67,7 @@ export class ConflictFlags extends FlagError {
 export class MissingValue extends FlagError {
   constructor(
     /** Option name */
-    public readonly name: string | readonly string[],
+    public readonly name: string | readonly string[]
   ) {
     super();
   }
@@ -91,15 +85,15 @@ export class UnexpectedFlag extends FlagError {
     /** Option name */
     public readonly name: string | readonly string[],
     /** Offender flag (raw form) */
-    public readonly unexpectedFlag: string,
+    public readonly unexpectedFlag: string
   ) {
     super();
   }
 
   public toString() {
-    return `Option ${flag(
-      this.name,
-    )} requires a value but received flag ${this.unexpectedFlag} instead`;
+    return `Option ${flag(this.name)} requires a value but received flag ${
+      this.unexpectedFlag
+    } instead`;
   }
 }
 
@@ -111,7 +105,7 @@ export class ValueParsingFailure extends FlagError {
     /** Option name */
     public readonly name: string | readonly string[],
     /** Value parsing error */
-    public readonly error: ValueError,
+    public readonly error: ValueError
   ) {
     super();
   }
