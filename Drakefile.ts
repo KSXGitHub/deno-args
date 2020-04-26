@@ -95,9 +95,9 @@ task("test", ["cache"], async () => {
   await sh(`deno test ${permissions.join(" ")} test/**/*.test.ts`);
 });
 
-desc("Run deno fmt");
+desc("Run prettier");
 task("fmt", [], async () => {
-  await sh(shouldUpdate ? "deno fmt" : "deno fmt --check");
+  await sh(shouldUpdate ? "prettier --write ." : "prettier --check .");
 });
 
 desc("Run all tasks");
