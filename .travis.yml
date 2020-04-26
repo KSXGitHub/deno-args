@@ -23,10 +23,12 @@ addons:
 
 env:
   - DENO_VERSION=v0.41.0
+    EXECUTABLE_FACTORY_TAG=0.1.0
 
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
   - sudo ln -s "$HOME/.deno/bin/deno" /bin/deno
+  - sudo --preserve-env=EXECUTABLE_FACTORY_TAG ./ci/install-prettier.bash
 
 script:
   - export SHELL=/bin/zsh
