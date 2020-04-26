@@ -36,7 +36,7 @@ jobs:
         env:
           EXECUTABLE_FACTORY_TAG: 0.1.0
         run: |
-          sudo ./ci/install-prettier.bash
+          sudo --preserve-env=EXECUTABLE_FACTORY_TAG ./ci/install-prettier.bash
       - name: Run all targets in Drakefile
         run: |
           deno run --allow-all Drakefile.ts all
