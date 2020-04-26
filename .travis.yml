@@ -20,6 +20,7 @@ addons:
   apt:
     packages:
       - zsh
+      - curl
 
 env:
   - DENO_VERSION=v0.41.0
