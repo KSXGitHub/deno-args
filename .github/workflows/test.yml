@@ -48,3 +48,9 @@ jobs:
         with:
           name: deno-cache
           path: deno-cache.tmp
+
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: KSXGitHub/github-actions-sane-fmt@0.2.22
