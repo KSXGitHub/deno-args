@@ -1,8 +1,8 @@
-#! /usr/bin/env -S deno --allow-all
+#! /usr/bin/env -S deno run --allow-all --unstable
 
-import { assertEquals } from 'https://deno.land/std@v0.41.0/testing/asserts.ts'
+import { assertEquals } from 'https://deno.land/std@v1.0.0-rc3/testing/asserts.ts'
 
-import * as path from 'https://deno.land/std@v0.41.0/path/mod.ts'
+import * as path from 'https://deno.land/std@v1.0.0-rc3/path/mod.ts'
 
 import {
   desc,
@@ -12,7 +12,7 @@ import {
   readFile,
   writeFile,
   glob,
-} from 'https://deno.land/x/drake@v0.41.0/mod.ts'
+} from 'https://deno.land/x/drake@v1.0.0-rc2/mod.ts'
 
 import { dirname } from 'https://deno.land/x/dirname/mod.ts'
 
@@ -21,7 +21,7 @@ import { pipe } from 'https://deno.land/x/compose@1.3.0/index.js'
 const {
   UPDATE = 'false',
   SHELL,
-} = Deno.env()
+} = Deno.env.toObject()
 
 const __dirname = dirname(import.meta)
 
@@ -65,7 +65,7 @@ task('markdown', [], async () => {
 desc('Fetch and compile dependencies')
 task('cache', [], async () => {
   const lockWrite = shouldUpdate ? '--lock-write' : ''
-  await sh(`deno cache **/*.ts --lock=deno-lock.json ${lockWrite}`)
+  await sh(`deno cache **/*.ts --lock=deno-lock.json --unstable ${lockWrite}`)
 
   const unsortedLockContent = readFile('deno-lock.json')
   const sortedLockContent = pipe(
