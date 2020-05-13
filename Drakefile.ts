@@ -1,8 +1,8 @@
 #! /usr/bin/env -S deno run --allow-all --unstable
 
-import { assertEquals } from 'https://deno.land/std@v1.0.0-rc3/testing/asserts.ts'
+import { assertEquals } from 'https://deno.land/std@0.50.0/testing/asserts.ts'
 
-import * as path from 'https://deno.land/std@v1.0.0-rc3/path/mod.ts'
+import * as path from 'https://deno.land/std@0.50.0/path/mod.ts'
 
 import {
   desc,
@@ -12,7 +12,7 @@ import {
   readFile,
   writeFile,
   glob,
-} from 'https://deno.land/x/drake@v1.0.0-rc2/mod.ts'
+} from 'https://raw.githubusercontent.com/KSXGitHub/drake/0.0.0/mod.ts'
 
 import { dirname } from 'https://deno.land/x/dirname/mod.ts'
 
