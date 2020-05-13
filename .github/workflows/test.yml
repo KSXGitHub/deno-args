@@ -19,6 +19,11 @@ jobs:
       - name: Install some necessary programs
         run: |
           sudo apt install -y zsh
+      - name: Install sane-fmt
+        uses: KSXGitHub/github-actions-sane-fmt@0.2.22
+        with:
+          run: 'false'
+          export-path: 'true'
       - name: Cache
         uses: actions/cache@v1
         with:
@@ -34,7 +39,7 @@ jobs:
           deno-version: 1.0.0-rc3
       - name: Run all targets in Drakefile
         run: |
-          deno run --allow-all Drakefile.ts all
+          deno run --allow-all --unstable Drakefile.ts all
       - name: Prepare for uploading deno cache as artifacts
         run: |
           cp -r ~/.cache/deno deno-cache.tmp
