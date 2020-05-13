@@ -25,6 +25,8 @@ jobs:
           run: 'false'
           export-path: 'true'
       - name: Cache
+        timeout-minutes: 1
+        continue-on-error: true
         uses: actions/cache@v1.1.2
         with:
           path: ~/.cache/deno
