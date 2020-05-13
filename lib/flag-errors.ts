@@ -1,22 +1,22 @@
 import {
   ParseError,
-} from "./types.ts";
+} from './types.ts'
 
 import {
   flag,
-} from "./utils.ts";
+} from './utils.ts'
 
 import {
   ValueError,
-} from "./value-errors.ts";
+} from './value-errors.ts'
 
-const fmtFlagList = (names: readonly string[]) => names.map(flag).join(" ");
+const fmtFlagList = (names: readonly string[]) => names.map(flag).join(' ')
 
 /**
  * Base class of all `FlagError`
  */
 export abstract class FlagError implements ParseError {
-  public abstract toString(): string;
+  public abstract toString(): string
 }
 
 /**
@@ -27,11 +27,11 @@ export class UnknownFlags extends FlagError {
     /** Flag names */
     public readonly names: readonly string[],
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Unknown flags: ${fmtFlagList(this.names)}`;
+    return `Unknown flags: ${fmtFlagList(this.names)}`
   }
 }
 
@@ -43,11 +43,11 @@ export class MissingFlag extends FlagError {
     /** Flag name */
     public readonly name: string,
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Flag ${flag(this.name)} is required but missing`;
+    return `Flag ${flag(this.name)} is required but missing`
   }
 }
 
@@ -59,11 +59,11 @@ export class ConflictFlags extends FlagError {
     /** Aliases */
     public readonly names: readonly string[],
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Conflicting options: ${fmtFlagList(this.names)}`;
+    return `Conflicting options: ${fmtFlagList(this.names)}`
   }
 }
 
@@ -75,11 +75,11 @@ export class MissingValue extends FlagError {
     /** Option name */
     public readonly name: string | readonly string[],
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Option ${flag(this.name)} requires a value but none was found`;
+    return `Option ${flag(this.name)} requires a value but none was found`
   }
 }
 
@@ -93,13 +93,15 @@ export class UnexpectedFlag extends FlagError {
     /** Offender flag (raw form) */
     public readonly unexpectedFlag: string,
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Option ${flag(
-      this.name,
-    )} requires a value but received flag ${this.unexpectedFlag} instead`;
+    return `Option ${
+      flag(
+        this.name,
+      )
+    } requires a value but received flag ${this.unexpectedFlag} instead`
   }
 }
 
@@ -113,10 +115,10 @@ export class ValueParsingFailure extends FlagError {
     /** Value parsing error */
     public readonly error: ValueError,
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Failed to parse ${flag(this.name)}: ${this.error.toString()}`;
+    return `Failed to parse ${flag(this.name)}: ${this.error.toString()}`
   }
 }

@@ -1,19 +1,19 @@
 import {
   once,
-} from "./deps.ts";
+} from './deps.ts'
 
 import {
   FlagType,
   ValueType,
   ArgvItem,
-} from "./types.ts";
+} from './types.ts'
 
 import {
   ok,
   err,
   flagPrefix,
   findFlags,
-} from "./utils.ts";
+} from './utils.ts'
 
 import {
   MissingFlag,
@@ -21,56 +21,53 @@ import {
   MissingValue,
   UnexpectedFlag,
   ValueParsingFailure,
-} from "./flag-errors.ts";
+} from './flag-errors.ts'
 
 const listFlags = <Name extends string>(
   name: Name,
   descriptor: {
-    readonly alias?: Iterable<string>;
+    readonly alias?: Iterable<string>
   },
-): [Name, ...string[]] => [name, ...descriptor.alias || []];
+): [Name, ...string[]] => [name, ...descriptor.alias || []]
 
 const fmtTitle = (name: string, descriptor: {
-  readonly alias?: Iterable<string>;
+  readonly alias?: Iterable<string>
 }): string =>
   listFlags(name, descriptor)
-    .map((flag) => flagPrefix(flag) + flag)
-    .join(", ");
+    .map(flag => flagPrefix(flag) + flag)
+    .join(', ')
 
-const fmtTypeHelp = (help?: () => string) =>
-  help
-    ? "\n" + help()
-    : "";
+const fmtTypeHelp = (help?: () => string) => help ? '\n' + help() : ''
 
-type FlagHelpFunc = FlagType<any, any>["help"];
+type FlagHelpFunc = FlagType<any, any>['help']
 const FlagHelpFunc = (
   name: string,
   descriptor: {
-    readonly alias?: readonly string[];
-    readonly describe?: string;
+    readonly alias?: readonly string[]
+    readonly describe?: string
   },
 ): FlagHelpFunc =>
   once(() => ({
     title: fmtTitle(name, descriptor),
     description: descriptor.describe,
-  }));
+  }))
 
 const sharedProps = (
   typeName: string,
   descriptor?: {
-    readonly type: ValueType<any, any>;
+    readonly type: ValueType<any, any>
   },
 ) => ({
   [Symbol.toStringTag]: typeName + (
-    descriptor ? `(${descriptor.type[Symbol.toStringTag]})` : ""
+    descriptor ? `(${descriptor.type[Symbol.toStringTag]})` : ''
   ),
-});
+})
 
 interface FlagDescriptorSharedProps {
   /** Flag aliases */
-  readonly alias?: readonly string[];
+  readonly alias?: readonly string[]
   /** Flag description */
-  readonly describe?: string;
+  readonly describe?: string
 }
 
 /**
@@ -82,13 +79,13 @@ export const EarlyExitFlag = <Name extends string>(
 ): FlagType<Name, void> => ({
   name,
   extract(args) {
-    const findRes = findFlags(args, listFlags(name, descriptor));
-    if (findRes.length) return descriptor.exit();
-    return ok({ value: undefined, consumedFlags: new Set() });
+    const findRes = findFlags(args, listFlags(name, descriptor))
+    if (findRes.length) return descriptor.exit()
+    return ok({ value: undefined, consumedFlags: new Set() })
   },
   help: FlagHelpFunc(name, descriptor),
-  ...sharedProps("EarlyExitFlag"),
-});
+  ...sharedProps('EarlyExitFlag'),
+})
 
 /**
  * Interface of descriptor of {@link EarlyExitFlag}
@@ -97,7 +94,7 @@ export interface EarlyExitDescriptor extends FlagDescriptorSharedProps {
   /**
    * Exit function to call
    */
-  readonly exit: () => never;
+  readonly exit: () => never
 }
 
 /**
@@ -111,17 +108,17 @@ export const BinaryFlag = <Name extends string>(
 ): FlagType<Name, boolean> => ({
   name,
   extract(args) {
-    const findRes = findFlags(args, listFlags(name, descriptor));
+    const findRes = findFlags(args, listFlags(name, descriptor))
     return ok({
       value: Boolean(findRes.length),
       consumedFlags: new Set(findRes),
-    });
+    })
   },
   help: FlagHelpFunc(name, descriptor),
-  ...sharedProps("BinaryFlag"),
-});
+  ...sharedProps('BinaryFlag'),
+})
 
-export { BinaryFlag as Flag };
+export { BinaryFlag as Flag }
 
 /**
  * Declare a count flag: Value is number of occurrences
@@ -132,25 +129,23 @@ export const CountFlag = <Name extends string>(
 ): FlagType<Name, number> => ({
   name,
   extract(args) {
-    const allNames = listFlags(name, descriptor);
-    const findRes = findFlags(args, allNames);
+    const allNames = listFlags(name, descriptor)
+    const findRes = findFlags(args, allNames)
     const value = findRes
-      .map((flag) =>
-        flag.type === "single-flag"
-          ? 1
-          : flag.name
-            .filter((name) => allNames.includes(name))
-            .length
+      .map(flag =>
+        flag.type === 'single-flag' ? 1 : flag.name
+          .filter(name => allNames.includes(name))
+          .length
       )
-      .reduce((acc, cur) => acc + cur, 0);
+      .reduce((acc, cur) => acc + cur, 0)
     return ok({
       value,
       consumedFlags: new Set(findRes),
-    });
+    })
   },
   help: FlagHelpFunc(name, descriptor),
-  ...sharedProps("CountFlag"),
-});
+  ...sharedProps('CountFlag'),
+})
 
 /**
  * Interface of descriptor of {@link BinaryFlag} and {@link CountFlag}
@@ -168,31 +163,31 @@ export const Option = <Name extends string, Value>(
 ): FlagType<Name, Value> => ({
   name,
   extract(args) {
-    const flags = listFlags(name, descriptor);
-    const findRes = findFlags(args, flags);
-    if (!findRes.length) return err(new MissingFlag(name));
-    if (findRes.length !== 1) return err(new ConflictFlags(flags));
-    const [res] = findRes;
-    const valPos = res.index + 1;
-    if (args.length <= valPos) return err(new MissingValue(res.name));
-    const val = args[valPos];
-    if (val.type !== "value") return err(new UnexpectedFlag(res.name, val.raw));
-    const parseResult = descriptor.type.extract([val.raw]);
+    const flags = listFlags(name, descriptor)
+    const findRes = findFlags(args, flags)
+    if (!findRes.length) return err(new MissingFlag(name))
+    if (findRes.length !== 1) return err(new ConflictFlags(flags))
+    const [res] = findRes
+    const valPos = res.index + 1
+    if (args.length <= valPos) return err(new MissingValue(res.name))
+    const val = args[valPos]
+    if (val.type !== 'value') return err(new UnexpectedFlag(res.name, val.raw))
+    const parseResult = descriptor.type.extract([val.raw])
     if (!parseResult.tag) {
-      return err(new ValueParsingFailure(res.name, parseResult.error));
+      return err(new ValueParsingFailure(res.name, parseResult.error))
     }
     return ok({
       value: parseResult.value,
       consumedFlags: new Set([res, val]),
-    });
+    })
   },
   help: once(() => ({
     title: `${fmtTitle(name, descriptor)} <${descriptor.type.getTypeName()}>`,
-    description: (descriptor.describe || "") +
+    description: (descriptor.describe || '') +
       fmtTypeHelp(descriptor.type.help),
   })),
-  ...sharedProps("Option", descriptor),
-});
+  ...sharedProps('Option', descriptor),
+})
 
 /**
  * Interface of descriptor of {@link Option}
@@ -200,7 +195,7 @@ export const Option = <Name extends string, Value>(
  */
 export interface OptionDescriptor<Value> extends FlagDescriptorSharedProps {
   /** Value parser and type */
-  readonly type: ValueType<Value, [string]>;
+  readonly type: ValueType<Value, [string]>
 }
 
 /**
@@ -215,25 +210,25 @@ export const Partial = <Name extends string, Value, Default>(
 ): FlagType<Name, Value | Default> => ({
   name: x.name,
   extract(args) {
-    const result = x.extract(args);
-    if (result.tag) return result;
+    const result = x.extract(args)
+    if (result.tag) return result
     if (result.error instanceof MissingFlag) {
       return ok({
         value: def,
         consumedFlags: new Set(),
-      });
+      })
     }
-    return result;
+    return result
   },
   help: once(() => {
-    const { title, description } = x.help();
+    const { title, description } = x.help()
     return {
       title: `${title} [default: ${descDef}]`,
       description,
-    };
+    }
   }),
   ...sharedProps(`Partial(${x[Symbol.toStringTag]})`),
-});
+})
 
 /**
  * Declare a partial option:
@@ -248,7 +243,7 @@ export const PartialOption = <Name extends string, Value, Default>(
     Option(name, descriptor),
     descriptor.default,
     descriptor.describeDefault,
-  );
+  )
 
 /**
  * Interface of descriptor of {@link PartialOption}
@@ -258,9 +253,9 @@ export const PartialOption = <Name extends string, Value, Default>(
 export interface PartialOptionDescriptor<Value, Default>
   extends OptionDescriptor<Value> {
   /** Default value */
-  readonly default: Default;
+  readonly default: Default
   /** Default value description */
-  readonly describeDefault?: string;
+  readonly describeDefault?: string
 }
 
 /**
@@ -274,38 +269,38 @@ export const CollectOption = <Name extends string, Value>(
 ): FlagType<Name, Value[]> => ({
   name,
   extract(args) {
-    const flags = listFlags(name, descriptor);
-    const findRes = findFlags(args, flags);
-    const value: Value[] = [];
-    const consumedFlags = new Set<ArgvItem>();
+    const flags = listFlags(name, descriptor)
+    const findRes = findFlags(args, flags)
+    const value: Value[] = []
+    const consumedFlags = new Set<ArgvItem>()
     // TODO: Return multiple errors at once
     for (const item of findRes) {
-      const valPos = item.index + 1;
-      if (args.length <= valPos) return err(new MissingValue(item.name));
-      const val = args[valPos];
-      if (val.type !== "value") {
-        return err(new UnexpectedFlag(item.name, val.raw));
+      const valPos = item.index + 1
+      if (args.length <= valPos) return err(new MissingValue(item.name))
+      const val = args[valPos]
+      if (val.type !== 'value') {
+        return err(new UnexpectedFlag(item.name, val.raw))
       }
-      const parseResult = descriptor.type.extract([val.raw]);
-      if (!parseResult.tag) return parseResult;
-      value.push(parseResult.value);
-      consumedFlags.add(item).add(val);
+      const parseResult = descriptor.type.extract([val.raw])
+      if (!parseResult.tag) return parseResult
+      value.push(parseResult.value)
+      consumedFlags.add(item).add(val)
     }
     return ok({
       value,
       consumedFlags,
-    });
+    })
   },
   help: once(() => {
-    const typeName = descriptor.type.getTypeName();
-    const titleSection = `${fmtTitle(name, descriptor)} <${typeName}>`;
-    const title = `${titleSection} [${titleSection} ...]`;
-    const description = (descriptor.describe || "") +
-      fmtTypeHelp(descriptor.type.help);
-    return { title, description };
+    const typeName = descriptor.type.getTypeName()
+    const titleSection = `${fmtTitle(name, descriptor)} <${typeName}>`
+    const title = `${titleSection} [${titleSection} ...]`
+    const description = (descriptor.describe || '') +
+      fmtTypeHelp(descriptor.type.help)
+    return { title, description }
   }),
-  ...sharedProps("MultiOption", descriptor),
-});
+  ...sharedProps('MultiOption', descriptor),
+})
 
 /**
  * Interface of descriptor of {@link CollectOption}

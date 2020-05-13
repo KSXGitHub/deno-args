@@ -1,10 +1,10 @@
 import {
   ParseError,
-} from "./types.ts";
+} from './types.ts'
 
 import {
   FlagError,
-} from "./flag-errors.ts";
+} from './flag-errors.ts'
 
 /**
  * Class of error created by `CommandType::extract`
@@ -20,10 +20,10 @@ export class CommandError<
 
   public readonly toString = () =>
     this.errors
-      .map((error) => error.toString())
-      .join("\n");
+      .map(error => error.toString())
+      .join('\n')
 
   public *[Symbol.iterator]() {
-    yield* this.errors;
+    yield* this.errors
   }
 }

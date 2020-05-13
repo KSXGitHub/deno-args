@@ -1,14 +1,14 @@
 import {
   ParseError,
-} from "./types.ts";
+} from './types.ts'
 
 /**
  * Base class of all `ValueError`
  */
 export abstract class ValueError implements ParseError {
   /** Raw input */
-  public abstract readonly raw: string;
-  public abstract toString(): string;
+  public abstract readonly raw: string
+  public abstract toString(): string
 }
 
 /**
@@ -19,11 +19,11 @@ export class NotANumber extends ValueError {
     /** Raw input */
     public readonly raw: string,
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Not a number: ${this.raw}`;
+    return `Not a number: ${this.raw}`
   }
 }
 
@@ -37,11 +37,11 @@ export class NotAnInteger extends ValueError {
     /** BigInt parsing error */
     public readonly error: SyntaxError,
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Not an integer: ${this.raw} (${this.error})`;
+    return `Not an integer: ${this.raw} (${this.error})`
   }
 }
 
@@ -57,12 +57,14 @@ export class InvalidChoice<ValidChoice extends string | number>
     /** List of valid choices */
     public readonly choices: readonly ValidChoice[],
   ) {
-    super();
+    super()
   }
 
   public toString() {
-    return `Invalid choice: ${this.raw} is not one of ${this.choices.join(
-      ", ",
-    )}`;
+    return `Invalid choice: ${this.raw} is not one of ${
+      this.choices.join(
+        ', ',
+      )
+    }`
   }
 }

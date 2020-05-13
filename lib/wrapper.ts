@@ -1,11 +1,11 @@
 import {
   ParseError,
   FlagType,
-} from "./types.ts";
+} from './types.ts'
 
 import {
   iterateArguments,
-} from "./utils.ts";
+} from './utils.ts'
 
 import {
   BLANK,
@@ -18,14 +18,14 @@ import {
   FlaggedCommandReturn,
   SubCommandReturn,
   ParseFailure,
-} from "./command-types.ts";
+} from './command-types.ts'
 
-import help from "./help.ts";
+import help from './help.ts'
 
 type ParseResult<
   Main extends CommandReturn<any, any, any>,
   ErrList extends readonly ParseError[],
-> = Main | ParseFailure<ErrList>;
+> = Main | ParseFailure<ErrList>
 
 /**
  * @template MainVal Type of value of current pipeline
@@ -47,7 +47,7 @@ class Wrapper<
    * @returns Parsing result
    */
   public parse(args: readonly string[]): ParseResult<Main, ErrList> {
-    return this._command.extract([...iterateArguments(args)]);
+    return this._command.extract([...iterateArguments(args)])
   }
 
   /**
@@ -56,7 +56,7 @@ class Wrapper<
    * @returns A wrapper with a new description
    */
   public describe(description: string): Wrapper<MainVal, Main, ErrList> {
-    return new Wrapper(Describe(this._command, description));
+    return new Wrapper(Describe(this._command, description))
   }
 
   /**
@@ -76,7 +76,7 @@ class Wrapper<
     FlaggedCommandReturn<MainVal, NextKey, NextVal>,
     readonly ParseError[]
   > {
-    return new Wrapper(FlaggedCommand(this._command, flag));
+    return new Wrapper(FlaggedCommand(this._command, flag))
   }
 
   /**
@@ -100,7 +100,7 @@ class Wrapper<
     SubCommandReturn<Main, Name, SubVal>,
     ErrList | NextErrList
   > {
-    return new Wrapper(SubCommand(this._command, name, sub._command));
+    return new Wrapper(SubCommand(this._command, name, sub._command))
   }
 
   /**
@@ -117,7 +117,7 @@ class Wrapper<
   > {
     return new Wrapper(
       MergeCommand<MainVal, NextVal, ParseError>(this._command, next._command),
-    );
+    )
   }
 
   /**
@@ -126,10 +126,10 @@ class Wrapper<
    * @returns Help message
    */
   public help(...cmdPath: readonly string[]): string {
-    return help(this._command, cmdPath);
+    return help(this._command, cmdPath)
   }
 }
 
 /** Starting point of parser construction pipeline */
-export const args = new Wrapper(BLANK);
-export default args;
+export const args = new Wrapper(BLANK)
+export default args

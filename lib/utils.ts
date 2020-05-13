@@ -3,7 +3,7 @@ import {
   Err,
   ParseError,
   ArgvItem,
-} from "./types.ts";
+} from './types.ts'
 
 /**
  * Create an `Ok`
@@ -14,7 +14,7 @@ import {
 export const ok = <Value>(value: Value): Ok<Value> => ({
   tag: true,
   value,
-});
+})
 
 /**
  * Create an `Err`
@@ -25,7 +25,7 @@ export const ok = <Value>(value: Value): Ok<Value> => ({
 export const err = <Error extends ParseError>(error: Error): Err<Error> => ({
   tag: false,
   error,
-});
+})
 
 /**
  * Create an object of single property
@@ -41,15 +41,15 @@ export const record = <
 >(
   key: Key,
   value: Value,
-) => ({ [key]: value }) as Record<Key, Value>;
+) => ({ [key]: value }) as Record<Key, Value>
 
 /**
  * Determine flag prefix
  * @param name Flag name
  * @returns `"-"` for single character name, or `"--"` for otherwise
  */
-export const flagPrefix = (name: string): "-" | "--" =>
-  name.length === 1 ? "-" : "--";
+export const flagPrefix = (name: string): '-' | '--' =>
+  name.length === 1 ? '-' : '--'
 
 /**
  * Convert a flag name to a flag argument
@@ -58,10 +58,10 @@ export const flagPrefix = (name: string): "-" | "--" =>
  */
 export function flag(name: string | readonly string[]) {
   switch (typeof name) {
-    case "string":
-      return flagPrefix(name) + name;
-    case "object":
-      return "-" + name.join("");
+    case 'string':
+      return flagPrefix(name) + name
+    case 'object':
+      return '-' + name.join('')
   }
 }
 
@@ -72,38 +72,38 @@ export function flag(name: string | readonly string[]) {
  */
 export function* iterateArguments(args: readonly string[]) {
   let fn = (raw: string, index: number): ArgvItem[] => {
-    if (raw === "--") {
-      fn = (raw, index) => ([{ type: "value", index, raw }]);
-      return [];
+    if (raw === '--') {
+      fn = (raw, index) => ([{ type: 'value', index, raw }])
+      return []
     }
 
-    if (raw.startsWith("--")) {
+    if (raw.startsWith('--')) {
       return [{
-        type: "single-flag",
-        name: raw.slice("--".length),
+        type: 'single-flag',
+        name: raw.slice('--'.length),
         index,
         raw,
-      }];
+      }]
     }
 
-    if (raw.startsWith("-") && isNaN(raw as any)) {
+    if (raw.startsWith('-') && isNaN(raw as any)) {
       return [{
-        type: "multi-flag",
-        name: [...raw.slice("-".length)],
+        type: 'multi-flag',
+        name: [...raw.slice('-'.length)],
         index,
         raw,
-      }];
+      }]
     }
 
     return [{
-      type: "value",
+      type: 'value',
       index,
       raw,
-    }];
-  };
+    }]
+  }
 
   for (let i = 0; i !== args.length; ++i) {
-    yield* fn(args[i], i);
+    yield* fn(args[i], i)
   }
 }
 
@@ -119,15 +119,15 @@ export function partition<X0, X1 extends X0>(
   xs: Iterable<X0>,
   fn: (x: X0) => x is X1,
 ): [X1[], X0[]] {
-  const left: X1[] = [];
-  const right: X0[] = [];
+  const left: X1[] = []
+  const right: X0[] = []
   for (const x of xs) {
-    (fn(x) ? left : right).push(x);
+    ;(fn(x) ? left : right).push(x)
   }
-  return [left, right];
+  return [left, right]
 }
 
-type ArgvFlag = ArgvItem.SingleFlag | ArgvItem.MultiFlag;
+type ArgvFlag = ArgvItem.SingleFlag | ArgvItem.MultiFlag
 
 /**
  * Create a predicate to filter flags of certain names from a list of classified arguments
@@ -137,14 +137,14 @@ type ArgvFlag = ArgvItem.SingleFlag | ArgvItem.MultiFlag;
 const flagPredicate = (names: readonly string[]) =>
   (item: ArgvItem): item is ArgvFlag => {
     switch (item.type) {
-      case "single-flag":
-        return names.includes(item.name);
-      case "multi-flag":
-        return item.name.some((flag) => names.includes(flag));
-      case "value":
-        return false;
+      case 'single-flag':
+        return names.includes(item.name)
+      case 'multi-flag':
+        return item.name.some(flag => names.includes(flag))
+      case 'value':
+        return false
     }
-  };
+  }
 
 /**
  * Divide a list of classified arguments into two: one for flags with certain names, other for the rest
@@ -155,7 +155,7 @@ const flagPredicate = (names: readonly string[]) =>
 export const partitionFlags = (
   args: Iterable<ArgvItem>,
   names: readonly string[],
-) => partition(args, flagPredicate(names));
+) => partition(args, flagPredicate(names))
 
 /**
  * Filter a list of classified arguments for flags with certain names
@@ -166,7 +166,7 @@ export const partitionFlags = (
 export const findFlags = (
   args: readonly ArgvItem[],
   names: readonly string[],
-) => args.filter(flagPredicate(names));
+) => args.filter(flagPredicate(names))
 
 /**
  * Convert a multi-line string into an iterator of lines
@@ -174,8 +174,8 @@ export const findFlags = (
  * @returns Lines of `text`
  */
 export function* lines(text: string) {
-  for (const line of text.split("\n")) {
-    yield line;
+  for (const line of text.split('\n')) {
+    yield line
   }
 }
 
@@ -188,7 +188,7 @@ export function* lines(text: string) {
  */
 export function* makeIndent(text: string, indent: string) {
   for (const line of lines(text)) {
-    yield indent + line;
+    yield indent + line
   }
 }
 
@@ -200,7 +200,7 @@ export function* makeIndent(text: string, indent: string) {
  * @returns Prefixed lines of `text`
  */
 export const makeIndentN = (text: string, size: number) =>
-  makeIndent(text, " ".repeat(size));
+  makeIndent(text, ' '.repeat(size))
 
 /**
  * `Map`-like class where `.get(key)` always result in defined value
@@ -214,12 +214,12 @@ export abstract class InitMap<Key, Value> extends Map<Key, Value> {
    * @param key Key that does not exist in `this` yet
    * @returns Intended value to key of `key`
    */
-  protected abstract init(key: Key): Value;
+  protected abstract init(key: Key): Value
 
   public get(key: Key): Value {
-    if (super.has(key)) return super.get(key)!;
-    const value = this.init(key);
-    super.set(key, value);
-    return value;
+    if (super.has(key)) return super.get(key)!
+    const value = this.init(key)
+    super.set(key, value)
+    return value
   }
 }
