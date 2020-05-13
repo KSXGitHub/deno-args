@@ -25,7 +25,7 @@ jobs:
           run: 'false'
           export-path: 'true'
       - name: Cache
-        uses: actions/cache@v1
+        uses: actions/cache@v1.1.2
         with:
           path: ~/.cache/deno
           key: deno-${{ runner.os }}-${{ hashFiles('deno-lock.json') }}
