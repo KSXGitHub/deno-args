@@ -38,8 +38,11 @@ jobs:
         with:
           deno-version: 1.0.0-rc3
       - name: Run all targets in Drakefile
+        env:
+            UPDATE: true
         run: |
           deno run --allow-all --unstable Drakefile.ts all
+          grep https://cdn.pika.dev/string-template-format-base/0.1.6 deno-lock.json
       - name: Prepare for uploading deno cache as artifacts
         run: |
           cp -r ~/.cache/deno deno-cache.tmp
