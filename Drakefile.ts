@@ -65,26 +65,7 @@ task('markdown', [], async () => {
 desc('Fetch and compile dependencies')
 task('cache', [], async () => {
   const lockWrite = shouldUpdate ? '--lock-write' : ''
-  await sh(`deno cache **/*.ts --lock=deno-lock.json --unstable ${lockWrite}`)
-
-  const unsortedLockContent = readFile('deno-lock.json')
-  const sortedLockContent = pipe(
-    unsortedLockContent,
-    JSON.parse,
-    Object.entries,
-    pairs => pairs.sort(([a], [b]) => a > b ? 1 : -1),
-    Object.fromEntries,
-    object => JSON.stringify(object, undefined, 2) + '\n',
-  )
-  if (shouldUpdate) {
-    writeFile('deno-lock.json', sortedLockContent)
-  } else {
-    assertEquals(
-      unsortedLockContent,
-      sortedLockContent,
-      "deno-lock.json isn't formatted correctly",
-    )
-  }
+  await sh(`deno cache **/*.ts --unstable ${lockWrite}`)
 })
 
 desc('Run tests')
