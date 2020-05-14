@@ -1,8 +1,8 @@
 #! /usr/bin/env -S deno run --allow-all --unstable
 
-import { assertEquals } from 'https://deno.land/std@0.50.0/testing/asserts.ts'
+import { assertEquals } from 'https://deno.land/std/testing/asserts.ts'
 
-import * as path from 'https://deno.land/std@0.50.0/path/mod.ts'
+import * as path from 'https://deno.land/std/path/mod.ts'
 
 import {
   desc,
