@@ -22,7 +22,7 @@ addons:
       - zsh
 
 env:
-  - DENO_VERSION=v0.41.0
+  - DENO_VERSION=v1.0.0-rc3
 
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
@@ -30,4 +30,4 @@ install:
 
 script:
   - export SHELL=/bin/zsh
-  - deno run --allow-all ./Drakefile.ts all
+  - deno run --allow-all --unstable ./Drakefile.ts all
