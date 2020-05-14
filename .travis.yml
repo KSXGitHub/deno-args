@@ -28,7 +28,7 @@ env:
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
   - sudo ln -s "$HOME/.deno/bin/deno" /bin/deno
-  - sudo wget -O /bin/sane-fmt https://github.com/KSXGitHub/sane-fmt/releases/download/$SANE_FMT_VERSION/sane-fmt-x86_64-unknown-linux-gnu
+  - sudo sh ./ci/install-sane-fmt.sh
 
 script:
   - export SHELL=/bin/zsh
