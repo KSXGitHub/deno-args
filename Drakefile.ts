@@ -64,8 +64,7 @@ task('markdown', [], async () => {
 
 desc('Fetch and compile dependencies')
 task('cache', [], async () => {
-  const lockWrite = shouldUpdate ? '--lock-write' : ''
-  await sh(`deno cache **/*.ts --unstable ${lockWrite}`)
+  await sh('deno cache **/*.ts --unstable')
 })
 
 desc('Run tests')
