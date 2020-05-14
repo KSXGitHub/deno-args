@@ -78,8 +78,10 @@ if (res.tag === PARSE_FAILURE) { // Alternatively, `if (res.error) {`
   switch (operator) {
     case "add":
       console.log(a + b);
+      break;
     case "sub":
       console.log(a - b);
+      break;
   }
 }
 ```
