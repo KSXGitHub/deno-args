@@ -23,11 +23,12 @@ addons:
 
 env:
   - DENO_VERSION=v1.0.0
+    SANE_FMT_VERSION=0.2.22
 
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
   - sudo ln -s "$HOME/.deno/bin/deno" /bin/deno
-  - sudo wget -O /bin/sane-fmt https://github.com/KSXGitHub/sane-fmt/releases/download/0.2.22/sane-fmt-x86_64-unknown-linux-gnu
+  - sudo wget -O /bin/sane-fmt https://github.com/KSXGitHub/sane-fmt/releases/download/$SANE_FMT_VERSION/sane-fmt-x86_64-unknown-linux-gnu
 
 script:
   - export SHELL=/bin/zsh
