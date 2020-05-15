@@ -101,13 +101,13 @@ All tasks are in [Drakefile.ts](https://git.io/JvhVf).
 ### Run all tests
 
 ```sh
-deno -A Drakefile.ts all
+deno run -A --unstable Drakefile.ts all
 ```
 
 ### Fix files
 
 ```sh
-env UPDATE=true deno -A Drakefile.ts all
+env UPDATE=true deno run -A --unstable Drakefile.ts all
 ```
 
 ## License
