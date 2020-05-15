@@ -9,7 +9,7 @@ import {
   run,
   readFile,
   glob,
-} from 'https://raw.githubusercontent.com/KSXGitHub/drake/0.0.0/mod.ts'
+} from 'https://deno.land/x/drake@v1.0.0/mod.ts'
 
 import { dirname } from 'https://deno.land/x/dirname/mod.ts'
 
