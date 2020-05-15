@@ -74,7 +74,7 @@ export function* iterateArguments(args: readonly string[]) {
   let fn = (raw: string, index: number): ArgvItem[] => {
     if (raw === '--') {
       fn = (raw, index) => ([{ type: 'value', index, raw }])
-      return []
+      return [{ type: 'double-dash', index, raw }]
     }
 
     if (raw.startsWith('--')) {
@@ -122,7 +122,7 @@ export function partition<X0, X1 extends X0>(
   const left: X1[] = []
   const right: X0[] = []
   for (const x of xs) {
-    ;(fn(x) ? left : right).push(x)
+    void (fn(x) ? left : right).push(x)
   }
   return [left, right]
 }
@@ -141,6 +141,7 @@ const flagPredicate = (names: readonly string[]) =>
         return names.includes(item.name)
       case 'multi-flag':
         return item.name.some(flag => names.includes(flag))
+      case 'double-dash':
       case 'value':
         return false
     }
