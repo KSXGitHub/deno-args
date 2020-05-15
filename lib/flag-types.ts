@@ -308,3 +308,24 @@ export const CollectOption = <Name extends string, Value>(
  */
 export interface CollectOptionDescriptor<Value>
   extends OptionDescriptor<Value> {}
+
+/**
+ * Declare an option that drains all arguments after the flag
+ *
+ * CLI example: `--opt abc def ghi` → `['abc', 'def', 'ghi']`
+ * @param name
+ * @param descriptor
+ */
+export const DrainOption = <Name extends string, Value>(
+  name: Name,
+  descriptor: DrainOptionDescriptor<Value>,
+) => ({})
+
+/**
+ * Interface of descriptor of {@link DrainOption}
+ * @template Value Type of values
+ */
+export interface DrainOptionDescriptor<Value> extends OptionDescriptor<Value> {
+  /** When to take an argument, it takes all by default */
+  readonly filter?: (arg: ArgvItem) => 'take' | 'skip' | 'stop'
+}
