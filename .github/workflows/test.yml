@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt install -y zsh
       - name: Install sane-fmt
-        uses: KSXGitHub/github-actions-sane-fmt@0.2.22
+        uses: KSXGitHub/github-actions-sane-fmt@0.2.23
         with:
           run: 'false'
           export-path: 'true'
@@ -30,9 +30,9 @@ jobs:
         uses: actions/cache@v1.1.2
         with:
           path: ~/.cache/deno
-          key: deno-${{ runner.os }}-${{ hashFiles('deno-lock.json') }}
+          key: deno-${{ runner.os }}-${{ hashFiles('**/deps.ts') }}
           restore-keys: |
-            deno-${{ runner.os }}-${{ hashFiles('deno-lock.json') }}
+            deno-${{ runner.os }}-${{ hashFiles('**/deps.ts') }}
             deno-${{ runner.os }}-
             deno-
       - name: Install Deno
