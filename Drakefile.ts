@@ -1,6 +1,6 @@
 #! /usr/bin/env -S deno run --allow-all --unstable
 
-import * as path from 'https://deno.land/std@21a4e9cc58aeed55cb597d2f986cca56f0aec819/path/mod.ts'
+import * as path from 'https://deno.land/std@0.51.0/path/mod.ts'
 
 import {
   desc,
