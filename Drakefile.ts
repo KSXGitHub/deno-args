@@ -18,6 +18,8 @@ const {
   SHELL,
 } = Deno.env.toObject()
 
+const deno = Deno.execPath()
+
 const __dirname = dirname(import.meta)
 
 const shouldUpdate = UPDATE.toLowerCase() === 'true'
@@ -59,7 +61,7 @@ task('markdown', [], async () => {
 
 desc('Fetch and compile dependencies')
 task('cache', [], async () => {
-  await sh('deno cache **/*.ts --unstable')
+  await sh(`${deno} cache **/*.ts --unstable`)
 })
 
 desc('Run tests')
@@ -67,7 +69,7 @@ task('test', ['cache'], async () => {
   const permissions = [
     '--allow-read',
   ]
-  await sh(`deno test ${permissions.join(' ')} test/**/*.test.ts`)
+  await sh(`${deno} test ${permissions.join(' ')} test/**/*.test.ts`)
 })
 
 desc('Run sane-fmt')
