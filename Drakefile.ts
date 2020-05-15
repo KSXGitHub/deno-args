@@ -1,7 +1,5 @@
 #! /usr/bin/env -S deno run --allow-all --unstable
 
-import { assertEquals } from 'https://deno.land/std@21a4e9cc58aeed55cb597d2f986cca56f0aec819/testing/asserts.ts'
-
 import * as path from 'https://deno.land/std@21a4e9cc58aeed55cb597d2f986cca56f0aec819/path/mod.ts'
 
 import {
@@ -10,13 +8,10 @@ import {
   sh,
   run,
   readFile,
-  writeFile,
   glob,
 } from 'https://raw.githubusercontent.com/KSXGitHub/drake/0.0.0/mod.ts'
 
 import { dirname } from 'https://deno.land/x/dirname/mod.ts'
-
-import { pipe } from 'https://deno.land/x/compose@1.3.0/index.js'
 
 const {
   UPDATE = 'false',
