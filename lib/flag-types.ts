@@ -387,3 +387,13 @@ export interface DrainOptionFilterReturn {
   /** Whether to stop further draining */
   readonly done: boolean
 }
+
+/** Set `filter` option to this value to make {@link DrainOption} only consumes all until flags */
+export const DRAIN_UNTIL_FLAG: DrainOptionFilterFunc = arg =>
+  arg.type === 'value' ? DRAIN_TAKE_CONTINUE : DRAIN_LEAVE_STOP
+
+/** Set `filter` option to this value make {@link DrainOption} consumes all including flags */
+export const DRAIN_ALL: DrainOptionFilterFunc = () => DRAIN_TAKE_CONTINUE
+
+const DRAIN_TAKE_CONTINUE: DrainOptionFilterReturn = { take: true, done: false }
+const DRAIN_LEAVE_STOP: DrainOptionFilterReturn = { take: false, done: true }
