@@ -370,5 +370,17 @@ export const DrainOption = <Name extends string, Value>(
  */
 export interface DrainOptionDescriptor<Value> extends OptionDescriptor<Value> {
   /** When to take an argument, it takes all by default */
-  readonly filter: (arg: ArgvItem) => 'take' | 'skip' | 'stop'
+  readonly filter: DrainOptionFilterFunc
+}
+
+/** Filter function */
+export interface DrainOptionFilterFunc {
+  /**
+   * Filter function
+   * @param arg Concerning argument
+   * @returns `'take'` to add the argument to the collection
+   * @returns `'skip'` to not add the argument to the collection
+   * @returns `'stop'` to stop draining
+   */
+  (arg: ArgvItem): 'take' | 'skip' | 'stop'
 }
