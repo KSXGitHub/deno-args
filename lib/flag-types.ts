@@ -319,7 +319,50 @@ export interface CollectOptionDescriptor<Value>
 export const DrainOption = <Name extends string, Value>(
   name: Name,
   descriptor: DrainOptionDescriptor<Value>,
-) => ({})
+): FlagType<Name, Value[]> => ({
+  name,
+  extract(args) {
+    const flags = listFlags(name, descriptor)
+    const findRes = findFlags(args, flags)
+    if (!findRes.length) return err(new MissingFlag(name))
+    if (findRes.length !== 1) return err(new ConflictFlags(flags))
+    const [res] = findRes
+    const consumedFlags = new Set<ArgvItem>([res])
+    // TODO: Return multiple errors at once
+    const values: Value[] = []
+    for (let i = res.index + 1; i < args.length; ++i) {
+      const item = args[i]
+      const act = descriptor.filter(item)
+      if (act === 'take') {
+        const valRes = descriptor.type.extract([item.raw])
+        if (!valRes.tag) return valRes
+        values.push(valRes.value)
+        consumedFlags.add(item)
+        continue
+      }
+      if (act === 'stop') break
+      if (act === 'skip') continue
+      throw new Error(
+        `Unexpected return value of filter: ${JSON.stringify(act)}`,
+      )
+    }
+    return {
+      tag: true,
+      value: {
+        value: values,
+        consumedFlags,
+      },
+    }
+  },
+  help: once(() => {
+    const typeName = descriptor.type.getTypeName()
+    const title = `${fmtTitle(name, descriptor)} [${typeName} ...]`
+    const description = (descriptor.describe || '') +
+      fmtTypeHelp(descriptor.type.help)
+    return { title, description }
+  }),
+  ...sharedProps('CollectOption', descriptor),
+})
 
 /**
  * Interface of descriptor of {@link DrainOption}
@@ -327,5 +370,5 @@ export const DrainOption = <Name extends string, Value>(
  */
 export interface DrainOptionDescriptor<Value> extends OptionDescriptor<Value> {
   /** When to take an argument, it takes all by default */
-  readonly filter?: (arg: ArgvItem) => 'take' | 'skip' | 'stop'
+  readonly filter: (arg: ArgvItem) => 'take' | 'skip' | 'stop'
 }
