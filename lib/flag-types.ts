@@ -373,9 +373,7 @@ export interface DrainOptionFilterFunc {
   /**
    * Filter function
    * @param arg Concerning argument
-   * @returns `'take'` to add the argument to the collection
-   * @returns `'skip'` to not add the argument to the collection
-   * @returns `'stop'` to stop draining
+   * @returns Whether the argument should be drain and whether should draining stops
    */
   (arg: ArgvItem): DrainOptionFilterReturn
 }
