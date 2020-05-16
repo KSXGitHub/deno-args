@@ -332,19 +332,14 @@ export const DrainOption = <Name extends string, Value>(
     const values: Value[] = []
     for (let i = res.index + 1; i < args.length; ++i) {
       const item = args[i]
-      const act = descriptor.filter(item)
-      if (act === 'take') {
+      const { take, done } = descriptor.filter(item)
+      if (take) {
         const valRes = descriptor.type.extract([item.raw])
         if (!valRes.tag) return valRes
         values.push(valRes.value)
         consumedFlags.add(item)
-        continue
       }
-      if (act === 'stop') break
-      if (act === 'skip') continue
-      throw new Error(
-        `Unexpected return value of filter: ${JSON.stringify(act)}`,
-      )
+      if (done) break
     }
     return {
       tag: true,
@@ -382,5 +377,13 @@ export interface DrainOptionFilterFunc {
    * @returns `'skip'` to not add the argument to the collection
    * @returns `'stop'` to stop draining
    */
-  (arg: ArgvItem): 'take' | 'skip' | 'stop'
+  (arg: ArgvItem): DrainOptionFilterReturn
+}
+
+/** Type of return value of {@link DrainOptionFilterFunc} */
+export interface DrainOptionFilterReturn {
+  /** Whether to take the argument */
+  readonly take: boolean
+  /** Whether to stop further draining */
+  readonly done: boolean
 }
