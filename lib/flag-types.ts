@@ -299,7 +299,7 @@ export const CollectOption = <Name extends string, Value>(
       fmtTypeHelp(descriptor.type.help)
     return { title, description }
   }),
-  ...sharedProps('MultiOption', descriptor),
+  ...sharedProps('CollectOption', descriptor),
 })
 
 /**
