@@ -313,8 +313,6 @@ export interface CollectOptionDescriptor<Value>
  * Declare an option that drains all arguments after the flag
  *
  * CLI example: `--opt abc def ghi` → `['abc', 'def', 'ghi']`
- * @param name
- * @param descriptor
  */
 export const DrainOption = <Name extends string, Value>(
   name: Name,
