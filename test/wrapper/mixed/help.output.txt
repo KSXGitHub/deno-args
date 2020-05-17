@@ -23,6 +23,10 @@ OPTIONS:
     ‣ 789: Not a number
   --collect <text> [--collect <text> ...]
     Text segments
+  --drain-until-flag [text ...]
+    Drain all arguments
+  --drain-all [text ...]
+    Drain all
 SUBCOMMANDS:
   sub0
     Sub command without flags

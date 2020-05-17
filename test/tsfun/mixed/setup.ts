@@ -11,6 +11,9 @@ import {
   Option,
   PartialOption,
   CollectOption,
+  DrainOption,
+  DRAIN_UNTIL_FLAG,
+  DRAIN_ALL,
 } from '../../../lib/flag-types.ts'
 import {
   FiniteNumber,
@@ -95,6 +98,22 @@ export const setup = pass(BLANK)
     CollectOption('collect', {
       type: Text,
       describe: 'Text segments',
+    }),
+  )
+  .to(
+    FlaggedCommand,
+    DrainOption('drain-until-flag', {
+      type: Text,
+      while: DRAIN_UNTIL_FLAG,
+      describe: 'Drain until flag',
+    }),
+  )
+  .to(
+    FlaggedCommand,
+    DrainOption('drain-all', {
+      type: Text,
+      while: DRAIN_ALL,
+      describe: 'Drain all',
     }),
   )
   .to(
