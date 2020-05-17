@@ -33,6 +33,8 @@ interface Value {
   readonly 'partial-integer': bigint
   readonly choice: 123 | 'foo' | 456 | 'bar' | '789'
   readonly collect: readonly string[]
+  readonly 'drain-until-flag': readonly string[]
+  readonly 'drain-all': readonly string[]
 }
 
 const okCases: OkCase[] = [
@@ -60,6 +62,8 @@ const okCases: OkCase[] = [
         'partial-integer': 123n,
         choice: 'foo',
         collect: [],
+        'drain-until-flag': [],
+        'drain-all': [],
       },
       remainingRawArgs: [],
     },
@@ -89,6 +93,8 @@ const okCases: OkCase[] = [
         'partial-integer': 123n,
         choice: 'bar',
         collect: [],
+        'drain-until-flag': [],
+        'drain-all': [],
       },
       remainingRawArgs: [],
     },
@@ -129,6 +135,8 @@ const okCases: OkCase[] = [
         text: '',
         choice: 123,
         collect: ['a', 'b', 'c'],
+        'drain-until-flag': [],
+        'drain-all': [],
       },
       remainingRawArgs: [],
     },
@@ -159,6 +167,8 @@ const okCases: OkCase[] = [
         text: '',
         choice: '789',
         collect: [],
+        'drain-until-flag': [],
+        'drain-all': [],
       },
       remainingRawArgs: [],
     },
@@ -190,6 +200,8 @@ const okCases: OkCase[] = [
         number: 0,
         text: '',
         collect: [],
+        'drain-until-flag': [],
+        'drain-all': [],
       },
       remainingRawArgs: [],
     },
@@ -229,6 +241,8 @@ const okCases: OkCase[] = [
         number: 0,
         text: '',
         collect: ['abc', 'def'],
+        'drain-until-flag': [],
+        'drain-all': [],
       },
       remainingRawArgs: [
         'abc',
@@ -270,6 +284,8 @@ const okCases: OkCase[] = [
         number: 0,
         text: '',
         collect: [],
+        'drain-until-flag': [],
+        'drain-all': [],
       },
       remainingRawArgs: [
         '--not-a-flag',

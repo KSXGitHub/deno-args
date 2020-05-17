@@ -30,6 +30,8 @@ switch (result.tag) {
     assert<bigint>(result.value['partial-integer'])
     assert<string>(result.value.text)
     assert<string[]>(result.value.collect)
+    assert<string[]>(result.value['drain-until-flag'])
+    assert<string[]>(result.value['drain-all'])
 
     break
 

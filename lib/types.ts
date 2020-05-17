@@ -119,6 +119,7 @@ export interface ParseError {
 export type ArgvItem =
   | ArgvItem.SingleFlag
   | ArgvItem.MultiFlag
+  | ArgvItem.DoubleDash
   | ArgvItem.Value
 
 export namespace ArgvItem {
@@ -126,7 +127,7 @@ export namespace ArgvItem {
     /** Position of the item in the arguments array */
     readonly index: number
     /** Discriminant and type of argument */
-    readonly type: 'single-flag' | 'multi-flag' | 'value'
+    readonly type: 'single-flag' | 'multi-flag' | 'double-dash' | 'value'
     /** Raw argument from which it was parsed */
     readonly raw: string
     /** Flag name if the argument is a flag */
@@ -147,6 +148,14 @@ export namespace ArgvItem {
   export interface MultiFlag extends Base {
     readonly type: 'multi-flag'
     readonly name: readonly string[]
+  }
+
+  /**
+   * Double dash variant of {@link ArgvItem}
+   */
+  export interface DoubleDash extends Base {
+    readonly type: 'double-dash'
+    readonly raw: '--'
   }
 
   /**

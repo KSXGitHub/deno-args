@@ -37,7 +37,9 @@ function addExtraProps<
 >(main: Main, args: readonly ArgvItem[]): Main & ExtraProps {
   const remaining: ExtraProps['remaining'] = once(() => {
     const { consumedArgs } = object
-    const remainingArgs = args.filter(item => !consumedArgs.has(item))
+    const remainingArgs = args.filter(item =>
+      !consumedArgs.has(item) && item.type !== 'double-dash'
+    )
     const mapFn = (item: ArgvItem) => item.raw
     const rawArgs = once(() => remainingArgs.map(mapFn))
     const rawFlags = once(

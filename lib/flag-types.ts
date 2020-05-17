@@ -299,7 +299,7 @@ export const CollectOption = <Name extends string, Value>(
       fmtTypeHelp(descriptor.type.help)
     return { title, description }
   }),
-  ...sharedProps('MultiOption', descriptor),
+  ...sharedProps('CollectOption', descriptor),
 })
 
 /**
@@ -308,3 +308,83 @@ export const CollectOption = <Name extends string, Value>(
  */
 export interface CollectOptionDescriptor<Value>
   extends OptionDescriptor<Value> {}
+
+/**
+ * Declare an option that drains all arguments after the flag
+ *
+ * CLI example: `--opt abc def ghi` → `['abc', 'def', 'ghi']`
+ */
+export const DrainOption = <Name extends string, Value>(
+  name: Name,
+  descriptor: DrainOptionDescriptor<Value>,
+): FlagType<Name, Value[]> => ({
+  name,
+  extract(args) {
+    const flags = listFlags(name, descriptor)
+    const findRes = findFlags(args, flags)
+    if (!findRes.length) {
+      return ok({
+        value: [],
+        consumedFlags: new Set(),
+      })
+    }
+    if (findRes.length !== 1) return err(new ConflictFlags(flags))
+    const [res] = findRes
+    const consumedFlags = new Set<ArgvItem>([res])
+    // TODO: Return multiple errors at once
+    const values: Value[] = []
+    for (let i = res.index + 1; i < args.length; ++i) {
+      const item = args[i]
+      if (!descriptor.while(item)) break
+      const valRes = descriptor.type.extract([item.raw])
+      if (!valRes.tag) return valRes
+      values.push(valRes.value)
+      consumedFlags.add(item)
+    }
+    return ok({
+      value: values,
+      consumedFlags,
+    })
+  },
+  help: once(() => {
+    const typeName = descriptor.type.getTypeName()
+    const title = `${fmtTitle(name, descriptor)} [${typeName} ...]`
+    const description = (descriptor.describe || '') +
+      fmtTypeHelp(descriptor.type.help)
+    return { title, description }
+  }),
+  ...sharedProps('CollectOption', descriptor),
+})
+
+/**
+ * Interface of descriptor of {@link DrainOption}
+ * @template Value Type of values
+ */
+export interface DrainOptionDescriptor<Value> extends OptionDescriptor<Value> {
+  /** When to take an argument, it takes all by default */
+  readonly while: DrainOptionWhile
+}
+
+/** Type of `while` of descriptor of {@link DrainOption} */
+export interface DrainOptionWhile {
+  /**
+   * Filter function
+   * @param arg Concerning argument
+   * @returns Whether draining should continues
+   */
+  (arg: ArgvItem): boolean
+}
+
+/** Type of return value of {@link DrainOptionFilterFunc} */
+export interface DrainOptionFilterReturn {
+  /** Whether to take the argument */
+  readonly take: boolean
+  /** Whether to stop further draining */
+  readonly done: boolean
+}
+
+/** Set `filter` option to this value to make {@link DrainOption} only consumes all until flags */
+export const DRAIN_UNTIL_FLAG: DrainOptionWhile = arg => arg.type === 'value'
+
+/** Set `filter` option to this value make {@link DrainOption} consumes all including flags */
+export const DRAIN_ALL: DrainOptionWhile = () => true
