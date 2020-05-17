@@ -332,14 +332,14 @@ export const DrainOption = <Name extends string, Value>(
     const values: Value[] = []
     for (let i = res.index + 1; i < args.length; ++i) {
       const item = args[i]
-      const { take, done } = descriptor.filter(item)
-      if (take) {
+      if (descriptor.while(item)) {
         const valRes = descriptor.type.extract([item.raw])
         if (!valRes.tag) return valRes
         values.push(valRes.value)
         consumedFlags.add(item)
+      } else {
+        break
       }
-      if (done) break
     }
     return {
       tag: true,
@@ -365,17 +365,17 @@ export const DrainOption = <Name extends string, Value>(
  */
 export interface DrainOptionDescriptor<Value> extends OptionDescriptor<Value> {
   /** When to take an argument, it takes all by default */
-  readonly filter: DrainOptionFilterFunc
+  readonly while: DrainOptionWhile
 }
 
-/** Filter function */
-export interface DrainOptionFilterFunc {
+/** Type of `while` of descriptor of {@link DrainOption} */
+export interface DrainOptionWhile {
   /**
    * Filter function
    * @param arg Concerning argument
-   * @returns Whether the argument should be drain and whether should draining stops
+   * @returns Whether draining should continues
    */
-  (arg: ArgvItem): DrainOptionFilterReturn
+  (arg: ArgvItem): boolean
 }
 
 /** Type of return value of {@link DrainOptionFilterFunc} */
@@ -387,11 +387,7 @@ export interface DrainOptionFilterReturn {
 }
 
 /** Set `filter` option to this value to make {@link DrainOption} only consumes all until flags */
-export const DRAIN_UNTIL_FLAG: DrainOptionFilterFunc = arg =>
-  arg.type === 'value' ? DRAIN_TAKE_CONTINUE : DRAIN_LEAVE_STOP
+export const DRAIN_UNTIL_FLAG: DrainOptionWhile = arg => arg.type === 'value'
 
 /** Set `filter` option to this value make {@link DrainOption} consumes all including flags */
-export const DRAIN_ALL: DrainOptionFilterFunc = () => DRAIN_TAKE_CONTINUE
-
-const DRAIN_TAKE_CONTINUE: DrainOptionFilterReturn = { take: true, done: false }
-const DRAIN_LEAVE_STOP: DrainOptionFilterReturn = { take: false, done: true }
+export const DRAIN_ALL: DrainOptionWhile = () => true
