@@ -332,14 +332,11 @@ export const DrainOption = <Name extends string, Value>(
     const values: Value[] = []
     for (let i = res.index + 1; i < args.length; ++i) {
       const item = args[i]
-      if (descriptor.while(item)) {
-        const valRes = descriptor.type.extract([item.raw])
-        if (!valRes.tag) return valRes
-        values.push(valRes.value)
-        consumedFlags.add(item)
-      } else {
-        break
-      }
+      if (!descriptor.while(item)) break
+      const valRes = descriptor.type.extract([item.raw])
+      if (!valRes.tag) return valRes
+      values.push(valRes.value)
+      consumedFlags.add(item)
     }
     return {
       tag: true,
