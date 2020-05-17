@@ -324,7 +324,15 @@ export const DrainOption = <Name extends string, Value>(
   extract(args) {
     const flags = listFlags(name, descriptor)
     const findRes = findFlags(args, flags)
-    if (!findRes.length) return err(new MissingFlag(name))
+    if (!findRes.length) {
+      return {
+        tag: true,
+        value: {
+          value: [],
+          consumedFlags: new Set(),
+        },
+      }
+    }
     if (findRes.length !== 1) return err(new ConflictFlags(flags))
     const [res] = findRes
     const consumedFlags = new Set<ArgvItem>([res])
