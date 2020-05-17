@@ -14,18 +14,18 @@ https://youtu.be/luzgMWrRJxw
 ### Example Code
 
 ```typescript
-import args from "https://deno.land/x/args@1.0.7/wrapper.ts";
+import args from "https://deno.land/x/args@2.0.0/wrapper.ts";
 import {
   EarlyExitFlag,
   Option,
-} from "https://deno.land/x/args@1.0.7/flag-types.ts";
+} from "https://deno.land/x/args@2.0.0/flag-types.ts";
 import {
   FiniteNumber,
   Choice,
-} from "https://deno.land/x/args@1.0.7/value-types.ts";
+} from "https://deno.land/x/args@2.0.0/value-types.ts";
 import {
   PARSE_FAILURE,
-} from "https://deno.land/x/args@1.0.7/symbols.ts";
+} from "https://deno.land/x/args@2.0.0/symbols.ts";
 
 const parser = args
   .describe("Add or subtract two numbers")
