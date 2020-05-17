@@ -325,13 +325,10 @@ export const DrainOption = <Name extends string, Value>(
     const flags = listFlags(name, descriptor)
     const findRes = findFlags(args, flags)
     if (!findRes.length) {
-      return {
-        tag: true,
-        value: {
-          value: [],
-          consumedFlags: new Set(),
-        },
-      }
+      return ok({
+        value: [],
+        consumedFlags: new Set(),
+      })
     }
     if (findRes.length !== 1) return err(new ConflictFlags(flags))
     const [res] = findRes
@@ -346,13 +343,10 @@ export const DrainOption = <Name extends string, Value>(
       values.push(valRes.value)
       consumedFlags.add(item)
     }
-    return {
-      tag: true,
-      value: {
-        value: values,
-        consumedFlags,
-      },
-    }
+    return ok({
+      value: values,
+      consumedFlags,
+    })
   },
   help: once(() => {
     const typeName = descriptor.type.getTypeName()
