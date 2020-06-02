@@ -46,7 +46,7 @@ jobs:
         run: |
           cp -r ~/.cache/deno deno-cache.tmp
       - name: Upload deno cache as artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2.0.1
         with:
           name: deno-cache
           path: deno-cache.tmp
