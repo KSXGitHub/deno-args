@@ -51,7 +51,7 @@ switch (res.tag) {
   case PARSE_FAILURE:
     console.error(res.error.toString())
     Deno.exit(1)
-  case MAIN_COMMAND:{
+  case MAIN_COMMAND: {
     const remaining = res.remaining().rawValues()
     if (remaining.length) {
       console.error(`Invalid subcommand: ${remaining[0]}`)
@@ -59,7 +59,8 @@ switch (res.tag) {
       console.error('Missing subcommand')
     }
     help()
-    Deno.exit(1)}
+    Deno.exit(1)
+  }
   case 'help':
     help(res.remaining().rawValues())
     break
