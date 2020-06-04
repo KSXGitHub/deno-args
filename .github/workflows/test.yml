@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt install -y zsh
       - name: Install sane-fmt
-        uses: sane-fmt/sane-fmt@0.3.4
+        uses: sane-fmt/action@0.3.4
         with:
           run: 'false'
           export-path: 'true'
