@@ -65,18 +65,14 @@ export function Choice<
   const valueStrings = values.map(x => String(x))
 
   { // check for duplication
-    const duplications = valueStrings.filter((x, i) =>
-      valueStrings.indexOf(x) !== i
-    )
+    const duplications = valueStrings.filter((x, i) => valueStrings.indexOf(x) !== i)
     if (duplications.length) {
       throw new RangeError(`Duplicated choices: ${duplications.join(' ')}`)
     }
   }
 
   { // check for invalid numbers
-    const invalidNumbers = values.filter(x =>
-      typeof x === 'number' && !isFinite(x)
-    )
+    const invalidNumbers = values.filter(x => typeof x === 'number' && !isFinite(x))
     if (invalidNumbers.length) {
       throw new RangeError(`Invalid numbers: ${invalidNumbers.join(' ')}`)
     }

@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt install -y zsh
       - name: Install sane-fmt
-        uses: KSXGitHub/github-actions-sane-fmt@0.2.23
+        uses: sane-fmt/action@0.3.7
         with:
           run: 'false'
           export-path: 'true'
@@ -55,4 +55,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: KSXGitHub/github-actions-sane-fmt@0.2.22
+      - uses: sane-fmt/action@0.3.7
+        with:
+          args: |
+            - --details=diff
+            - --color=always
+            - .
