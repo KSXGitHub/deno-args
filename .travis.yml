@@ -23,7 +23,7 @@ addons:
 
 env:
   - DENO_VERSION=v1.0.0
-    SANE_FMT_VERSION=0.2.22
+    SANE_FMT_VERSION=0.3.7
 
 install:
   - curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
