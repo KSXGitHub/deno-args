@@ -13,7 +13,7 @@ https://youtu.be/luzgMWrRJxw
 
 ### Examples
 
-Examples are located at [examples](./examples) folder.
+Examples are located at [examples](https://git.io/JfX8i) folder.
 
 ### Sample Apps
 
