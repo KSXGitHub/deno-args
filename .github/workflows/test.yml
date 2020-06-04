@@ -56,7 +56,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: sane-fmt/action@0.3.4
-        with: |
-          - --details=diff
-          - --color=always
-          - .
+        with:
+          args: |
+            - --details=diff
+            - --color=always
+            - .
