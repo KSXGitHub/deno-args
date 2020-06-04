@@ -37,5 +37,4 @@ export const fmtArgv = (argv: readonly string[]) =>
     .map(item => item.trim() ? shEsc.singleArgument(item) : "'" + item + "'")
     .join(' ')
 
-export const fmtTestName = (title: string, argv: readonly string[]) =>
-  `${title} (${fmtArgv(argv)})`
+export const fmtTestName = (title: string, argv: readonly string[]) => `${title} (${fmtArgv(argv)})`

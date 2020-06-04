@@ -364,8 +364,7 @@ const errCases: ErrCase[] = [
     ],
     output: {
       types: ['UnexpectedFlag'],
-      messages:
-        'Option --integer requires a value but received flag --text instead',
+      messages: 'Option --integer requires a value but received flag --text instead',
     },
   },
 

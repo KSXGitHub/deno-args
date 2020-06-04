@@ -48,8 +48,7 @@ export const record = <
  * @param name Flag name
  * @returns `"-"` for single character name, or `"--"` for otherwise
  */
-export const flagPrefix = (name: string): '-' | '--' =>
-  name.length === 1 ? '-' : '--'
+export const flagPrefix = (name: string): '-' | '--' => name.length === 1 ? '-' : '--'
 
 /**
  * Convert a flag name to a flag argument
@@ -200,8 +199,7 @@ export function* makeIndent(text: string, indent: string) {
  * @param size Size of prefix
  * @returns Prefixed lines of `text`
  */
-export const makeIndentN = (text: string, size: number) =>
-  makeIndent(text, ' '.repeat(size))
+export const makeIndentN = (text: string, size: number) => makeIndent(text, ' '.repeat(size))
 
 /**
  * `Map`-like class where `.get(key)` always result in defined value

@@ -37,9 +37,7 @@ function addExtraProps<
 >(main: Main, args: readonly ArgvItem[]): Main & ExtraProps {
   const remaining: ExtraProps['remaining'] = once(() => {
     const { consumedArgs } = object
-    const remainingArgs = args.filter(item =>
-      !consumedArgs.has(item) && item.type !== 'double-dash'
-    )
+    const remainingArgs = args.filter(item => !consumedArgs.has(item) && item.type !== 'double-dash')
     const mapFn = (item: ArgvItem) => item.raw
     const rawArgs = once(() => remainingArgs.map(mapFn))
     const rawFlags = once(
@@ -152,8 +150,7 @@ export namespace CommandReturn {
    * Interface of parsing failure
    * @template ErrList Type of list of errors
    */
-  export interface Failure<ErrList extends readonly ParseError[]>
-    extends FailureBase<ErrList> {}
+  export interface Failure<ErrList extends readonly ParseError[]> extends FailureBase<ErrList> {}
 }
 
 /**

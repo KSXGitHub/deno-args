@@ -49,8 +49,7 @@ export class NotAnInteger extends ValueError {
  * `ValueError` class for when raw input not matching any expected choice
  * @template ValidChoice Union type of valid choices
  */
-export class InvalidChoice<ValidChoice extends string | number>
-  extends ValueError {
+export class InvalidChoice<ValidChoice extends string | number> extends ValueError {
   constructor(
     /** Raw input */
     public readonly raw: string,

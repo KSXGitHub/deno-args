@@ -250,8 +250,7 @@ export const PartialOption = <Name extends string, Value, Default>(
  * @template Value Type of value
  * @template Default Type of default value
  */
-export interface PartialOptionDescriptor<Value, Default>
-  extends OptionDescriptor<Value> {
+export interface PartialOptionDescriptor<Value, Default> extends OptionDescriptor<Value> {
   /** Default value */
   readonly default: Default
   /** Default value description */
@@ -306,8 +305,7 @@ export const CollectOption = <Name extends string, Value>(
  * Interface of descriptor of {@link CollectOption}
  * @template Value Type of values
  */
-export interface CollectOptionDescriptor<Value>
-  extends OptionDescriptor<Value> {}
+export interface CollectOptionDescriptor<Value> extends OptionDescriptor<Value> {}
 
 /**
  * Declare an option that drains all arguments after the flag
