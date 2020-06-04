@@ -11,7 +11,9 @@ Extensible CLI arguments parser for [Deno](https://deno.land) with intelligent T
 
 https://youtu.be/luzgMWrRJxw
 
-### Example Code
+### Examples
+
+Examples are located at [examples](./examples) folder.
 
 ### Sample Apps
 
