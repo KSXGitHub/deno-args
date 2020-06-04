@@ -22,7 +22,7 @@ addons:
       - zsh
 
 env:
-  - DENO_VERSION=v1.0.0
+  - DENO_VERSION=v1.0.4
     SANE_FMT_VERSION=0.3.7
 
 install:

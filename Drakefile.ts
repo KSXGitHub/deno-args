@@ -1,6 +1,6 @@
 #! /usr/bin/env -S deno run --allow-all --unstable
 
-import * as path from 'https://deno.land/std@0.51.0/path/mod.ts'
+import * as path from 'https://deno.land/std@0.55.0/path/mod.ts'
 
 import {
   desc,
@@ -69,7 +69,7 @@ task('test', ['cache'], async () => {
   const permissions = [
     '--allow-read',
   ]
-  await sh(`${deno} test ${permissions.join(' ')} test/**/*.test.ts`)
+  await sh(`${deno} test --unstable ${permissions.join(' ')} test/**/*.test.ts`)
 })
 
 desc('Run sane-fmt')
