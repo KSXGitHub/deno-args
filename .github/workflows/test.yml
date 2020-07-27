@@ -36,7 +36,7 @@ jobs:
             deno-${{ runner.os }}-
             deno-
       - name: Install Deno
-        uses: denolib/setup-deno@v2
+        uses: denolib/setup-deno@v2.1.0
         with:
           deno-version: 1.0.4
       - name: Run all targets in Drakefile
