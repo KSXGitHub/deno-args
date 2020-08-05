@@ -1,6 +1,6 @@
 #! /usr/bin/env -S deno run --allow-all --unstable
 
-import * as path from 'https://deno.land/std@0.55.0/path/mod.ts'
+import * as path from 'https://deno.land/std@0.63.0/path/mod.ts'
 
 import {
   desc,
@@ -9,7 +9,7 @@ import {
   run,
   readFile,
   glob,
-} from 'https://deno.land/x/drake@v1.0.0/mod.ts'
+} from 'https://deno.land/x/drake@v1.2.6/mod.ts'
 
 import { dirname } from 'https://deno.land/x/dirname/mod.ts'
 
