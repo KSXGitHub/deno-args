@@ -1,15 +1,15 @@
-import args from '../lib/wrapper.ts'
+import args from 'https://deno.land/x/args@2.0.6/wrapper.ts'
 import {
   EarlyExitFlag,
   Option,
-} from '../lib/flag-types.ts'
+} from 'https://deno.land/x/args@2.0.6/flag-types.ts'
 import {
   FiniteNumber,
   Choice,
-} from '../lib/value-types.ts'
+} from 'https://deno.land/x/args@2.0.6/value-types.ts'
 import {
   PARSE_FAILURE,
-} from '../lib/symbols.ts'
+} from 'https://deno.land/x/args@2.0.6/symbols.ts'
 
 const parser = args
   .describe('Add or subtract two numbers')
