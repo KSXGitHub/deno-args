@@ -1,11 +1,6 @@
-import {
-  ParseError,
-  FlagType,
-} from './types.ts'
+import { ParseError, FlagType } from './types.ts'
 
-import {
-  iterateArguments,
-} from './utils.ts'
+import { iterateArguments } from './utils.ts'
 
 import {
   BLANK,

@@ -2,14 +2,7 @@
 
 import * as path from 'https://deno.land/std@0.63.0/path/mod.ts'
 
-import {
-  desc,
-  task,
-  sh,
-  run,
-  readFile,
-  glob,
-} from 'https://deno.land/x/drake@v1.2.6/mod.ts'
+import { desc, task, sh, run, readFile, glob } from 'https://deno.land/x/drake@v1.2.6/mod.ts'
 
 import { dirname } from 'https://deno.land/x/dirname/mod.ts'
 

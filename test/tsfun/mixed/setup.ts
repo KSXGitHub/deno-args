@@ -1,9 +1,4 @@
-import {
-  BLANK,
-  Describe,
-  FlaggedCommand,
-  SubCommand,
-} from '../../../lib/command-types.ts'
+import { BLANK, Describe, FlaggedCommand, SubCommand } from '../../../lib/command-types.ts'
 import {
   EarlyExitFlag,
   Flag,
@@ -15,16 +10,9 @@ import {
   DRAIN_UNTIL_FLAG,
   DRAIN_ALL,
 } from '../../../lib/flag-types.ts'
-import {
-  FiniteNumber,
-  Integer,
-  Text,
-  Choice,
-} from '../../../lib/value-types.ts'
+import { FiniteNumber, Integer, Text, Choice } from '../../../lib/value-types.ts'
 import { fmtTestName } from '../../utils.ts'
-import {
-  pass,
-} from '../deps.ts'
+import { pass } from '../deps.ts'
 
 export const setup = pass(BLANK)
   .to(Describe, 'Top level command')

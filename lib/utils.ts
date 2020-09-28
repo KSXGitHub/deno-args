@@ -1,9 +1,4 @@
-import {
-  Ok,
-  Err,
-  ParseError,
-  ArgvItem,
-} from './types.ts'
+import { Ok, Err, ParseError, ArgvItem } from './types.ts'
 
 /**
  * Create an `Ok`

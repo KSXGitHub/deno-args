@@ -1,27 +1,10 @@
-import {
-  once,
-} from './deps.ts'
+import { once } from './deps.ts'
 
-import {
-  FlagType,
-  ValueType,
-  ArgvItem,
-} from './types.ts'
+import { FlagType, ValueType, ArgvItem } from './types.ts'
 
-import {
-  ok,
-  err,
-  flagPrefix,
-  findFlags,
-} from './utils.ts'
+import { ok, err, flagPrefix, findFlags } from './utils.ts'
 
-import {
-  MissingFlag,
-  ConflictFlags,
-  MissingValue,
-  UnexpectedFlag,
-  ValueParsingFailure,
-} from './flag-errors.ts'
+import { MissingFlag, ConflictFlags, MissingValue, UnexpectedFlag, ValueParsingFailure } from './flag-errors.ts'
 
 const listFlags = <Name extends string>(
   name: Name,
