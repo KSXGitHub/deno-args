@@ -1,8 +1,4 @@
-import {
-  assertEquals,
-  path,
-  dirname,
-} from '../../deps.ts'
+import { assertEquals, path, dirname } from '../../deps.ts'
 
 import { setup } from './setup.ts'
 

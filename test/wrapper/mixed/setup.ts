@@ -10,12 +10,7 @@ import {
   DRAIN_UNTIL_FLAG,
   DRAIN_ALL,
 } from '../../../lib/flag-types.ts'
-import {
-  FiniteNumber,
-  Integer,
-  Text,
-  Choice,
-} from '../../../lib/value-types.ts'
+import { FiniteNumber, Integer, Text, Choice } from '../../../lib/value-types.ts'
 import { fmtTestName } from '../../utils.ts'
 
 export const setup = () =>

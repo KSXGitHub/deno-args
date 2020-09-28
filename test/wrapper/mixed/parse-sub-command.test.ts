@@ -1,20 +1,10 @@
-import {
-  PARSE_FAILURE,
-} from '../../../lib/symbols.ts'
+import { PARSE_FAILURE } from '../../../lib/symbols.ts'
 
-import {
-  assertEquals,
-} from '../../deps.ts'
+import { assertEquals } from '../../deps.ts'
 
-import {
-  dbg,
-} from '../../utils.ts'
+import { dbg } from '../../utils.ts'
 
-import {
-  Case,
-  setup,
-  test,
-} from './setup.ts'
+import { Case, setup, test } from './setup.ts'
 
 interface Variant<Tag, Value> {
   readonly tag: Tag

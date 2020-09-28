@@ -1,17 +1,8 @@
-import {
-  ValueType,
-} from './types.ts'
+import { ValueType } from './types.ts'
 
-import {
-  ok,
-  err,
-} from './utils.ts'
+import { ok, err } from './utils.ts'
 
-import {
-  NotANumber,
-  NotAnInteger,
-  InvalidChoice,
-} from './value-errors.ts'
+import { NotANumber, NotAnInteger, InvalidChoice } from './value-errors.ts'
 
 const sharedProps = (typeName: string) => ({
   [Symbol.toStringTag]: typeName,

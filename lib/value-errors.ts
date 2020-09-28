@@ -1,6 +1,4 @@
-import {
-  ParseError,
-} from './types.ts'
+import { ParseError } from './types.ts'
 
 /**
  * Base class of all `ValueError`

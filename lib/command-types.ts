@@ -1,25 +1,12 @@
-import {
-  once,
-} from './deps.ts'
+import { once } from './deps.ts'
 
-import {
-  ArgvItem,
-  ParseError,
-  FlagType,
-} from './types.ts'
+import { ArgvItem, ParseError, FlagType } from './types.ts'
 
-import {
-  record,
-} from './utils.ts'
+import { record } from './utils.ts'
 
-import {
-  MAIN_COMMAND,
-  PARSE_FAILURE,
-} from './symbols.ts'
+import { MAIN_COMMAND, PARSE_FAILURE } from './symbols.ts'
 
-import {
-  CommandError,
-} from './command-errors.ts'
+import { CommandError } from './command-errors.ts'
 
 interface ExtraProps {
   remaining(): {
