@@ -57,3 +57,31 @@ deno run sub.ts exponent --base 3 --exp 8
 ```
 
 _Output:_ 6561
+
+## [`share-options-between-subs.ts`](./share-options-between-subs.ts)
+
+### `help`
+
+```sh
+deno run share-options-between-subs.ts help
+```
+
+```sh
+deno run share-options-between-subs.ts help sub1
+```
+
+```sh
+deno run share-options-between-subs.ts help sub2
+```
+
+### `sub1`
+
+```sh
+deno run share-options-between-subs.ts sub1 --shared-opt foo --sub1-opt bar
+```
+
+### `sub2`
+
+```sh
+deno run share-options-between-subs.ts sub2 --shared-opt foo --sub2-opt bar
+```
