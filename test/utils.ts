@@ -1,4 +1,4 @@
-import { TemplateTag, shEsc } from './deps.ts'
+import { TemplateTag, shEsc, path } from './deps.ts'
 
 export const dbg = TemplateTag(Deno.inspect)
 
@@ -38,3 +38,10 @@ export const fmtArgv = (argv: readonly string[]) =>
     .join(' ')
 
 export const fmtTestName = (title: string, argv: readonly string[]) => `${title} (${fmtArgv(argv)})`
+
+export interface ImportMeta {
+  readonly url: string
+}
+
+export const filename = (meta: ImportMeta) => path.fromFileUrl(meta.url)
+export const dirname = (meta: ImportMeta) => path.dirname(filename(meta))

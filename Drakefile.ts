@@ -1,10 +1,8 @@
 #! /usr/bin/env -S deno run --allow-all --unstable
 
-import * as path from 'https://deno.land/std@0.63.0/path/mod.ts'
+import * as path from 'https://deno.land/std@0.75.0/path/mod.ts'
 
-import { desc, task, sh, run, readFile, glob } from 'https://deno.land/x/drake@v1.2.6/mod.ts'
-
-import { dirname } from 'https://deno.land/x/dirname/mod.ts'
+import { desc, task, sh, run, readFile, glob } from 'https://deno.land/x/drake@v1.4.4/mod.ts'
 
 const {
   UPDATE = 'false',
@@ -13,7 +11,8 @@ const {
 
 const deno = Deno.execPath()
 
-const __dirname = dirname(import.meta)
+const __filename = path.fromFileUrl(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const shouldUpdate = UPDATE.toLowerCase() === 'true'
 

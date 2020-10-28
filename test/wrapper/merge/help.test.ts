@@ -1,4 +1,5 @@
-import { assertEquals, path, fs, dirname } from '../../deps.ts'
+import { assertEquals, path, fs } from '../../deps.ts'
+import { dirname } from '../../utils.ts'
 import { setup } from './setup.ts'
 
 const __dirname = dirname(import.meta)
