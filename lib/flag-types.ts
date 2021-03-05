@@ -64,7 +64,7 @@ export const EarlyExitFlag = <Name extends string>(
   extract(args) {
     const findRes = findFlags(args, listFlags(name, descriptor))
     if (findRes.length) return descriptor.exit()
-    return ok({ value: undefined, consumedFlags: new Set() })
+    return ok({ value: undefined, consumedFlags: new Set<never>() })
   },
   help: FlagHelpFunc(name, descriptor),
   ...sharedProps('EarlyExitFlag'),
@@ -198,7 +198,7 @@ export const Partial = <Name extends string, Value, Default>(
     if (result.error instanceof MissingFlag) {
       return ok({
         value: def,
-        consumedFlags: new Set(),
+        consumedFlags: new Set<never>(),
       })
     }
     return result
@@ -306,7 +306,7 @@ export const DrainOption = <Name extends string, Value>(
     if (!findRes.length) {
       return ok({
         value: [],
-        consumedFlags: new Set(),
+        consumedFlags: new Set<never>(),
       })
     }
     if (findRes.length !== 1) return err(new ConflictFlags(flags))
