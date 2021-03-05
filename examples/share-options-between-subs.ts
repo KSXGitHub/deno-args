@@ -1,7 +1,7 @@
-import args from 'https://deno.land/x/args@2.0.6/wrapper.ts'
-import { Option } from 'https://deno.land/x/args@2.0.6/flag-types.ts'
-import { Text } from 'https://deno.land/x/args@2.0.6/value-types.ts'
-import { PARSE_FAILURE, MAIN_COMMAND } from 'https://deno.land/x/args@2.0.6/symbols.ts'
+import { Option } from '../lib/flag-types.ts'
+import { PARSE_FAILURE, MAIN_COMMAND } from '../lib/symbols.ts'
+import { Text } from '../lib/value-types.ts'
+import args from '../lib/wrapper.ts'
 
 const globalOptions = args
   .with(Option('shared-opt', {
