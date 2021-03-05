@@ -1,6 +1,5 @@
-import { makeIndentN, InitMap } from './utils.ts'
-
 import { Command, CommandHelp } from './command-types.ts'
+import { makeIndentN, InitMap } from './utils.ts'
 
 class HelpCategories extends InitMap<string, CommandHelp[]> {
   protected init(): CommandHelp[] {

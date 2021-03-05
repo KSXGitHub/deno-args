@@ -1,7 +1,5 @@
 import { ParseError } from './types.ts'
-
 import { flag } from './utils.ts'
-
 import { ValueError } from './value-errors.ts'
 
 const fmtFlagList = (names: readonly string[]) => names.map(flag).join(' ')

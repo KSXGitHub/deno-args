@@ -1,7 +1,7 @@
-import args from '../lib/wrapper.ts'
 import { BinaryFlag, Option } from '../lib/flag-types.ts'
-import { Integer } from '../lib/value-types.ts'
 import { MAIN_COMMAND } from '../lib/symbols.ts'
+import { Integer } from '../lib/value-types.ts'
+import args from '../lib/wrapper.ts'
 import { assert } from './deps.ts'
 
 const shared = args

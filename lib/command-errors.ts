@@ -1,6 +1,5 @@
-import { ParseError } from './types.ts'
-
 import { FlagError } from './flag-errors.ts'
+import { ParseError } from './types.ts'
 
 /**
  * Class of error created by `CommandType::extract`
