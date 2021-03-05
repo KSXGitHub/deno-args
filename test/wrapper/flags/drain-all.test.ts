@@ -1,6 +1,6 @@
 import { DrainOption, DRAIN_ALL } from '../../../lib/flag-types.ts'
-import { Text } from '../../../lib/value-types.ts'
 import { MAIN_COMMAND, PARSE_FAILURE } from '../../../lib/symbols.ts'
+import { Text } from '../../../lib/value-types.ts'
 import args from '../../../lib/wrapper.ts'
 import { assertEquals } from '../../deps.ts'
 import { dbg, fmtTestName } from '../../utils.ts'

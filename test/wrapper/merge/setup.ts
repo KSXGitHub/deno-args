@@ -1,5 +1,5 @@
-import args from '../../../lib/wrapper.ts'
 import { BinaryFlag, CountFlag } from '../../../lib/flag-types.ts'
+import args from '../../../lib/wrapper.ts'
 import { fmtTestName } from '../../utils.ts'
 
 export function setup() {

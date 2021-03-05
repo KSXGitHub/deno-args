@@ -1,4 +1,3 @@
-import args from '../../../lib/wrapper.ts'
 import {
   EarlyExitFlag,
   Flag,
@@ -11,6 +10,7 @@ import {
   DRAIN_ALL,
 } from '../../../lib/flag-types.ts'
 import { FiniteNumber, Integer, Text, Choice } from '../../../lib/value-types.ts'
+import args from '../../../lib/wrapper.ts'
 import { fmtTestName } from '../../utils.ts'
 
 export const setup = () =>

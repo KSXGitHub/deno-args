@@ -1,6 +1,6 @@
 import { CollectOption } from '../../../lib/flag-types.ts'
-import { Integer } from '../../../lib/value-types.ts'
 import { MAIN_COMMAND, PARSE_FAILURE } from '../../../lib/symbols.ts'
+import { Integer } from '../../../lib/value-types.ts'
 import args from '../../../lib/wrapper.ts'
 import { assertEquals } from '../../deps.ts'
 import { dbg, fmtTestName } from '../../utils.ts'

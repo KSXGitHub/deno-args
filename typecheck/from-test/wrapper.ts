@@ -1,5 +1,5 @@
-import { MAIN_COMMAND, PARSE_FAILURE } from '../../lib/symbols.ts'
 import { CommandError } from '../../lib/command-errors.ts'
+import { MAIN_COMMAND, PARSE_FAILURE } from '../../lib/symbols.ts'
 import { ParseError, ArgvItem } from '../../lib/types.ts'
 import { setup } from '../../test/wrapper/mixed/setup.ts'
 import { assert } from '../deps.ts'

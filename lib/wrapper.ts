@@ -1,7 +1,3 @@
-import { ParseError, FlagType } from './types.ts'
-
-import { iterateArguments } from './utils.ts'
-
 import {
   BLANK,
   Command,
@@ -14,8 +10,9 @@ import {
   SubCommandReturn,
   ParseFailure,
 } from './command-types.ts'
-
 import help from './help.ts'
+import { ParseError, FlagType } from './types.ts'
+import { iterateArguments } from './utils.ts'
 
 type ParseResult<
   Main extends CommandReturn<any, any, any>,

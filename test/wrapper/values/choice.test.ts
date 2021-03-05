@@ -1,6 +1,6 @@
 import { Option } from '../../../lib/flag-types.ts'
-import { Choice } from '../../../lib/value-types.ts'
 import { MAIN_COMMAND, PARSE_FAILURE } from '../../../lib/symbols.ts'
+import { Choice } from '../../../lib/value-types.ts'
 import args from '../../../lib/wrapper.ts'
 import { assertEquals } from '../../deps.ts'
 import { dbg, fmtTestName, tryExec } from '../../utils.ts'
