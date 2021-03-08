@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt install -y zsh
       - name: Install sane-fmt
-        uses: sane-fmt/action@0.6.5
+        uses: sane-fmt/action@0.7.6
         with:
           run: 'false'
           export-path: 'true'
@@ -46,7 +46,7 @@ jobs:
         run: |
           cp -r ~/.cache/deno deno-cache.tmp
       - name: Upload deno cache as artifacts
-        uses: actions/upload-artifact@v2.2.0
+        uses: actions/upload-artifact@v2.2.2
         with:
           name: deno-cache
           path: deno-cache.tmp
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: sane-fmt/action@0.6.5
+      - uses: sane-fmt/action@0.7.6
         with:
           args: |
             - --details=diff
