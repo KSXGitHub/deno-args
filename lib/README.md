@@ -40,4 +40,4 @@ env UPDATE=true deno run -A --unstable Drakefile.ts all
 
 ## License
 
-[MIT](https://git.io/JvK1f) © [Hoàng Văn Khải](https://github.com/KSXGitHub)
+[MIT](https://git.io/JvK1f) © [Hoàng Văn Khải](https://ksxgithub.github.io)
