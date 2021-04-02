@@ -1,9 +1,6 @@
 import { MAIN_COMMAND } from '../../../lib/symbols.ts'
-
 import { assertEquals } from '../../deps.ts'
-
 import { dbg } from '../../utils.ts'
-
 import { Case, setup, test } from './setup.ts'
 
 type OkCase = Case<{
