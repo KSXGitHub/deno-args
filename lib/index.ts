@@ -6,4 +6,15 @@ export * as symbols from './symbols.ts'
 export * as types from './types.ts'
 export * as valueErrors from './value-errors.ts'
 export * as values from './value-types.ts'
+
+export * from './command-types.ts'
+export * from './flag-types.ts'
+export * from './symbols.ts'
+export * from './types.ts'
+export * from './value-types.ts'
+
+export { CommandError } from './command-errors.ts'
+export { FlagError } from './flag-errors.ts'
+export { ValueError } from './value-errors.ts'
+
 export { args, default } from './wrapper.ts'
