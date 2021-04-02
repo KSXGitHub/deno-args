@@ -1,7 +1,4 @@
-import { Option } from '../lib/flag-types.ts'
-import { PARSE_FAILURE, MAIN_COMMAND } from '../lib/symbols.ts'
-import { FiniteNumber } from '../lib/value-types.ts'
-import args from '../lib/wrapper.ts'
+import { args, FiniteNumber, Option, PARSE_FAILURE, MAIN_COMMAND } from '../lib/index.ts'
 
 const parser = args
   .describe('Calculate multiplication or exponent')

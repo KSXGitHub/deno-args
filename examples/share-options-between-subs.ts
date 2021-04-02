@@ -1,7 +1,4 @@
-import { Option } from '../lib/flag-types.ts'
-import { PARSE_FAILURE, MAIN_COMMAND } from '../lib/symbols.ts'
-import { Text } from '../lib/value-types.ts'
-import args from '../lib/wrapper.ts'
+import { args, Text, Option, PARSE_FAILURE, MAIN_COMMAND } from '../lib/index.ts'
 
 const globalOptions = args
   .with(Option('shared-opt', {

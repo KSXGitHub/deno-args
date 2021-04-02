@@ -1,7 +1,4 @@
-import { EarlyExitFlag, Option } from '../lib/flag-types.ts'
-import { PARSE_FAILURE } from '../lib/symbols.ts'
-import { FiniteNumber, Choice } from '../lib/value-types.ts'
-import args from '../lib/wrapper.ts'
+import { args, FiniteNumber, Choice, Option, EarlyExitFlag, PARSE_FAILURE } from '../lib/index.ts'
 
 const parser = args
   .describe('Add or subtract two numbers')
