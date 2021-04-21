@@ -38,7 +38,7 @@ jobs:
       - name: Install Deno
         uses: denolib/setup-deno@v2.3.0
         with:
-          deno-version: 1.8.0
+          deno-version: 1.9.1
       - name: Run all targets in Drakefile
         run: |
           deno run --allow-all --unstable Drakefile.ts all
