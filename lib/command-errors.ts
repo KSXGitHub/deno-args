@@ -10,9 +10,8 @@ export class CommandError<
 > implements ParseError, Iterable<FlagError> {
   /** Array of {@link FlagError} */
   public readonly errors: ErrList
-  
-  constructor(errors:ErrList) 
-  {
+
+  constructor(errors: ErrList) {
     this.errors = errors
   }
 
