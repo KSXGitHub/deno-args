@@ -8,10 +8,12 @@ import { ParseError } from './types.ts'
 export class CommandError<
   ErrList extends readonly FlagError[],
 > implements ParseError, Iterable<FlagError> {
-  constructor(
-    /** Array of {@link FlagError} */
-    public readonly errors: ErrList,
-  ) {}
+  /** Array of {@link FlagError} */
+  public readonly errors: ErrList
+
+  constructor(errors: ErrList) {
+    this.errors = errors
+  }
 
   public readonly toString = () =>
     this.errors
