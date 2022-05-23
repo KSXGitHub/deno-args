@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt install -y zsh
       - name: Install sane-fmt
-        uses: sane-fmt/action@0.11.0
+        uses: sane-fmt/action@0.13.0
         with:
           run: 'false'
           export-path: 'true'
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: sane-fmt/action@0.11.0
+      - uses: sane-fmt/action@0.13.0
         with:
           args: |
             - --details=diff
