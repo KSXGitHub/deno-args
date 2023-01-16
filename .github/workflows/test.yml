@@ -27,7 +27,7 @@ jobs:
       - name: Cache
         timeout-minutes: 1
         continue-on-error: true
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.2.3
         with:
           path: ~/.cache/deno
           key: deno-${{ runner.os }}-${{ hashFiles('**/deps.ts') }}
